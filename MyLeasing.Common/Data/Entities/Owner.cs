@@ -2,13 +2,13 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MyLeasing.Common;
+namespace MyLeasing.Common.Data.Entities;
 
-public class Owner
+public class Owner : IEntity
 {
     #region Attributes
 
-    private string _fullName;
+    private readonly string _fullName;
 
     #endregion
 
@@ -18,7 +18,7 @@ public class Owner
     [Key] public int Id { get; set; }
 
 
-    [NotNull] [DisplayName("First Name*")] public string Document { get; set; }
+    [NotNull] [DisplayName("Document*")] public string Document { get; set; }
 
 
     [NotNull] [DisplayName("First Name*")] public string FirstName { get; set; }
@@ -32,7 +32,11 @@ public class Owner
     public string FullName
     {
         get => _fullName;
-        set => _fullName = $"{FirstName} {LastName}";
+        init
+        {
+            _fullName = value;
+            _fullName = $"{FirstName} {LastName}";
+        }
     }
 
 
@@ -43,6 +47,9 @@ public class Owner
 
 
     public string Address { get; set; }
+
+    
+    public User User { get; set; }
 
     #endregion
 }
