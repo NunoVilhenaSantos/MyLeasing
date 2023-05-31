@@ -38,11 +38,16 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyLeasing.Common\MyLeasing.Common.csproj" />
+        <ProjectReference Include="..\MyLeasing.Common\MyLeasing.Common.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Data\Entities\" />
+        <Folder Include="Controllers\API\" />
+        <Folder Include="Data\Entities\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Remove="Controllers\Owners.cs" />
     </ItemGroup>
 
 </Project>

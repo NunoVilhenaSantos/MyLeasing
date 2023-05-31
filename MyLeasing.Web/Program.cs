@@ -12,7 +12,7 @@ builder.Services.AddControllersWithViews();
 // make sure to add the connection string in the appsettings.json file
 // and the connection string name is the same as the one in the appsettings.json file
 // in this case the connection string name is "DefaultConnection"
-// builder.Services.AddDbContext<DataContext>(
+// builder.Services.AddDbContext<DataContext2>(
 //     options =>
 //         options.UseSqlServer(
 //             builder.Configuration.GetConnectionString(
@@ -25,11 +25,11 @@ builder.Services.AddControllersWithViews();
 // in this case the connection string name is "LocalMySQLConnection"
 // MySQL is not supported in .NET 6.0 yet, so we need to install the following package
 // Microsoft.EntityFrameworkCore.Relational
-builder.Services.AddDbContext<DataContext>(
-    options =>
-        options.UseMySQL(
-            builder.Configuration.GetConnectionString(
-                "LocalMySQLConnection") ?? string.Empty));
+// builder.Services.AddDbContext<DataContext1>(
+//     options =>
+//         options.UseMySQL(
+//             builder.Configuration.GetConnectionString(
+//                 "LocalMySQLConnection") ?? string.Empty));
 
 
 // Add services to the container.

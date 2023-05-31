@@ -11,7 +11,7 @@ using MyLeasing.Common.Data;
 namespace MyLeasing.Common.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230530225534_InitDb")]
+    [Migration("20230531102907_InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
@@ -155,11 +155,9 @@ namespace MyLeasing.Common.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CellPhone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Document")
@@ -171,11 +169,6 @@ namespace MyLeasing.Common.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FixedPhone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")

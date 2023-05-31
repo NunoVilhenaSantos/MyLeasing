@@ -152,11 +152,9 @@ namespace MyLeasing.Common.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("CellPhone")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Document")
@@ -168,11 +166,6 @@ namespace MyLeasing.Common.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FixedPhone")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")

@@ -6,13 +6,6 @@ namespace MyLeasing.Common.Data.Entities;
 
 public class Owner : IEntity
 {
-    #region Attributes
-
-    private readonly string _fullName;
-
-    #endregion
-
-
     #region Properties
 
     [Key] public int Id { get; set; }
@@ -29,26 +22,18 @@ public class Owner : IEntity
 
     [NotNull]
     [DisplayName("Owner Name*")]
-    public string FullName
-    {
-        get => _fullName;
-        init
-        {
-            _fullName = value;
-            _fullName = $"{FirstName} {LastName}";
-        }
-    }
+    public string FullName => $"{FirstName} {LastName}";
 
 
-    [DisplayName("Fixed Phone")] public string FixedPhone { get; set; }
+    [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
 
 
-    [DisplayName("Cell Phone")] public string CellPhone { get; set; }
+    [DisplayName("Cell Phone")] public string? CellPhone { get; set; }
 
 
-    public string Address { get; set; }
+    public string? Address { get; set; }
 
-    
+
     public User User { get; set; }
 
     #endregion
