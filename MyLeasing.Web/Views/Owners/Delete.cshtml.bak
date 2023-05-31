@@ -1,16 +1,16 @@
 ﻿@model MyLeasing.Common.Data.Entities.Owner
 
+
+
 @{
     ViewData["Title"] = "Delete";
 }
 
-<br/>
+
 <h1>@ViewData["Title"]</h1>
 
-<br/>
-<h3>Are you sure you want to delete this?</h3>
 
-<br/>
+<h3>Are you sure you want to delete this?</h3>
 <div>
     <h4>Owner</h4>
     <hr/>

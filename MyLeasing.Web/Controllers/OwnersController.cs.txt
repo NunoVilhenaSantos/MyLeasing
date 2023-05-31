@@ -2,18 +2,28 @@
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Data;
 using MyLeasing.Common.Data.Entities;
-using Serilog;
 
 namespace MyLeasing.Web.Controllers;
 
 public class OwnersController : Controller
 {
-    private readonly DataContext _context;
+    #region MyRegion
 
-    public OwnersController(DataContext context)
+    public OwnersController(
+        DataContext context
+        // DataContextMSSql dataContextMsSql,
+        // DataContextMySql dataContextMySql,
+        // DataContextSQLite dataContextSqLite
+    )
     {
         _context = context;
+        // _dataContextMsSql = dataContextMsSql;
+        // _dataContextMySql = dataContextMySql;
+        // _dataContextSqLite = dataContextSqLite;
     }
+
+    #endregion
+
 
     // GET: Owners
     public async Task<IActionResult> Index()
@@ -43,27 +53,18 @@ public class OwnersController : Controller
     // POST: Owners/Create
     // To protect from overposting attacks,
     // enable the specific properties you want to bind to.
-    // For more details,
-    // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind(
-            "Id,Document,FirstName,LastName,FixedPhone,CellPhone,Address")]
-        Owner owner)
+    public async Task<IActionResult> Create(Owner owner)
     {
         if (!ModelState.IsValid) return View(owner);
 
         _context.Add(owner);
 
         // await _context.SaveChangesAsync();
-        if (!await SaveChangesAsync())
-        {
-            Log.Logger.Error(
-                "Error creating owner: {0}, {1}",
-                owner.Id, owner.FullName);
-        }
-
+        await SaveChangesAsync();
+        
         return RedirectToAction(nameof(Index));
     }
 
@@ -80,14 +81,12 @@ public class OwnersController : Controller
     }
 
     // POST: Owners/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // To protect from overposting attacks,
+    // enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind(
-            "Id,Document,FirstName,LastName,FixedPhone,CellPhone,Address")]
-        Owner owner)
+    public async Task<IActionResult> Edit(int id, Owner owner)
     {
         if (id != owner.Id) return NotFound();
 
@@ -97,17 +96,11 @@ public class OwnersController : Controller
         {
             _context.Update(owner);
             // await _context.SaveChangesAsync();
-            if (!await SaveChangesAsync())
-            {
-                Log.Logger.Error(
-                    "Error creating owner: {0}, {1}",
-                    owner.Id, owner.FullName);
-            }
+            await SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!OwnerExists(owner.Id))
-                return NotFound();
+            if (!OwnerExists(owner.Id)) return NotFound();
             throw;
         }
 
@@ -138,12 +131,7 @@ public class OwnersController : Controller
         if (owner != null) _context.Owners.Remove(owner);
 
         // await _context.SaveChangesAsync();
-        if (!await SaveChangesAsync())
-        {
-            Log.Logger.Error(
-                "Error creating owner: {0}, {1}",
-                owner.Id, owner.FullName);
-        }
+        await SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
@@ -151,11 +139,21 @@ public class OwnersController : Controller
     private async Task<bool> SaveChangesAsync()
     {
         return await _context.SaveChangesAsync() > 0;
+        // throw new NotImplementedException();
     }
-
 
     private bool OwnerExists(int id)
     {
         return _context.Owners.Any(e => e.Id == id);
     }
+
+
+    #region MyRegion
+
+    private readonly DataContext _context;
+    // private readonly DataContextMSSql _dataContextMsSql;
+    // private readonly DataContextMySql _dataContextMySql;
+    // private readonly DataContextSQLite _dataContextSqLite;
+
+    #endregion
 }

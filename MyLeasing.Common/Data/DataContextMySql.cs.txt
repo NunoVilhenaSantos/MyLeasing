@@ -4,10 +4,11 @@ using MyLeasing.Common.Data.Entities;
 
 namespace MyLeasing.Common.Data;
 
-public class DataContext : IdentityDbContext<User>
-// public class DataContext : DbContext
+public class DataContextMySql : IdentityDbContext<User>
+// public class DataContextMySql : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
+    public DataContextMySql(DbContextOptions<DataContextMySql> options) :
+        base(options)
     {
     }
 

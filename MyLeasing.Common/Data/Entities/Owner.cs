@@ -11,17 +11,26 @@ public class Owner : IEntity
     [Key] public int Id { get; set; }
 
 
-    [NotNull] [DisplayName("Document*")] public string Document { get; set; }
-
-
-    [NotNull] [DisplayName("First Name*")] public string FirstName { get; set; }
-
-
-    [NotNull] [DisplayName("Last Name*")] public string LastName { get; set; }
+    [NotNull]
+    [Required]
+    [DisplayName("Document*")]
+    public string Document { get; set; }
 
 
     [NotNull]
-    [DisplayName("Owner Name*")]
+    [Required]
+    [DisplayName("First Name*")]
+    public string FirstName { get; set; }
+
+
+    [NotNull]
+    [Required]
+    [DisplayName("Last Name*")]
+    public string LastName { get; set; }
+
+
+    [NotNull]
+    [DisplayName("Owner Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 

@@ -31,6 +31,7 @@ public class User : IdentityUser
     public string Address { get; set; }
 
     
+    [Display(Name = "Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
     public string FullNameWithDocument =>

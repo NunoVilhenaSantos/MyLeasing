@@ -1,0 +1,21 @@
+Connection details
+
+SQL Server version:
+	MS SQL 2022 Express
+
+SQL Server address:
+	MyLeasing-NunoVilhenaSantos.mssql.somee.com
+	
+Login name:
+	MyLeasing_SQLLogin_1
+
+Login password:
+	COPY TO CLIPBOARD
+	h849grt3qo
+
+Connection string:
+	COPY TO CLIPBOARD
+	workstation id=MyLeasing-NunoVilhenaSantos.mssql.somee.com;packet size=4096;user id=MyLeasing_SQLLogin_1;pwd=h849grt3qo;data source=MyLeasing-NunoVilhenaSantos.mssql.somee.com;persist security info=False;initial catalog=MyLeasing-NunoVilhenaSantos
+
+
+

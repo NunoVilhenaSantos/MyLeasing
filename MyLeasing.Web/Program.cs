@@ -1,53 +1,88 @@
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Data;
+using MyLeasing.Common.Data.Seeders;
 
+
+// using MyLeasing.Web.Data;
 var builder = WebApplication.CreateBuilder(args);
-
-
-// Add services to the container.
-builder.Services.AddControllersWithViews();
 
 
 // Add services to the container.
 // make sure to add the connection string in the appsettings.json file
 // and the connection string name is the same as the one in the appsettings.json file
 // in this case the connection string name is "DefaultConnection"
-// builder.Services.AddDbContext<DataContext2>(
+// builder.Services.AddDbContext<DataContext>(
 //     options =>
 //         options.UseSqlServer(
 //             builder.Configuration.GetConnectionString(
 //                 "DefaultConnection")));
 
 
+builder.Services.AddDbContext<DataContext>(
+    options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString(
+                "SomeeConnection")));
+
+
 // Add services to the container.
 // make sure to add the connection string in the appsettings.json file
 // and the connection string name is the same as the one in the appsettings.json file
 // in this case the connection string name is "LocalMySQLConnection"
-// MySQL is not supported in .NET 6.0 yet, so we need to install the following package
+// MySQL is not supported in .NET 6.0 yet,
+// so we need to install the following package
 // Microsoft.EntityFrameworkCore.Relational
-// builder.Services.AddDbContext<DataContext1>(
+// builder.Services.AddDbContext<DataContextMySql>(
 //     options =>
 //         options.UseMySQL(
 //             builder.Configuration.GetConnectionString(
-//                 "LocalMySQLConnection") ?? string.Empty));
+//                 "LocalMySQLConnection") ?? string.Empty ));
 
 
 // Add services to the container.
 // make sure to add the connection string in the appsettings.json file
 // and the connection string name is the same as the one in the appsettings.json file
 // in this case the connection string name is "SqliteConnection"
-// SQLite is not supported in .NET 6.0 yet, so we need to install the following package
+// SQLite is not supported in .NET 6.0 yet,
+// so we need to install the following package
 // Microsoft.EntityFrameworkCore.Sqlite
-builder.Services.AddDbContext<DataContext>(
-    options =>
-        options.UseSqlite(
-            builder.Configuration.GetConnectionString(
-                "SqliteConnection")));
+// builder.Services.AddDbContext<DataContextSQLite>(
+//     options =>
+//         options.UseSqlite(
+//             builder.Configuration.GetConnectionString(
+//                 "SqliteConnection")));
 
 
+// Add services to the container.
+builder.Services.AddTransient<Random>();
+builder.Services.AddTransient<SeedDb>();
+// builder.Services.AddScoped<SeedDb>();
+// builder.Services.AddSingleton<SeedDb>();
+
+
+// Add services to the container.
 builder.Services.AddAuthentication();
 
+
+// Add services to the container.
+builder.Services.AddControllersWithViews();
+
+
 var app = builder.Build();
+
+RunSeeding();
+
+void RunSeeding()
+{
+    var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+
+    using var scope = scopeFactory.CreateScope();
+
+    var seeder = scope.ServiceProvider.GetService<SeedDb>();
+
+    seeder?.SeedAsync().Wait();
+}
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

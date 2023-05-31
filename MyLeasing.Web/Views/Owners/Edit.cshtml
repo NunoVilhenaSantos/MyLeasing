@@ -1,19 +1,18 @@
 ﻿@model MyLeasing.Common.Data.Entities.Owner
 
 
-
 @{
     ViewData["Title"] = "Edit";
 }
 
 
-
+<br/>
 <h1>@ViewData["Title"]</h1>
 
-
-
-
+<br/>
 <h4>Owner</h4>
+
+<br/>
 <hr/>
 <div class="row">
     <div class="col-md-4">
@@ -50,13 +49,22 @@
                 <input asp-for="Address" class="form-control"/>
                 <span asp-validation-for="Address" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary"/>
-            </div>
+            @* <br/> *@
+            @* <div class="form-group"> *@
+            @*     <input type="submit" value="Save" class="btn btn-primary"/> *@
+            @* </div> *@
         </form>
     </div>
 </div>
 
-<div>
+
+<br/>
+<div >
+    <input type="submit" value="Save" class="btn btn-primary"/> |
     <a asp-action="Index" class="btn btn-dark">Back to List</a>
 </div>
+<br/>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
