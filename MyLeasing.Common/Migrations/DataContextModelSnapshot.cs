@@ -15,10 +15,7 @@ namespace MyLeasing.Common.Migrations
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
-            
-            
-            #pragma warning disable 612, 618
-            
+#pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
@@ -158,7 +155,7 @@ namespace MyLeasing.Common.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyLeasing.Common.Data.Entities.Owner", b =>
+            modelBuilder.Entity("MyLeasing.Common.Entities.Owner", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,7 +194,7 @@ namespace MyLeasing.Common.Migrations
                     b.ToTable("Owners");
                 });
 
-            modelBuilder.Entity("MyLeasing.Common.Data.Entities.User", b =>
+            modelBuilder.Entity("MyLeasing.Common.Entities.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -293,7 +290,7 @@ namespace MyLeasing.Common.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("MyLeasing.Common.Data.Entities.User", null)
+                    b.HasOne("MyLeasing.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -302,7 +299,7 @@ namespace MyLeasing.Common.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("MyLeasing.Common.Data.Entities.User", null)
+                    b.HasOne("MyLeasing.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -317,7 +314,7 @@ namespace MyLeasing.Common.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MyLeasing.Common.Data.Entities.User", null)
+                    b.HasOne("MyLeasing.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -326,25 +323,22 @@ namespace MyLeasing.Common.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("MyLeasing.Common.Data.Entities.User", null)
+                    b.HasOne("MyLeasing.Common.Entities.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyLeasing.Common.Data.Entities.Owner", b =>
+            modelBuilder.Entity("MyLeasing.Common.Entities.Owner", b =>
                 {
-                    b.HasOne("MyLeasing.Common.Data.Entities.User", "User")
+                    b.HasOne("MyLeasing.Common.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
-            
-            #pragma warning restore 612, 618
-            
-            
+#pragma warning restore 612, 618
         }
     }
 }

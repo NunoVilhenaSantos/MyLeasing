@@ -5,6 +5,31 @@
     ViewData["Title"] = "Owners List";
 }
 
+@* 1.ª função para a string de formatação *@
+@functions {
+    // Função de formatação de telefone
+    // private static string FormatPhoneNumber(string phoneNumber)
+    // {
+    //     if (string.IsNullOrEmpty(phoneNumber) || phoneNumber.Length != 8)
+    //         return phoneNumber;
+    //
+    //     return $"({phoneNumber[..2]}) {phoneNumber.Substring(2, 4)}-{phoneNumber[6..]}";
+    // }
+
+    // Função de formatação de telefone
+    private static string FormatPhoneNumber(string phoneNumber)
+    {
+        if (string.IsNullOrEmpty(phoneNumber))
+            return "N/A";
+
+        phoneNumber = phoneNumber.PadLeft(8, '0');
+
+        return $"({phoneNumber[..2]}) {phoneNumber.Substring(2, 4)}-{phoneNumber[6..]}";
+    }
+
+}
+
+
 <br/>
 <h1>@ViewData["Title"]</h1>
 
@@ -57,6 +82,11 @@
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.LastName) *@
             @* </td> *@
+
+            <!-- Colunas com formatação -->
+            <td>@FormatPhoneNumber(item.FixedPhone ?? "N/A")</td>
+            <td>@FormatPhoneNumber(item.CellPhone ?? "N/A")</td>
+
             <td>
                 @Html.DisplayFor(modelItem => item.FixedPhone)
             </td>

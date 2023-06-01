@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Entities;
 
+
 namespace MyLeasing.Common.DataContexts;
 
 public class DataContext : IdentityDbContext<User>

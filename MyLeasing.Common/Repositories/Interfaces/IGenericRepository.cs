@@ -1,6 +1,6 @@
 using MyLeasing.Common.Entities;
 
-namespace MyLeasing.Common.Repositories;
+namespace MyLeasing.Common.Repositories.Interfaces;
 
 public interface IGenericRepository<T> where T : class, IEntity
 {

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.DataContexts;
 using MyLeasing.Common.Repositories;
+using MyLeasing.Common.Repositories.Interfaces;
 using MyLeasing.Common.Repositories.OLD;
 using MyLeasing.Common.Seeders;
 

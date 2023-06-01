@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Common.Entities;
 using MyLeasing.Common.Repositories;
-using MyLeasing.Common.Repositories.OLD;
+using MyLeasing.Common.Repositories.Interfaces;
 using Serilog;
 
 namespace MyLeasing.Web.Controllers;
@@ -23,7 +23,9 @@ public class OwnersController : Controller
     public Task<IActionResult> Index()
     {
         return Task.FromResult<IActionResult>(
-            View(_ownerRepository.GetAll())
+            View(_ownerRepository.GetAll()
+                .OrderBy(o => o.FirstName)
+                .ThenBy(o => o.LastName))
         );
     }
 
@@ -131,6 +133,8 @@ public class OwnersController : Controller
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
         var owner = await _ownerRepository.GetByIdAsync(id);
+
+        if (owner == null) return RedirectToAction(nameof(Index));
 
         await _ownerRepository.DeleteAsync(owner);
 

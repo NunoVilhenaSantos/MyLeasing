@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
@@ -5,21 +6,21 @@ namespace MyLeasing.Common.Entities;
 
 public class User : IdentityUser
 {
-    [Display(Name = "Document")]
+    [DisplayName("Document")]
     [MaxLength(20,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public string Document { get; set; }
 
 
-    [Display(Name = "First Name")]
+    [DisplayName("First Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
     public string FirstName { get; set; }
 
 
-    [Display(Name = "Last Name")]
+    [DisplayName("Last Name")]
     [MaxLength(50,
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -34,6 +35,8 @@ public class User : IdentityUser
     [Display(Name = "Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 
+
+    [Display(Name = "Full Name with Document")]
     public string FullNameWithDocument =>
         $"{FirstName} {LastName} - {Document}";
 }
