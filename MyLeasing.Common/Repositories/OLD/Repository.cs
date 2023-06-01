@@ -1,7 +1,7 @@
 using MyLeasing.Common.DataContexts;
 using MyLeasing.Common.Entities;
 
-namespace MyLeasing.Common.Repositories;
+namespace MyLeasing.Common.Repositories.OLD;
 
 public class Repository : IRepository
 {

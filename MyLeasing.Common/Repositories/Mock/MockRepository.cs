@@ -1,7 +1,7 @@
 using MyLeasing.Common.Entities;
-using MyLeasing.Common.Repositories;
+using MyLeasing.Common.Repositories.OLD;
 
-namespace MyLeasing.Common.MockRepositories;
+namespace MyLeasing.Common.Repositories.Mock;
 
 public class MockRepository : IRepository
 {
@@ -23,8 +23,8 @@ public class MockRepository : IRepository
                     Id = "123456789",
                     FirstName = "John",
                     LastName = "Doe",
-                    Email = "John.Doe@company.mail.com",
-                },
+                    Email = "John.Doe@company.mail.com"
+                }
             },
 
             new()
@@ -41,8 +41,8 @@ public class MockRepository : IRepository
                     Id = "987654321",
                     FirstName = "Jane",
                     LastName = "Doe",
-                    Email = "Jane.Doe@company.mail.com",
-                },
+                    Email = "Jane.Doe@company.mail.com"
+                }
             },
 
             new()
@@ -59,9 +59,10 @@ public class MockRepository : IRepository
                     Id = "123456789",
                     FirstName = "John",
                     LastName = "Smith",
-                    Email = "John.Smith@company.mail.com",
-                },
+                    Email = "John.Smith@company.mail.com"
+                }
             },
+
             new()
             {
                 Id = 4,
@@ -76,9 +77,10 @@ public class MockRepository : IRepository
                     Id = "987654321",
                     FirstName = "Jane",
                     LastName = "Smith",
-                    Email = "Jane.Smith@company.mail.com",
-                },
+                    Email = "Jane.Smith@company.mail.com"
+                }
             },
+
             new()
             {
                 Id = 5,
@@ -93,8 +95,8 @@ public class MockRepository : IRepository
                     Id = "123456789",
                     FirstName = "John",
                     LastName = "Doe",
-                    Email = "",
-                },
+                    Email = ""
+                }
             }
         };
 

@@ -30,7 +30,7 @@ public class User : IdentityUser
         ErrorMessage = "The {0} field can not have more than {1} characters.")]
     public string Address { get; set; }
 
-    
+
     [Display(Name = "Full Name")]
     public string FullName => $"{FirstName} {LastName}";
 

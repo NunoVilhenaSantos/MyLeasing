@@ -1,8 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common;
 using MyLeasing.Common.DataContexts;
-using MyLeasing.Common.MockRepositories;
 using MyLeasing.Common.Repositories;
+using MyLeasing.Common.Repositories.OLD;
 using MyLeasing.Common.Seeders;
 
 
@@ -62,6 +61,7 @@ builder.Services.AddTransient<SeedDb>();
 
 builder.Services.AddScoped<IRepository, Repository>();
 // builder.Services.AddScoped<IRepository, MockRepository>();
+builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 
 // builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

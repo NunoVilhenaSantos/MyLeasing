@@ -5,14 +5,6 @@ namespace MyLeasing.Common.Seeders;
 
 public class SeedDb
 {
-    #region Attributes
-
-    private readonly DataContext _dataContext;
-    private readonly Random _random;
-
-    #endregion
-
-
     public SeedDb(DataContext dataContext, Random random)
     {
         _dataContext = dataContext;
@@ -51,10 +43,17 @@ public class SeedDb
                 LastName = lastName,
                 FixedPhone = _random.Next(1000000, 99999999).ToString(),
                 CellPhone = _random.Next(1000000, 99999999).ToString(),
-                Address = address + ", " + _random.Next(1, 100),
+                Address = address + ", " + _random.Next(1, 100)
             }
         );
 
         _dataContext.SaveChanges();
     }
+
+    #region Attributes
+
+    private readonly DataContext _dataContext;
+    private readonly Random _random;
+
+    #endregion
 }

@@ -1,43 +1,50 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common.DataContexts;
 using MyLeasing.Common.Entities;
 using MyLeasing.Common.Repositories;
+using MyLeasing.Common.Repositories.OLD;
 using Serilog;
 
 namespace MyLeasing.Web.Controllers;
 
 public class OwnersController : Controller
 {
-    private readonly IRepository _repository;
+    private readonly IOwnerRepository _ownerRepository;
 
-    public OwnersController(IRepository repository)
+    public OwnersController(IOwnerRepository ownerRepository)
     {
+        _ownerRepository = ownerRepository;
         // _context = context;
-        _repository = repository;
+        // _repository = repository;
     }
+
 
     // GET: Owners
-    public async Task<IActionResult> Index()
+    public Task<IActionResult> Index()
     {
-        return View(_repository.GetOwners());
+        return Task.FromResult<IActionResult>(
+            View(_ownerRepository.GetAll())
+        );
     }
+
 
     // GET: Owners/Details/5
     public async Task<IActionResult> Details(int? id)
     {
         if (id == null) return NotFound();
 
-        var owner = _repository.GetOwner(id.Value);
+        var owner = await _ownerRepository.GetByIdAsync(id.Value);
 
         return View(owner);
     }
+
 
     // GET: Owners/Create
     public IActionResult Create()
     {
         return View();
     }
+
 
     // POST: Owners/Create
     // To protect from overposting attacks,
@@ -50,32 +57,35 @@ public class OwnersController : Controller
     {
         if (!ModelState.IsValid) return View(owner);
 
-        _repository.AddOwner(owner);
+        await _ownerRepository.CreateAsync(owner);
 
-
-        if (!await _repository.SaveOwnersAsync())
-        {
+        if (!await _ownerRepository.SaveAllAsync())
             Log.Logger.Error(
                 "Error creating owner: {0}, {1}",
                 owner.Id, owner.FullName);
-        }
 
         return RedirectToAction(nameof(Index));
     }
+
 
     // GET: Owners/Edit/5
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
 
-        var owner = _repository.GetOwner(id.Value);
+        var owner = await _ownerRepository.GetByIdAsync(id.Value);
 
         return View(owner);
     }
 
+
     // POST: Owners/Edit/5
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //
+    // To protect from overposting attacks,
+    // enable the specific properties you want to bind to.
+    //
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Edit(int id, Owner owner)
@@ -86,33 +96,33 @@ public class OwnersController : Controller
 
         try
         {
-            _repository.UpdateOwner(owner);
+            await _ownerRepository.UpdateAsync(owner);
 
-            if (!await _repository.SaveOwnersAsync())
-            {
+            if (!await _ownerRepository.SaveAllAsync())
                 Log.Logger.Error(
                     "Error creating owner: {0}, {1}",
                     owner.Id, owner.FullName);
-            }
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_repository.OwnerExists(owner.Id)) return NotFound();
+            if (!await _ownerRepository.ExistAsync(owner.Id)) return NotFound();
             throw;
         }
 
         return RedirectToAction(nameof(Index));
     }
 
+
     // GET: Owners/Delete/5
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();
 
-        var owner = _repository.GetOwner(id.Value);
+        var owner = await _ownerRepository.GetByIdAsync(id.Value);
 
         return View(owner);
     }
+
 
     // POST: Owners/Delete/5
     [HttpPost]
@@ -120,17 +130,14 @@ public class OwnersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var owner = _repository.GetOwner(id);
+        var owner = await _ownerRepository.GetByIdAsync(id);
 
-        _repository.RemoveOwner(owner);
+        await _ownerRepository.DeleteAsync(owner);
 
-        // ;
-        if (!await _repository.SaveOwnersAsync())
-        {
+        if (!await _ownerRepository.SaveAllAsync())
             Log.Logger.Error(
                 "Error creating owner: {0}, {1}",
                 owner.Id, owner.FullName);
-        }
 
         return RedirectToAction(nameof(Index));
     }
