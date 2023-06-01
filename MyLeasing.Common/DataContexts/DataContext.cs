@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common.Data.Entities;
+using MyLeasing.Common.Entities;
 
-namespace MyLeasing.Common.Data;
+namespace MyLeasing.Common.DataContexts;
 
 public class DataContext : IdentityDbContext<User>
 // public class DataContext : DbContext

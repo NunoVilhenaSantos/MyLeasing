@@ -1,6 +1,7 @@
-using MyLeasing.Common.Data.Entities;
+using MyLeasing.Common.DataContexts;
+using MyLeasing.Common.Entities;
 
-namespace MyLeasing.Common.Data.Seeders;
+namespace MyLeasing.Common.Seeders;
 
 public class SeedDb
 {
@@ -23,7 +24,7 @@ public class SeedDb
     {
         await _dataContext.Database.EnsureCreatedAsync();
 
-        // if (_dataContext.Owners.Any()) return;
+        if (_dataContext.Owners.Any()) return;
 
         AddOwners("Juan", "Zuluaga", "Calle Luna");
         AddOwners("Joaquim", "Alvenaria", "Calle Sol");

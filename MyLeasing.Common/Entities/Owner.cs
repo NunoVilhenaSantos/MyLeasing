@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
 
-namespace MyLeasing.Common.Data.Entities;
+namespace MyLeasing.Common.Entities;
 
 public class Owner : IEntity
 {
@@ -34,10 +34,14 @@ public class Owner : IEntity
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
+    [DisplayName("Fixed Phone")]
+    [DisplayFormat(DataFormatString = "{0:(00) 0000-0000}")]
+    public string? FixedPhone { get; set; }
 
 
-    [DisplayName("Cell Phone")] public string? CellPhone { get; set; }
+    [DisplayName("Cell Phone")]
+    [DisplayFormat(DataFormatString = "{0:(00) 0000-0000}")]
+    public string? CellPhone { get; set; }
 
 
     public string? Address { get; set; }

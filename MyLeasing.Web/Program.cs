@@ -1,6 +1,9 @@
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common.Data;
-using MyLeasing.Common.Data.Seeders;
+using MyLeasing.Common;
+using MyLeasing.Common.DataContexts;
+using MyLeasing.Common.MockRepositories;
+using MyLeasing.Common.Repositories;
+using MyLeasing.Common.Seeders;
 
 
 // using MyLeasing.Web.Data;
@@ -56,8 +59,11 @@ builder.Services.AddDbContext<DataContext>(
 // Add services to the container.
 builder.Services.AddTransient<Random>();
 builder.Services.AddTransient<SeedDb>();
-// builder.Services.AddScoped<SeedDb>();
-// builder.Services.AddSingleton<SeedDb>();
+
+builder.Services.AddScoped<IRepository, Repository>();
+// builder.Services.AddScoped<IRepository, MockRepository>();
+
+// builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 
 // Add services to the container.

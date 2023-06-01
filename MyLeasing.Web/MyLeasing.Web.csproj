@@ -45,7 +45,6 @@
 
     <ItemGroup>
         <Folder Include="Controllers\API\" />
-        <Folder Include="Data\Entities\" />
     </ItemGroup>
 
     <ItemGroup>

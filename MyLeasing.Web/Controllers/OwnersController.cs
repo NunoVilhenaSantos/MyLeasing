@@ -1,24 +1,26 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common.Data;
-using MyLeasing.Common.Data.Entities;
+using MyLeasing.Common.DataContexts;
+using MyLeasing.Common.Entities;
+using MyLeasing.Common.Repositories;
 using Serilog;
 
 namespace MyLeasing.Web.Controllers;
 
 public class OwnersController : Controller
 {
-    private readonly DataContext _context;
+    private readonly IRepository _repository;
 
-    public OwnersController(DataContext context)
+    public OwnersController(IRepository repository)
     {
-        _context = context;
+        // _context = context;
+        _repository = repository;
     }
 
     // GET: Owners
     public async Task<IActionResult> Index()
     {
-        return View(await _context.Owners.ToListAsync());
+        return View(_repository.GetOwners());
     }
 
     // GET: Owners/Details/5
@@ -26,10 +28,7 @@ public class OwnersController : Controller
     {
         if (id == null) return NotFound();
 
-        var owner = await _context.Owners
-            .FirstOrDefaultAsync(m => m.Id == id);
-
-        if (owner == null) return NotFound();
+        var owner = _repository.GetOwner(id.Value);
 
         return View(owner);
     }
@@ -47,17 +46,14 @@ public class OwnersController : Controller
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(
-        [Bind(
-            "Id,Document,FirstName,LastName,FixedPhone,CellPhone,Address")]
-        Owner owner)
+    public async Task<IActionResult> Create(Owner owner)
     {
         if (!ModelState.IsValid) return View(owner);
 
-        _context.Add(owner);
+        _repository.AddOwner(owner);
 
-        // await _context.SaveChangesAsync();
-        if (!await SaveChangesAsync())
+
+        if (!await _repository.SaveOwnersAsync())
         {
             Log.Logger.Error(
                 "Error creating owner: {0}, {1}",
@@ -72,9 +68,7 @@ public class OwnersController : Controller
     {
         if (id == null) return NotFound();
 
-        var owner = await _context.Owners.FindAsync(id);
-
-        if (owner == null) return NotFound();
+        var owner = _repository.GetOwner(id.Value);
 
         return View(owner);
     }
@@ -84,10 +78,7 @@ public class OwnersController : Controller
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id,
-        [Bind(
-            "Id,Document,FirstName,LastName,FixedPhone,CellPhone,Address")]
-        Owner owner)
+    public async Task<IActionResult> Edit(int id, Owner owner)
     {
         if (id != owner.Id) return NotFound();
 
@@ -95,9 +86,9 @@ public class OwnersController : Controller
 
         try
         {
-            _context.Update(owner);
-            // await _context.SaveChangesAsync();
-            if (!await SaveChangesAsync())
+            _repository.UpdateOwner(owner);
+
+            if (!await _repository.SaveOwnersAsync())
             {
                 Log.Logger.Error(
                     "Error creating owner: {0}, {1}",
@@ -106,8 +97,7 @@ public class OwnersController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!OwnerExists(owner.Id))
-                return NotFound();
+            if (!_repository.OwnerExists(owner.Id)) return NotFound();
             throw;
         }
 
@@ -119,10 +109,7 @@ public class OwnersController : Controller
     {
         if (id == null) return NotFound();
 
-        var owner = await _context.Owners
-            .FirstOrDefaultAsync(m => m.Id == id);
-
-        if (owner == null) return NotFound();
+        var owner = _repository.GetOwner(id.Value);
 
         return View(owner);
     }
@@ -133,12 +120,12 @@ public class OwnersController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var owner = await _context.Owners.FindAsync(id);
+        var owner = _repository.GetOwner(id);
 
-        if (owner != null) _context.Owners.Remove(owner);
+        _repository.RemoveOwner(owner);
 
-        // await _context.SaveChangesAsync();
-        if (!await SaveChangesAsync())
+        // ;
+        if (!await _repository.SaveOwnersAsync())
         {
             Log.Logger.Error(
                 "Error creating owner: {0}, {1}",
@@ -146,16 +133,5 @@ public class OwnersController : Controller
         }
 
         return RedirectToAction(nameof(Index));
-    }
-
-    private async Task<bool> SaveChangesAsync()
-    {
-        return await _context.SaveChangesAsync() > 0;
-    }
-
-
-    private bool OwnerExists(int id)
-    {
-        return _context.Owners.Any(e => e.Id == id);
     }
 }

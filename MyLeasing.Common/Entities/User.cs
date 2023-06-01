@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 
-namespace MyLeasing.Common.Data.Entities;
+namespace MyLeasing.Common.Entities;
 
 public class User : IdentityUser
 {

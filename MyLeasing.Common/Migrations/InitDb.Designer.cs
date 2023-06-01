@@ -5,14 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MyLeasing.Common.Data;
+using MyLeasing.Common.DataContexts;
 
 #nullable disable
 
 namespace MyLeasing.Common.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230531144904_InitDb")]
+    [Migration("InitDb")]
     partial class InitDb
     {
         /// <inheritdoc />
