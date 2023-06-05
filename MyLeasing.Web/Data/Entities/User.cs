@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace MyLeasing.Web.Data.Entities;
 
-
 public class User : IdentityUser
 {
     [DisplayName("Document")]
@@ -42,4 +41,22 @@ public class User : IdentityUser
     [Display(Name = "Full Name with Document")]
     public string FullNameWithDocument =>
         $"{FirstName} {LastName} - {Document}";
+
+
+    [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
+
+
+    public string? ProfilePhotoFullUrl =>
+        string.IsNullOrEmpty(ProfilePhotoUrl)
+            ? null
+            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
+
+
+    // [Display(Name = "Thumbnail")]
+    // public string ImageThumbnailUrl { get; set; }
+    //
+    // public string ImageThumbnailFullUrl =>
+    //     string.IsNullOrEmpty(ImageThumbnailUrl)
+    //         ? null
+    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 }

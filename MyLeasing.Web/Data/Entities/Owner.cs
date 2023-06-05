@@ -6,34 +6,38 @@ using Microsoft.AspNetCore.Identity;
 
 namespace MyLeasing.Web.Data.Entities;
 
-public class Owner : User, IEntity
+public class Owner : IEntity
 {
-    #region Properties
-
-     [Key] public int Id { get; set; }
+    [Key] public int Id { get; set; }
 
 
-    
-    [Required]
-    [DisplayName("Document*")]
-    public string Document { get; set; }
+    [Required] [DisplayName("Document*")] public string Document { get; set; }
 
 
-    
     [Required]
     [DisplayName("First Name*")]
     public string FirstName { get; set; }
 
 
-    
-    [Required]
-    [DisplayName("Last Name*")]
-    public string LastName { get; set; }
+    [Required] [DisplayName("Last Name*")] public string LastName { get; set; }
 
 
-    
-    [DisplayName("Profile Photo")]
-    public string ProfilePhotoURL { get; set; }
+    [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
+
+
+    public string? ProfilePhotoFullUrl =>
+        string.IsNullOrEmpty(ProfilePhotoUrl)
+            ? null
+            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
+
+
+    // [Display(Name = "Thumbnail")]
+    // public string ImageThumbnailUrl { get; set; }
+    //
+    // public string ImageThumbnailFullUrl =>
+    //     string.IsNullOrEmpty(ImageThumbnailUrl)
+    //         ? null
+    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 
 
     [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
@@ -49,7 +53,5 @@ public class Owner : User, IEntity
     public string FullName => $"{FirstName} {LastName}";
 
 
-    public User User { get; set; }
-
-    #endregion
+    [Required] public User User { get; set; }
 }

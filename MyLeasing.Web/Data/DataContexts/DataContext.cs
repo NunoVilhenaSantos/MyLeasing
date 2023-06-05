@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.Entities;
 
@@ -12,4 +12,6 @@ public class DataContext : IdentityDbContext<User>
     }
 
     public DbSet<Owner> Owners { get; set; }
+
+    public DbSet<MyLeasing.Web.Data.Entities.Lessee> Lessee { get; set; } = default!;
 }
