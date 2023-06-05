@@ -1,21 +1,29 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Common.Entities;
-using MyLeasing.Common.Repositories;
-using MyLeasing.Common.Repositories.Interfaces;
+using MyLeasing.Web.Data.DataContexts;
+using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Data.Repositories.Interfaces;
+using MyLeasing.Web.Helpers;
 using Serilog;
 
 namespace MyLeasing.Web.Controllers;
 
 public class OwnersController : Controller
 {
+    #region Attributes
+
+    private readonly IUserHelper _userHelper;
     private readonly IOwnerRepository _ownerRepository;
 
-    public OwnersController(IOwnerRepository ownerRepository)
+    #endregion
+
+    public OwnersController(
+        IUserHelper userHelper,
+        IOwnerRepository ownerRepository
+    )
     {
+        _userHelper = userHelper;
         _ownerRepository = ownerRepository;
-        // _context = context;
-        // _repository = repository;
     }
 
 
@@ -49,15 +57,24 @@ public class OwnersController : Controller
 
 
     // POST: Owners/Create
+    //
     // To protect from overposting attacks,
     // enable the specific properties you want to bind to.
+    //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Create(Owner owner)
     {
-        if (!ModelState.IsValid) return View(owner);
+        // TODO: Model validation, pending to implement
+        if (ModelState.IsValid) return View(owner);
+
+        // TODO: Pending to change to the logged user
+        // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);
+        owner.User =
+            await _userHelper.GetUserByEmailAsync(
+                "admin@disto_tudo_e_que_rouba_a_descarada.com");
 
         await _ownerRepository.CreateAsync(owner);
 
@@ -94,7 +111,7 @@ public class OwnersController : Controller
     {
         if (id != owner.Id) return NotFound();
 
-        if (!ModelState.IsValid) return View(owner);
+        if (ModelState.IsValid) return View(owner);
 
         try
         {
@@ -145,4 +162,9 @@ public class OwnersController : Controller
 
         return RedirectToAction(nameof(Index));
     }
+
+    // private Task<Owner?> OwnerExists(int id)
+    // {
+    //     return (_ownerRepository.GetByIdAsync(id));
+    // }
 }
