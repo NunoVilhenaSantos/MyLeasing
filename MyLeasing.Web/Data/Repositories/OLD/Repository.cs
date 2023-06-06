@@ -14,7 +14,7 @@ public class Repository : IRepository
     }
 
 
-    public IEnumerable<Owner> GetOwners()
+    public IOrderedQueryable<Owner> GetOwners()
     {
         return _context.Owners
             .OrderBy(o => o.FirstName)
@@ -22,25 +22,25 @@ public class Repository : IRepository
     }
 
 
-    public Owner GetOwner(int id)
+    public Owner? GetOwner(int id)
     {
         return _context.Owners.Find(id);
     }
 
 
-    public void AddOwner(Owner owner)
+    public void AddOwner(Owner? owner)
     {
         _context.Owners.Add(owner);
     }
 
 
-    public void UpdateOwner(Owner owner)
+    public void UpdateOwner(Owner? owner)
     {
         _context.Owners.Update(owner);
     }
 
 
-    public void RemoveOwner(Owner owner)
+    public void RemoveOwner(Owner? owner)
     {
         _context.Owners.Remove(owner);
     }

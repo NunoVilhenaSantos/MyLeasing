@@ -18,10 +18,11 @@ public class OwnersController : ControllerBase
 
     // GET: api/Owners
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Owner>>> GetOwners()
+    public IActionResult GetOwners()
     {
-        return await _context.Owners.ToListAsync();
+        return Ok(_context.Owners.Include(t => t.User));
     }
+
 
     // GET: api/Owners/5
     [HttpGet("{id}")]
@@ -64,7 +65,7 @@ public class OwnersController : ControllerBase
     // To protect from overposting attacks,
     // see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
-    public async Task<ActionResult<Owner>> PostOwner(Owner owner)
+    public async Task<ActionResult<Owner>> PostOwner(Owner? owner)
     {
         _context.Owners.Add(owner);
 

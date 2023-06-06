@@ -1,163 +1,224 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.DataContexts;
-using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Helpers;
+using MyLeasing.Web.Models;
 
-namespace MyLeasing.Web.Controllers
+namespace MyLeasing.Web.Controllers;
+
+public class LesseesController : Controller
 {
-    public class LesseesController : Controller
+    public LesseesController(
+        IUserHelper userHelper,
+        IImageHelper imageHelper,
+        IConverterHelper converterHelper,
+        // ILesseeRepository lesseeRepository,
+        DataContext context
+    )
     {
-        private readonly DataContext _context;
-
-        public LesseesController(DataContext context)
-        {
-            _context = context;
-        }
-
-        // GET: Lessees
-        public async Task<IActionResult> Index()
-        {
-              return _context.Lessee != null ? 
-                          View(await _context.Lessee.ToListAsync()) :
-                          Problem("Entity set 'DataContext.Lessee'  is null.");
-        }
-
-        // GET: Lessees/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null || _context.Lessee == null)
-            {
-                return NotFound();
-            }
-
-            var lessee = await _context.Lessee
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (lessee == null)
-            {
-                return NotFound();
-            }
-
-            return View(lessee);
-        }
-
-        // GET: Lessees/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Lessees/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Document,FirstName,LastName,ProfilePhotoUrl,FixedPhone,CellPhone,Address")] Lessee lessee)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(lessee);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(lessee);
-        }
-
-        // GET: Lessees/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Lessee == null)
-            {
-                return NotFound();
-            }
-
-            var lessee = await _context.Lessee.FindAsync(id);
-            if (lessee == null)
-            {
-                return NotFound();
-            }
-            return View(lessee);
-        }
-
-        // POST: Lessees/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Document,FirstName,LastName,ProfilePhotoUrl,FixedPhone,CellPhone,Address")] Lessee lessee)
-        {
-            if (id != lessee.Id)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(lessee);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!LesseeExists(lessee.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(lessee);
-        }
-
-        // GET: Lessees/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Lessee == null)
-            {
-                return NotFound();
-            }
-
-            var lessee = await _context.Lessee
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (lessee == null)
-            {
-                return NotFound();
-            }
-
-            return View(lessee);
-        }
-
-        // POST: Lessees/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Lessee == null)
-            {
-                return Problem("Entity set 'DataContext.Lessee'  is null.");
-            }
-            var lessee = await _context.Lessee.FindAsync(id);
-            if (lessee != null)
-            {
-                _context.Lessee.Remove(lessee);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool LesseeExists(int id)
-        {
-          return (_context.Lessee?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        _userHelper = userHelper;
+        _imageHelper = imageHelper;
+        _converterHelper = converterHelper;
+        // _lesseeRepository = lesseeRepository;
+        _context = context;
     }
+
+
+    // GET: Lessees
+    public Task<IActionResult> Index()
+    {
+        return Task.FromResult<IActionResult>(
+            View(_context.Lessee
+                .OrderBy(l => l.FirstName)
+                .ThenBy(l => l.LastName)));
+
+        // return View(_lesseeRepository.GetAll().OrderBy(p => p.Name));
+
+        // return Task.FromResult<IActionResult>(
+        //     View(_ownerRepository.GetAll()
+        //         .OrderBy(o => o.FirstName)
+        //         .ThenBy(o => o.LastName))
+        // );
+    }
+
+
+    // GET: Lessees/Details/5
+    public async Task<IActionResult> Details(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var lessee = await _context.Lessee
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (lessee == null) return NotFound();
+
+        return View(lessee);
+    }
+
+
+    // GET: Lessees/Create
+    public IActionResult Create()
+    {
+        return View();
+    }
+
+
+    // POST: Lessees/Create
+    //
+    // To protect from overposting attacks,
+    // enable the specific properties you want to bind to.
+    //
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Create(LesseeViewModel lesseeViewModel)
+    {
+        // TODO: Model validation, pending to implement
+        // TODO: Microsoft BUG: ModelState.IsValid is always false
+        // if (!ModelState.IsValid) return View(lesseeViewModel);
+
+        var filePath = lesseeViewModel.ProfilePhotoUrl;
+
+        if (lesseeViewModel.ImageFile is {Length: > 0})
+            filePath = await _imageHelper.UploadImageAsync(
+                lesseeViewModel.ImageFile, "products");
+
+        var lessee = _converterHelper.ToLessee(
+            lesseeViewModel, filePath, true);
+
+        // TODO: Pending to improve
+        // lessee.User = await _userHelper.GetUserByEmailAsync(
+        //     this.User.Identity.Name);
+        lessee.User = await _userHelper.GetUserByEmailAsync(
+            "nunovilhenasantos@msn.com");
+
+        _context.Add(lessee);
+        // await _lesseeRepository.CreateAsync(lessee);
+
+        // if (!await _ownerRepository.SaveAllAsync())
+        //     Log.Logger.Error(
+        //         "Error creating owner: {0}, {1}",
+        //         owner.Id, owner.FullName);
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    // GET: Lessees/Edit/5
+    public async Task<IActionResult> Edit(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var lessee = await _context.Lessee.FindAsync(id);
+
+        if (lessee == null) return NotFound();
+
+        var lesseeViewModel =
+            _converterHelper.ToLesseeViewModel(lessee);
+
+        return View(lesseeViewModel);
+    }
+
+
+    // POST: Lessees/Edit/5
+    //
+    // To protect from overposting attacks,
+    // enable the specific properties you want to bind to.
+    //
+    // For more details,
+    // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Edit(
+        int id, LesseeViewModel lesseeViewModel)
+    {
+        if (id != lesseeViewModel.Id) return NotFound();
+
+        // TODO: Model validation, pending to implement
+        // TODO: Microsoft BUG: ModelState.IsValid is always false
+        // if (!ModelState.IsValid) return View(lesseeViewModel);
+
+        try
+        {
+            var filePath = lesseeViewModel.ProfilePhotoUrl;
+
+            if (lesseeViewModel.ImageFile is {Length: > 0})
+                filePath = await _imageHelper.UploadImageAsync(
+                    lesseeViewModel.ImageFile, "lessees");
+
+            var lessee = _converterHelper.ToLessee(
+                lesseeViewModel, filePath, false);
+
+            // TODO: Pending to improve
+            // lessee.User = await _userHelper.GetUserByEmailAsync(
+            //     User.Identity?.Name);
+            lessee.User = await _userHelper.GetUserByEmailAsync(
+                "nunovilhenasantos@msn.com");
+
+            _context.Update(lessee);
+            // await _lesseeRepository.UpdateAsync(lessee);
+
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!LesseeExists(lesseeViewModel.Id)) return NotFound();
+
+            throw;
+        }
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    // GET: Lessees/Delete/5
+    public async Task<IActionResult> Delete(int? id)
+    {
+        if (id == null) return NotFound();
+
+        var lessee = await _context.Lessee
+            .FirstOrDefaultAsync(m => m.Id == id);
+
+        if (lessee == null) return NotFound();
+
+        return View(lessee);
+    }
+
+
+    // POST: Lessees/Delete/5
+    [HttpPost]
+    [ActionName("Delete")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> DeleteConfirmed(int id)
+    {
+        var lessee = await _context.Lessee.FindAsync(id);
+
+        if (lessee != null) _context.Lessee.Remove(lessee);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToAction(nameof(Index));
+    }
+
+
+    private bool LesseeExists(int id)
+    {
+        return (_context.Lessee?
+                .Any(e => e.Id == id))
+            .GetValueOrDefault();
+    }
+
+    #region Attribues
+
+    private readonly DataContext _context;
+    private readonly IUserHelper _userHelper;
+    private readonly IImageHelper _imageHelper;
+
+    private readonly IConverterHelper _converterHelper;
+    // private readonly ILesseeRepository _lesseeRepository;
+
+    #endregion
 }

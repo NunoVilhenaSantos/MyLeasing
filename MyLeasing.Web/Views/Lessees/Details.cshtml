@@ -1,60 +1,92 @@
 ﻿@model MyLeasing.Web.Data.Entities.Lessee
 
+
 @{
-    ViewData["Title"] = "Details";
+    // ViewData["Title"] = "Details";
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = @ViewContext.RouteData.Values["action"];
 }
 
-<h1>Details</h1>
 
-<div>
-    <h4>Lessee</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Document)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Document)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ProfilePhotoUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FixedPhone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FixedPhone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CellPhone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CellPhone)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+<br/>
+<h1>@ViewContext.RouteData.Values["action"]</h1>
+
+@* <br/> *@
+@* <h4>@ViewContext.RouteData.Values["controller"]</h4> *@
+@* <h4>@Model.GetType().Name</h4> *@
+
+<br/>
+<hr/>
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-auto">
+            @if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
+            {
+                <img src="@Url.Content(Model.ProfilePhotoUrl)"
+                     class="img-thumbnail" width="250" height="auto" alt="Image"/>
+            }
+            else
+            {
+                <img src="~/images/4131088.webp"
+                     class="img-thumbnail" width="250" height="auto" alt="Image"/>
+            }
+
+        </div>
+
+        <div class="col">
+            <dl class="row">
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Document)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Document)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.ProfilePhotoUrl)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.FixedPhone)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.FixedPhone)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.CellPhone)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.CellPhone)
+                </dd>
+                <dt class="col-sm-2">
+                    @Html.DisplayNameFor(model => model.Address)
+                </dt>
+                <dd class="col-sm-10">
+                    @Html.DisplayFor(model => model.Address)
+                </dd>
+            </dl>
+
+            <div>
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+
+        </div>
+
+    </div>
 </div>

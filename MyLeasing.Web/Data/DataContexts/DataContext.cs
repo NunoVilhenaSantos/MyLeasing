@@ -11,7 +11,7 @@ public class DataContext : IdentityDbContext<User>
     {
     }
 
-    public DbSet<Owner> Owners { get; set; }
+    public DbSet<Owner?> Owners { get; set; }
 
-    public DbSet<MyLeasing.Web.Data.Entities.Lessee> Lessee { get; set; } = default!;
+    public DbSet<Lessee> Lessee { get; set; } = default!;
 }

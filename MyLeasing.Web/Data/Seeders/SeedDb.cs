@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
-using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Data.DataContexts;
+using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Helpers;
 
 namespace MyLeasing.Web.Data.Seeders;
@@ -28,47 +28,74 @@ public class SeedDb
 
         var user = await CheckUserAsync(
             "Juan", "Zuluaga",
-            email:
             "admin@disto_tudo_e_que_rouba_a_descarada.com",
-            phoneNumber: "123456789", role: "Admin",
-            document: "document's", address: "Calle Luna",
-            password: "123456"
+            "admin@disto_tudo_e_que_rouba_a_descarada.com",
+            "111222333", "Admin",
+            "document's", "Calle Luna"
         );
 
 
         // await CheckRolesAsync(user);
 
-        // if (_dataContext.Owners.Any()) return;
+        if (!_dataContext.Owners.Any())
+        {
+            await AddOwners(
+                "Juan", "Zuluaga", "Calle Luna", user);
+            await AddOwners(
+                "Joaquim", "Alvenaria", "Calle Sol", user);
+            await AddOwners(
+                "Alberto", "Domingues", "Calle Luna", user);
+            await AddOwners(
+                "Mariana", "Alvarez", "Calle Sol", user);
+            await AddOwners(
+                "Lucia", "Liu", "Calle Luna", user);
+            await AddOwners(
+                "Renee", "Arriaga", "Calle Sol", user);
+            await AddOwners(
+                "Marcia", "Zuluaga", "Calle Luna", user);
+            await AddOwners(
+                "Ernesto", "Guevara", "Calle Sol", user);
+            await AddOwners(
+                "El", "Che", "Calle Luna", user);
+            await AddOwners(
+                "Claudia", "Arroz", "Calle Sol", user);
+        }
 
-        AddOwners(
-            "Juan", "Zuluaga", "Calle Luna", user);
-        AddOwners(
-            "Joaquim", "Alvenaria", "Calle Sol", user);
-        AddOwners(
-            "Alberto", "Domingues", "Calle Luna", user);
-        AddOwners(
-            "Mariana", "Alvarez", "Calle Sol", user);
-        AddOwners(
-            "Lucia", "Liu", "Calle Luna", user);
-        AddOwners(
-            "Renee", "Arriaga", "Calle Sol", user);
-        AddOwners(
-            "Marcia", "Zuluaga", "Calle Luna", user);
-        AddOwners(
-            "Ernesto", "Guevara", "Calle Sol", user);
-        AddOwners(
-            "El", "Che", "Calle Luna", user);
-        AddOwners(
-            "Claudia", "Arroz", "Calle Sol", user);
+
+        if (!_dataContext.Lessee.Any())
+        {
+            await AddLessees(
+                "Roberto", "Rossellini", "Calle Luna", user);
+            await AddLessees(
+                "Giuseppe", "Tornatore", "Calle Luna", user);
+            await AddLessees(
+                "Ingrid", "Bergman", "Calle Sol", user);
+            await AddLessees(
+                "Gina", "Lollobrigida", "Calle Sol", user);
+            await AddLessees(
+                "Isabella", "Rossellini", "Calle Luna", user);
+            await AddLessees(
+                "Monica", "Bellucci", "Calle Sol", user);
+            await AddLessees(
+                "Giovanna", "Ralli", "Calle Luna", user);
+            await AddLessees(
+                "Valeria", "Golino", "Calle Sol", user);
+            await AddLessees(
+                "Sophia", "Loren", "Calle Luna", user);
+            await AddLessees(
+                "Claudia", "Cardinale", "Calle Sol", user);
+        }
+
+        await _dataContext.SaveChangesAsync();
     }
 
 
     private async Task<User> CheckUserAsync(
-        string firstName = "Nuno", string lastName = "Santos",
-        string userName = "admin@disto_tudo_e_que_rouba_a_descarada.com",
-        string email = "admin@disto_tudo_e_que_rouba_a_descarada.com",
-        string phoneNumber = "123456789", string role = "Admin",
-        string document = "document", string address = "address",
+        string firstName, string lastName,
+        string userName,
+        string? email,
+        string phoneNumber, string role,
+        string document, string address,
         string password = "123456")
     {
         var user = await _userHelper.GetUserByEmailAsync(email);
@@ -77,15 +104,39 @@ public class SeedDb
         {
             case null:
             {
-                user = new User
+                user = role switch
                 {
-                    Document = document,
-                    FirstName = firstName,
-                    LastName = lastName,
-                    Address = address,
-                    UserName = userName,
-                    Email = email,
-                    PhoneNumber = phoneNumber
+                    "Owner" => new User
+                    {
+                        Document = document,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Address = address,
+                        UserName = userName,
+                        Email = email,
+                        PhoneNumber = phoneNumber
+                    },
+                    "Lessee" => new User
+                    {
+                        Document = document,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Address = address,
+                        UserName = userName,
+                        Email = email,
+                        PhoneNumber = phoneNumber
+                    },
+                    "User" => new User
+                    {
+                        Document = document,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Address = address,
+                        UserName = userName,
+                        Email = email,
+                        PhoneNumber = phoneNumber
+                    },
+                    _ => null
                 };
 
                 var result = await _userHelper.AddUserAsync(user, password);
@@ -113,26 +164,66 @@ public class SeedDb
     private async Task<IdentityResult> CreateRoleAsync(string? admin)
     {
         return await _roleManager.CreateAsync(new IdentityRole("Admin"));
-        throw new NotImplementedException();
     }
 
 
-    private void AddOwners(
+    private async Task AddOwners(
         string firstName, string lastName, string address, User user)
     {
+        var document = _random.Next(100000, 999999999).ToString();
+        var fixedPhone = _random.Next(1000000, 99999999).ToString();
+        var cellPhone = _random.Next(1000000, 99999999).ToString();
+        var addressFull = address + ", " + _random.Next(1, 9999);
+
         _dataContext.Owners.Add(new Owner
             {
-                Document = _random.Next(100000, 999999999).ToString(),
+                Document = document,
                 FirstName = firstName,
                 LastName = lastName,
-                FixedPhone = _random.Next(1000000, 99999999).ToString(),
-                CellPhone = _random.Next(1000000, 99999999).ToString(),
-                Address = address + ", " + _random.Next(1, 9999),
-                User = user
+                FixedPhone = fixedPhone,
+                CellPhone = cellPhone,
+                Address = addressFull,
+                User = await CheckUserAsync(
+                    firstName, lastName,
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{cellPhone}", "Owner",
+                    document, addressFull
+                )
             }
         );
 
-        _dataContext.SaveChanges();
+        // await _dataContext.SaveChangesAsync();
+    }
+
+
+    private async Task AddLessees(
+        string firstName, string lastName, string address, User user)
+    {
+        var document = _random.Next(100000, 999999999).ToString();
+        var fixedPhone = _random.Next(1000000, 99999999).ToString();
+        var cellPhone = _random.Next(1000000, 99999999).ToString();
+        var addressFull = address + ", " + _random.Next(1, 9999);
+
+        _dataContext.Lessee.Add(new Lessee
+            {
+                Document = document,
+                FirstName = firstName,
+                LastName = lastName,
+                FixedPhone = fixedPhone,
+                CellPhone = cellPhone,
+                Address = addressFull,
+                User = await CheckUserAsync(
+                    firstName, lastName,
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{firstName}.{lastName}@rouba_a_descarada.com",
+                    $"{cellPhone}", "Lessee",
+                    document, addressFull
+                )
+            }
+        );
+
+        // await _dataContext.SaveChangesAsync();
     }
 
 

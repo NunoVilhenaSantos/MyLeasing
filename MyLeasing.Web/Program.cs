@@ -120,16 +120,18 @@ builder.Services.AddScoped<IUserHelper, UserHelper>();
 // builder.Services.AddScoped<IUserHelper, MockUserHelper>();
 
 // add identity service to the container
-builder.Services.AddScoped<IdentityUser, User>();
+// builder.Services.AddScoped<IdentityUser, User>();
 builder.Services.AddScoped<UserManager<User>, UserManager<User>>();
 builder.Services.AddScoped<SignInManager<User>, SignInManager<User>>();
 builder.Services
     .AddScoped<RoleManager<IdentityRole>, RoleManager<IdentityRole>>();
 
 
+builder.Services.AddScoped<IImageHelper, ImageHelper>();
+builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+
+
 // builder.Services.AddScoped<IImageHelper, ImageHelper>();
-
-
 // builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 
 
@@ -140,9 +142,20 @@ builder.Services
 // -----------------------------------------------------------------------------
 
 // Repositories
+//
+// OwnerRepository
+//
 // builder.Services.AddScoped<IRepository, Repository>();
 // builder.Services.AddScoped<IRepository, MockRepository>();
 builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
+// builder.Services.AddScoped<IOwnerRepository, MockOwnerRepository>();
+
+//
+// LesseesRepository
+//
+// builder.Services.AddScoped<IRepository, Repository>();
+// builder.Services.AddScoped<IRepository, MockRepository>();
+// builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 // builder.Services.AddScoped<IOwnerRepository, MockOwnerRepository>();
 
 

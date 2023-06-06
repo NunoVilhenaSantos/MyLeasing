@@ -1,70 +1,110 @@
-﻿@model MyLeasing.Web.Data.Entities.Owner
+﻿@* @model MyLeasing.Web.Data.Entities.Owner *@
+@model MyLeasing.Web.Models.OwnerViewModel
 
 
 @{
-    ViewData["Title"] = "Edit";
+    // ViewData["Title"] = "Details";
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = @ViewContext.RouteData.Values["action"];
 }
 
 
 <br/>
-<h1>@ViewData["Title"]</h1>
+<h1>@ViewContext.RouteData.Values["action"]</h1>
 
-<br/>
-<h4>Owner</h4>
+@* <br/> *@
+@* <h4>@ViewContext.RouteData.Values["controller"]</h4> *@
+@* <h4>@Model.GetType().Name</h4> *@
 
 <br/>
 <hr/>
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
-            <div class="form-group">
-                <label asp-for="Document" class="control-label"></label>
-                <input asp-for="Document" class="form-control"/>
-                <span asp-validation-for="Document" class="text-danger"></span>
+
+
+<div class="container-fluid">
+    <div class="row">
+
+        <div class="col-auto">
+            @if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
+            {
+                <img alt="Image" class="img-thumbnail" height="auto" id="preview"
+                     src="@Url.Content(Model.ProfilePhotoUrl)" width="250"/>
+            }
+            else
+            {
+                <img alt="Image" class="img-thumbnail" height="auto" id="preview"
+                     src="~/images/legacy.png" width="250"/>
+            }
+        </div>
+
+        <div class="col">
+            <div class="row">
+                <form asp-action="Edit" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Id"/>
+                    <div class="form-group">
+                        <label asp-for="Document" class="control-label"></label>
+                        <input asp-for="Document" class="form-control"/>
+                        <span asp-validation-for="Document" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FirstName" class="control-label"></label>
+                        <input asp-for="FirstName" class="form-control"/>
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="LastName" class="control-label"></label>
+                        <input asp-for="LastName" class="form-control"/>
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="ImageFile" class="control-label"></label>
+                        <input asp-for="ImageFile" class="form-control" id="imageInput"
+                               onchange="previewImage(event)" type="file"/>
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label asp-for="FixedPhone" class="control-label"></label>
+                        <input asp-for="FixedPhone" class="form-control"/>
+                        <span asp-validation-for="FixedPhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CellPhone" class="control-label"></label>
+                        <input asp-for="CellPhone" class="form-control"/>
+                        <span asp-validation-for="CellPhone" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control"/>
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary"/>
+                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="FirstName" class="control-label"></label>
-                <input asp-for="FirstName" class="form-control"/>
-                <span asp-validation-for="FirstName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="LastName" class="control-label"></label>
-                <input asp-for="LastName" class="form-control"/>
-                <span asp-validation-for="LastName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="FixedPhone" class="control-label"></label>
-                <input asp-for="FixedPhone" class="form-control"/>
-                <span asp-validation-for="FixedPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="CellPhone" class="control-label"></label>
-                <input asp-for="CellPhone" class="form-control"/>
-                <span asp-validation-for="CellPhone" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control"/>
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            @* <br/> *@
-            @* <div class="form-group"> *@
-            @*     <input type="submit" value="Save" class="btn btn-primary"/> *@
-            @* </div> *@
-        </form>
+        </div>
     </div>
 </div>
 
-
-<br/>
-<div >
-    <input type="submit" value="Save" class="btn btn-primary"/> |
-    <a asp-action="Index" class="btn btn-dark">Back to List</a>
-</div>
 <br/>
 
 @section Scripts {
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                let preview = document.getElementById('preview');
+                preview.src = reader.result;
+            }
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+
 }

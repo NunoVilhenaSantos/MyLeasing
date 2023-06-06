@@ -1,71 +1,136 @@
 ﻿@model IEnumerable<MyLeasing.Web.Data.Entities.Lessee>
 
+
 @{
-    ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Index";
+    ViewData["Title"] = "Lessees List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + "-" + @ViewContext.RouteData.Values["action"];
 }
 
-<h1>Index</h1>
 
+@* 1.ª função para a string de formatação *@
+
+@functions {
+    // Função de formatação de telefone
+    private static string FormatPhoneNumber(string phoneNumber)
+    {
+        if (string.IsNullOrEmpty(phoneNumber)) return "N/A";
+
+        phoneNumber = phoneNumber.PadLeft(8, '0');
+
+        return $"({phoneNumber[..2]}) {phoneNumber.Substring(2, 4)}-{phoneNumber[6..]}";
+    }
+
+}
+
+
+<br/>
+<h1>@ViewData["Title"]</h1>
+
+@* <h4>@ViewContext.RouteData.Values["controller"]</h4> *@
+@* <h4>@Model.GetType().Name</h4> *@
+@* <h4>@Model.GetType().FullName</h4> *@
+
+
+<br/>
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
 </p>
-<table class="table">
+
+<br/>
+<table class="table table-hover" sortable="True" id="sortableTable">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Document)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FirstName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.LastName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.FixedPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.CellPhone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Document)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        @* <th> *@
+        @*     @Html.DisplayNameFor(model => model.FirstName) *@
+        @* </th> *@
+        @* <th> *@
+        @*     @Html.DisplayNameFor(model => model.LastName) *@
+        @* </th> *@
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.FixedPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CellPhone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Address)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Document)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
+                @Html.DisplayFor(modelItem => item.FullName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.LastName)
+                @if (!string.IsNullOrEmpty(item.ProfilePhotoUrl))
+                {
+                    <img src="@Url.Content(item.ProfilePhotoUrl)"
+                         class="img-thumbnail" width="150" height="150" alt="Image"/>
+                }
+                else
+                {
+                    <img src="~/images/4131088.webp"
+                         class="img-thumbnail" width="150" height="150" alt="Image"/>
+                }
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProfilePhotoUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FixedPhone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CellPhone)
-            </td>
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.ProfilePhotoUrl) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.FirstName) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.LastName) *@
+            @* </td> *@
+
+            <!-- Colunas com formatação -->
+            <td>@FormatPhoneNumber(item.FixedPhone ?? "N/A")</td>
+            <td>@FormatPhoneNumber(item.CellPhone ?? "N/A")</td>
+
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.FixedPhone) *@
+            @* </td> *@
+            @* <td> *@
+            @*     @Html.DisplayFor(modelItem => item.CellPhone) *@
+            @* </td> *@
+
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
+                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info">Details</a>
+                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
+
+
+@section scripts {
+    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#sortableTable').DataTable();
+        });
+    </script>
+}

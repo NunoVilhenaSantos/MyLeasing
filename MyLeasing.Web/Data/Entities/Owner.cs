@@ -1,15 +1,26 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Identity;
-
 
 namespace MyLeasing.Web.Data.Entities;
 
 public class Owner : IEntity
 {
-    [Key] public int Id { get; set; }
+    public Owner()
+    {
+    }
 
+    public Owner(int id, string firstName, string lastName, string document,
+        string? fixedPhone, string? cellPhone, string? address, User? user)
+    {
+        Id = id;
+        FirstName = firstName;
+        LastName = lastName;
+        Document = document;
+        FixedPhone = fixedPhone;
+        CellPhone = cellPhone;
+        Address = address;
+        User = user;
+    }
 
     [Required] [DisplayName("Document*")] public string Document { get; set; }
 
@@ -53,5 +64,6 @@ public class Owner : IEntity
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Required] public User User { get; set; }
+    [Required] public User? User { get; set; }
+    [Key] public int Id { get; set; }
 }
