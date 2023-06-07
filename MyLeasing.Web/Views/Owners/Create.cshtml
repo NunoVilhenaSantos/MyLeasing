@@ -14,8 +14,9 @@
 
 @{
     // ViewData["Title"] = "Index";
-    ViewData["Title"] = "Owners List";
-    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + "-" + @ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = "Owners List";
+    ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " List";
 }
 
 @{
