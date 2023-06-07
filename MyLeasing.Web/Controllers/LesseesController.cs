@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.DataContexts;
-using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
@@ -83,9 +82,12 @@ public class LesseesController : Controller
 
         var filePath = lesseeViewModel.ProfilePhotoUrl;
 
+        // if (lesseeViewModel.ImageFile is {Length: > 0})
+        //     filePath = await _imageHelper.UploadImageAsync(
+        //         lesseeViewModel.ImageFile, GetType().Name);
         if (lesseeViewModel.ImageFile is {Length: > 0})
             filePath = await _imageHelper.UploadImageAsync(
-                lesseeViewModel.ImageFile, this.GetType().Name);
+                lesseeViewModel.ImageFile, "lessees");
 
         var lessee = _converterHelper.ToLessee(
             lesseeViewModel, filePath, true);

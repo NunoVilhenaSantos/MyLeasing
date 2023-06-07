@@ -1,4 +1,15 @@
-﻿@model IEnumerable<MyLeasing.Web.Data.Entities.Owner>
+﻿@inject IWebHostEnvironment HostingEnvironment
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@model IEnumerable<MyLeasing.Web.Data.Entities.Owner>
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+
+@* @model MyLeasing.Web.Data.Entities.Owner *@
+@* @model MyLeasing.Web.Data.Entities.Lessee *@
+
+@* @model MyLeasing.Web.Models.OwnerViewModel *@
+@* @model MyLeasing.Web.Models.LesseeViewModel *@
 
 
 @{
@@ -7,19 +18,43 @@
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + "-" + @ViewContext.RouteData.Values["action"];
 }
 
+@{
+    var webHostEnvironment = ViewContext.HttpContext.RequestServices
+        .GetService<IWebHostEnvironment>();
+
+    var webRootPath = webHostEnvironment?.WebRootPath;
+}
+
 
 @* 1.ª função para a string de formatação *@
 
 @functions {
     // Função de formatação de telefone
-    private static string FormatPhoneNumber(string phoneNumber)
+    private static string FormatPhoneNumberToString(string phoneNumber)
     {
+    // Remove any non-digit characters from the phone number
+        phoneNumber = new string(phoneNumber.Where(char.IsDigit).ToArray());
+
+
+    // Check if the phone number is valid
         if (string.IsNullOrEmpty(phoneNumber)) return "N/A";
 
-        phoneNumber = phoneNumber.PadLeft(8, '0');
 
-        return $"({phoneNumber[..2]}) {phoneNumber.Substring(2, 4)}-{phoneNumber[6..]}";
+    // Format the phone number based on its length
+        return phoneNumber.Length switch
+        {
+            >= 11 => $"+{phoneNumber[..^10]} ({phoneNumber.Substring(phoneNumber.Length - 10, 3)}) " +
+                     $"{phoneNumber.Substring(phoneNumber.Length - 7, 4)}-{phoneNumber[^3..]}",
+
+            >= 8 =>  $"({phoneNumber[..^7]}) {phoneNumber.Substring(phoneNumber.Length - 7, 4)}-" +
+                     $"{phoneNumber[^3..]}",
+
+            >= 5 =>  $"({phoneNumber[..2]}) {phoneNumber.Substring(2, 4)}-{phoneNumber[6..]}",
+            _ =>     "N/A"
+
+            };
     }
+
 
 }
 
@@ -56,6 +91,9 @@
         <th>
             @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
+        </th>
 
         <th>
             @Html.DisplayNameFor(model => model.FixedPhone)
@@ -70,6 +108,11 @@
     </tr>
     </thead>
     <tbody>
+
+
+    @{
+        var fileImageToShow = "~/images/PlaceHolders/4131088.webp";
+    }
     @foreach (var item in Model)
     {
         <tr>
@@ -79,21 +122,35 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
+
             <td>
-                @if (!string.IsNullOrEmpty(item.ProfilePhotoUrl))
-                {
-                    <img src="@Url.Content(item.ProfilePhotoUrl)"
-                         class="img-thumbnail" width="150" height="150" alt="Image"/>
-                }
-                else
-                {
-                    <img src="~/images/4131088.webp"
-                         class="img-thumbnail" width="150" height="150" alt="Image"/>
+                @{
+                    var fileExists = false;
+
+                    if (!string.IsNullOrEmpty(item.ProfilePhotoUrl))
+                    {
+                        if (webRootPath != null)
+                        {
+                            var photoPath = System.IO.Path.Combine(webRootPath, item.ProfilePhotoUrl[2..]);
+                            fileExists = File.Exists(photoPath);
+
+                            photoPath = System.IO.Path.Combine(webRootPath, item.ProfilePhotoUrl.TrimStart('~', '/'));
+                            fileExists = File.Exists(photoPath);
+                        }
+                    }
+
+                    if (fileExists) fileImageToShow = item.ProfilePhotoUrl;
+
+                    <img src="@Url.Content(fileImageToShow)"
+                         class="img-thumbnail" width="150" height="150" alt="Image" id="preview"/>
+
+                    Console.WriteLine("debug zone");
                 }
             </td>
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.ProfilePhotoUrl) *@
-            @* </td> *@
+
+            <td>
+                @Html.DisplayFor(modelItem => item.ProfilePhotoUrl)
+            </td>
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.FirstName) *@
             @* </td> *@
@@ -102,8 +159,8 @@
             @* </td> *@
 
             <!-- Colunas com formatação -->
-            <td>@FormatPhoneNumber(item.FixedPhone ?? "N/A")</td>
-            <td>@FormatPhoneNumber(item.CellPhone ?? "N/A")</td>
+            <td>@FormatPhoneNumberToString(item.FixedPhone ?? "N/A")</td>
+            <td>@FormatPhoneNumberToString(item.CellPhone ?? "N/A")</td>
 
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.FixedPhone) *@
@@ -127,10 +184,27 @@
 
 
 @section scripts {
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+
     <script>
         $(document).ready(function() {
-            $('#sortableTable').DataTable();
+            // $('#sortableTable').DataTable();
+            $('#sortableTable').DataTable(
+                {"pageLength": 25}
+                );
         });
     </script>
+
+    <script>
+            function previewImage(event) {
+                const reader = new FileReader();
+
+                reader.onload = function() {
+                    let preview = document.getElementById('preview');
+                    preview.src = reader.result;
+                }
+
+                reader.readAsDataURL(event.target.files[0]);
+            }
+    </script>
+
 }

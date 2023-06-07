@@ -1,11 +1,30 @@
-﻿@* @model MyLeasing.Web.Data.Entities.Owner *@
+﻿@inject IWebHostEnvironment HostingEnvironment
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+
+@* @model MyLeasing.Web.Data.Entities.Owner *@
+@* @model MyLeasing.Web.Data.Entities.Lessee *@
+
 @model MyLeasing.Web.Models.OwnerViewModel
+@* @model MyLeasing.Web.Models.LesseeViewModel *@
 
 
 @{
-    // ViewData["Title"] = "Details";
-    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
-    // ViewData["Title"] = @ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = "Index";
+    ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + "-" + @ViewContext.RouteData.Values["action"];
+}
+
+@{
+    var webHostEnvironment = ViewContext.HttpContext.RequestServices
+        .GetService<IWebHostEnvironment>();
+
+    var webRootPath = webHostEnvironment?.WebRootPath;
+
+    const string fileImageToShow = "~/images/PlaceHolders/240px-Placeholder_no_text.png";
 }
 
 
@@ -23,8 +42,8 @@
     <div class="row">
 
         <div class="col-auto">
-            <img alt="Image" class="img-thumbnail" height="auto" id="preview"
-                 src="~/images/4131088.webp" width="250"/>
+            <img src="@Url.Content(fileImageToShow)"
+                 class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/>
         </div>
 
         <div class="col">

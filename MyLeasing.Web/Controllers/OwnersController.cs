@@ -70,9 +70,12 @@ public class OwnersController : Controller
 
         var filePath = ownerViewModel.ProfilePhotoUrl;
 
+        // if (ownerViewModel.ImageFile is {Length: > 0})
+        //     filePath = await _imageHelper.UploadImageAsync(
+        //         ownerViewModel.ImageFile, GetType().Name);
         if (ownerViewModel.ImageFile is {Length: > 0})
             filePath = await _imageHelper.UploadImageAsync(
-                ownerViewModel.ImageFile, this.GetType().Name);
+                ownerViewModel.ImageFile, "owners");
 
         var owner = _converterHelper.ToOwner(
             ownerViewModel, filePath, true);
@@ -136,8 +139,10 @@ public class OwnersController : Controller
                 filePath = await _imageHelper.UploadImageAsync(
                     ownerViewModel.ImageFile, "owners");
 
+
             var owner = _converterHelper.ToOwner(
                 ownerViewModel, filePath, false);
+
 
             // TODO: Pending to change to the logged user
             // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);

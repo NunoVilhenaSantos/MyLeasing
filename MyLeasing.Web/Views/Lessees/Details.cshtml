@@ -1,10 +1,30 @@
-﻿@model MyLeasing.Web.Data.Entities.Lessee
+﻿@inject IWebHostEnvironment HostingEnvironment
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+
+@* @model MyLeasing.Web.Data.Entities.Owner *@
+@model MyLeasing.Web.Data.Entities.Lessee
+
+@* @model MyLeasing.Web.Models.OwnerViewModel *@
+@* @model MyLeasing.Web.Models.LesseeViewModel *@
 
 
 @{
-    // ViewData["Title"] = "Details";
-    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
-    // ViewData["Title"] = @ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = "Index";
+    ViewData["Title"] = "Owners List";
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + "-" + @ViewContext.RouteData.Values["action"];
+}
+
+@{
+    var webHostEnvironment = ViewContext.HttpContext.RequestServices
+        .GetService<IWebHostEnvironment>();
+
+    var webRootPath = webHostEnvironment?.WebRootPath;
+
+    var fileImageToShow = "~/images/PlaceHolders/4131088.webp";
 }
 
 
@@ -22,17 +42,28 @@
     <div class="row">
 
         <div class="col-auto">
-            @if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
-            {
-                <img src="@Url.Content(Model.ProfilePhotoUrl)"
-                     class="img-thumbnail" width="250" height="auto" alt="Image"/>
-            }
-            else
-            {
-                <img src="~/images/4131088.webp"
-                     class="img-thumbnail" width="250" height="auto" alt="Image"/>
-            }
+            @{
+                var fileExists = false;
 
+                if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
+                {
+                    if (webRootPath != null)
+                    {
+                        var photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]);
+                        fileExists = File.Exists(photoPath);
+
+                        photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/'));
+                        fileExists = File.Exists(photoPath);
+                    }
+                }
+
+                if (fileExists) fileImageToShow = Model.ProfilePhotoUrl;
+
+                <img src="@Url.Content(fileImageToShow)"
+                     class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/>
+
+                Console.WriteLine("debug zone");
+            }
         </div>
 
         <div class="col">

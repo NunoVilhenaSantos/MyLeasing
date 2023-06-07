@@ -9,13 +9,15 @@ public class SeedDb
 {
     public SeedDb(
         IUserHelper userHelper,
-        DataContext dataContext
+        DataContext dataContext,
+        IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
     )
     {
         _userHelper = userHelper;
         _dataContext = dataContext;
+        _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
         // _roleManager = roleManager;
     }
@@ -101,7 +103,53 @@ public class SeedDb
                 "Claudia", "Cardinale", "Calle Sol", user);
         }
 
+        // if (!_dataContext.Properties.Any())
+        // {
+        //     await AddProperties(user);
+        // }
+
+        // verificar se existem os placeholders no sistema
+        AddPlaceHolders();
+
+
         await _dataContext.SaveChangesAsync();
+    }
+
+    private void AddPlaceHolders()
+    {
+        var baseDirectory = _hostingEnvironment.ContentRootPath;
+        var diretorioBase =
+            Path.GetFullPath(Path.Combine(baseDirectory, "Helpers/Images"));
+
+        var origem = Path.Combine(_hostingEnvironment.ContentRootPath,
+            "Helpers", "Images");
+        var destino = Path.Combine(_hostingEnvironment.WebRootPath,
+            "images", "PlaceHolders");
+        PlaceHolders = Path.Combine(_hostingEnvironment.WebRootPath,
+            "images", "PlaceHolders");
+
+
+        // Cria o diretório se não existir
+        var folderPath = Path.Combine(
+            Directory.GetCurrentDirectory(), "wwwroot", "images",
+            "PlaceHolders");
+        Directory.CreateDirectory(destino);
+        Path.Exists(destino);
+
+
+        // Obtém todos os caminhos dos arquivos na pasta de origem
+        var arquivos = Directory.GetFiles(origem);
+
+
+        // Itera sobre os caminhos dos arquivos e copia cada um para a pasta de destino
+        foreach (var arquivo in arquivos)
+        {
+            var nomeArquivo = Path.GetFileName(arquivo);
+            var caminhoDestino = Path.Combine(destino, nomeArquivo);
+            File.Copy(arquivo, caminhoDestino, true);
+        }
+
+        Console.WriteLine("Placeholders adicionados com sucesso!");
     }
 
     private async Task AddUsers(
@@ -311,6 +359,11 @@ public class SeedDb
         "licinio.do.rosario@formandos.cinel.pt";
 
     #endregion
+
+    // Injeção de dependência do IWebHostEnvironment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
+    public string PlaceHolders;
 
     #endregion
 }
