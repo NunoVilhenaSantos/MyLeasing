@@ -7,7 +7,7 @@ public class UserHelper : IUserHelper
 {
     #region Constructor
 
-    public UserHelper(UserManager<User?> userManager,
+    public UserHelper(UserManager<User> userManager,
         SignInManager<User> signInManager)
     {
         _userManager = userManager;
@@ -36,7 +36,7 @@ public class UserHelper : IUserHelper
 
     #region MyRegion
 
-    private readonly UserManager<User?> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
 
     #endregion

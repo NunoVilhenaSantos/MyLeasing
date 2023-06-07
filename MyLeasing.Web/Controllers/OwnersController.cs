@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.Repositories.Interfaces;
+using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
 using Serilog;
@@ -71,15 +72,16 @@ public class OwnersController : Controller
 
         if (ownerViewModel.ImageFile is {Length: > 0})
             filePath = await _imageHelper.UploadImageAsync(
-                ownerViewModel.ImageFile, "products");
+                ownerViewModel.ImageFile, this.GetType().Name);
 
         var owner = _converterHelper.ToOwner(
             ownerViewModel, filePath, true);
 
         // TODO: Pending to change to the logged user
         // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);
-        owner.User = await _userHelper.GetUserByEmailAsync(
-            "admin@disto_tudo_e_que_rouba_a_descarada.com");
+        var user = await _userHelper
+            .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+        owner.User = user ?? ownerViewModel.User;
 
         await _ownerRepository.CreateAsync(owner);
 
@@ -137,11 +139,11 @@ public class OwnersController : Controller
             var owner = _converterHelper.ToOwner(
                 ownerViewModel, filePath, false);
 
-            // TODO: Pending to improve
-            // owner.User = await _userHelper.GetUserByEmailAsync(
-            //     User.Identity?.Name);
-            owner.User = await _userHelper.GetUserByEmailAsync(
-                "nunovilhenasantos@msn.com");
+            // TODO: Pending to change to the logged user
+            // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);
+            var user = await _userHelper
+                .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+            owner.User = user ?? ownerViewModel.User;
 
             await _ownerRepository.UpdateAsync(owner);
 

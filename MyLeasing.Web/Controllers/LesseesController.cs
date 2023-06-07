@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.DataContexts;
+using MyLeasing.Web.Data.Entities;
+using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
 
@@ -83,24 +85,29 @@ public class LesseesController : Controller
 
         if (lesseeViewModel.ImageFile is {Length: > 0})
             filePath = await _imageHelper.UploadImageAsync(
-                lesseeViewModel.ImageFile, "products");
+                lesseeViewModel.ImageFile, this.GetType().Name);
 
         var lessee = _converterHelper.ToLessee(
             lesseeViewModel, filePath, true);
 
+
         // TODO: Pending to improve
         // lessee.User = await _userHelper.GetUserByEmailAsync(
         //     this.User.Identity.Name);
-        lessee.User = await _userHelper.GetUserByEmailAsync(
-            "nunovilhenasantos@msn.com");
+        // TODO: use seedDb, pending to implement
+        var user = await _userHelper
+            .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+        lessee.User = user ?? lesseeViewModel.User;
 
-        _context.Add(lessee);
+
+        await _context.Lessee.AddAsync(lessee);
         // await _lesseeRepository.CreateAsync(lessee);
 
         // if (!await _ownerRepository.SaveAllAsync())
         //     Log.Logger.Error(
         //         "Error creating owner: {0}, {1}",
         //         owner.Id, owner.FullName);
+        await _context.SaveChangesAsync();
 
         return RedirectToAction(nameof(Index));
     }
@@ -155,10 +162,11 @@ public class LesseesController : Controller
             // TODO: Pending to improve
             // lessee.User = await _userHelper.GetUserByEmailAsync(
             //     User.Identity?.Name);
-            lessee.User = await _userHelper.GetUserByEmailAsync(
-                "nunovilhenasantos@msn.com");
+            var user = await _userHelper
+                .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+            lessee.User = user ?? lesseeViewModel.User;
 
-            _context.Update(lessee);
+            _context.Lessee.Update(lessee);
             // await _lesseeRepository.UpdateAsync(lessee);
 
             await _context.SaveChangesAsync();

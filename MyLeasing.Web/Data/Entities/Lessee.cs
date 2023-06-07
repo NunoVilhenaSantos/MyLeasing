@@ -68,6 +68,6 @@ public class Lessee : IEntity
         $"{FirstName} {LastName} - {Document}";
 
 
-    [Required] public User? User { get; set; }
+    [Required] public User User { get; set; }
     [Key] public int Id { get; set; }
 }

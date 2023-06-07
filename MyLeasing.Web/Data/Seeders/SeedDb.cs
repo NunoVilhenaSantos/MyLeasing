@@ -26,6 +26,22 @@ public class SeedDb
         await _dataContext.Database.EnsureCreatedAsync();
 
 
+        await AddUsers(MyLeasingAdminsJorge,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsRuben,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsTatiane,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsJoel,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsLicinio,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsDiogo,
+            "Calle Luna", "Admin", "123456");
+        await AddUsers(MyLeasingAdminsNuno,
+            "Calle Luna", "Admin", "123456");
+
+
         var user = await CheckUserAsync(
             "Juan", "Zuluaga",
             "admin@disto_tudo_e_que_rouba_a_descarada.com",
@@ -33,7 +49,6 @@ public class SeedDb
             "111222333", "Admin",
             "document's", "Calle Luna"
         );
-
 
         // await CheckRolesAsync(user);
 
@@ -89,11 +104,34 @@ public class SeedDb
         await _dataContext.SaveChangesAsync();
     }
 
+    private async Task AddUsers(
+        string email, string address,
+        string role, string password
+    )
+    {
+        var userSplit = email.Split(
+            '.', StringSplitOptions.RemoveEmptyEntries);
+
+        var document = _random.Next(100000, 999999999).ToString();
+        var fixedPhone = _random.Next(1000000, 99999999).ToString();
+        var cellPhone = _random.Next(1000000, 99999999).ToString();
+        var addressFull = address + ", " + _random.Next(1, 9999);
+
+        await CheckUserAsync(
+            userSplit[0], userSplit[1],
+            email,
+            email,
+            cellPhone, role,
+            document,
+            addressFull, password
+        );
+    }
+
 
     private async Task<User> CheckUserAsync(
         string firstName, string lastName,
         string userName,
-        string? email,
+        string email,
         string phoneNumber, string role,
         string document, string address,
         string password = "123456")
@@ -136,7 +174,18 @@ public class SeedDb
                         Email = email,
                         PhoneNumber = phoneNumber
                     },
-                    _ => null
+                    "Admin" => new User
+                    {
+                        Document = document,
+                        FirstName = firstName,
+                        LastName = lastName,
+                        Address = address,
+                        UserName = userName,
+                        Email = email,
+                        PhoneNumber = phoneNumber
+                    },
+                    _ => throw new InvalidOperationException(
+                        "The role is not valid")
                 };
 
                 var result = await _userHelper.AddUserAsync(user, password);
@@ -236,6 +285,32 @@ public class SeedDb
 
     // private readonly UserManager<User> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
+
+
+    #region AdminSeedersConstants
+
+    public const string MyLeasingAdminsNuno =
+        "nuno.santos.26288@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsDiogo =
+        "diogo.alves.28645@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsRuben =
+        "ruben.corrreia.28257@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsTatiane =
+        "tatiane.avellar.24718@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJorge =
+        "jorge.pinto.28720@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJoel =
+        "joel.rangel.22101@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsLicinio =
+        "licinio.do.rosario@formandos.cinel.pt";
+
+    #endregion
 
     #endregion
 }
