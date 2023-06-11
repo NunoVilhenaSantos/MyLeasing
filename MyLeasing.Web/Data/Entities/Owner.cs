@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
@@ -35,11 +36,21 @@ public class Owner : IEntity
 
     [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
 
-
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? null
-            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
+            ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+            : Regex.Replace(ProfilePhotoUrl, @"^~/owners/images/",
+                "https://myleasingnunostorage.blob.core.windows.net/owners/");
+    // : "https://myleasingnunostorage.blob.core.windows.net/owners/" + ProfilePhotoUrl.Replace("~/owners/images/", "");
+
+    public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://myleasingnunostorage.blob.core.windows.net/owners/" +
+          ProfilePhotoId;
+    //:   "https://supershopnunostorage.blob.core.windows.net/{GetType().Name.ToLower()}s/{ImageId}";
+    //    "https://supershopnunostorage.blob.core.windows.net/products/e1572b5b-3a31-4c9a-a68b-f13bc4f550d4";
 
 
     // [Display(Name = "Thumbnail")]

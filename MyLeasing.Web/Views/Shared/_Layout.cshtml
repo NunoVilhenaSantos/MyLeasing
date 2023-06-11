@@ -142,8 +142,44 @@
 </script>
 
 
-@await RenderSectionAsync("Scripts", false)
+<script>
+        $(document).ready(function() {
+            // $('#sortableTable').DataTable();
+            $('#sortableTable').DataTable({"pageLength": 25});
+        });
+    </script>
 
+<script>
+        function previewImage(event) {
+            const reader = new FileReader();
+
+            reader.onload = function() {
+                let preview = document.getElementById('preview');
+                preview.src = reader.result;
+            }
+
+            reader.readAsDataURL(event.target.files[0]);
+        }
+</script>
+
+
+<script>
+    function previewImages(event) {
+        let reader = new FileReader();
+
+        reader.onload = function() {
+            let previews = document.getElementsByClassName('preview');
+            for (let i = 0; i < previews.length; i++) {
+                previews[i].src = reader.result;
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+</script>
+
+
+@await RenderSectionAsync("Scripts", false)
 
 </body>
 

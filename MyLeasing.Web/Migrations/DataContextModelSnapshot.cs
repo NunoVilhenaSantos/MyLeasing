@@ -188,6 +188,9 @@ namespace MyLeasing.Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ProfilePhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -230,6 +233,9 @@ namespace MyLeasing.Web.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProfilePhotoUrl")
                         .HasColumnType("nvarchar(max)");

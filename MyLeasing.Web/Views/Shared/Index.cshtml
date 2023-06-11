@@ -27,7 +27,6 @@
 }
 
 
-
 @* 1.ª função para a string de formatação *@
 
 @functions {
@@ -76,7 +75,6 @@
 
 <br/>
 <table class="table table-hover" sortable="True" id="sortableTable">
-    @* <partial name="_Lists"/> *@
     <thead>
     <tr>
         <th>
@@ -122,6 +120,7 @@
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
+
 
             <td>
                 <img src="@Url.Content(item.ProfilePhotoFullUrl)"

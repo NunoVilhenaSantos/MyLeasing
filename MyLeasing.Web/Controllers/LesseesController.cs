@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using MyLeasing.Web.Data.DataContexts;
+using MyLeasing.Web.Data.Repositories.Interfaces;
 using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
 using MyLeasing.Web.Models;
+using Serilog;
 
 namespace MyLeasing.Web.Controllers;
 
@@ -12,16 +13,16 @@ public class LesseesController : Controller
     public LesseesController(
         IUserHelper userHelper,
         IImageHelper imageHelper,
+        IStorageHelper storageHelper,
         IConverterHelper converterHelper,
-        // ILesseeRepository lesseeRepository,
-        DataContext context
+        ILesseeRepository lesseeRepository
     )
     {
         _userHelper = userHelper;
         _imageHelper = imageHelper;
+        _storageHelper = storageHelper;
         _converterHelper = converterHelper;
-        // _lesseeRepository = lesseeRepository;
-        _context = context;
+        _lesseeRepository = lesseeRepository;
     }
 
 
@@ -29,17 +30,10 @@ public class LesseesController : Controller
     public Task<IActionResult> Index()
     {
         return Task.FromResult<IActionResult>(
-            View(_context.Lessee
-                .OrderBy(l => l.FirstName)
-                .ThenBy(l => l.LastName)));
-
-        // return View(_lesseeRepository.GetAll().OrderBy(p => p.Name));
-
-        // return Task.FromResult<IActionResult>(
-        //     View(_ownerRepository.GetAll()
-        //         .OrderBy(o => o.FirstName)
-        //         .ThenBy(o => o.LastName))
-        // );
+            View(_lesseeRepository.GetAll()
+                .OrderBy(o => o.FirstName)
+                .ThenBy(o => o.LastName))
+        );
     }
 
 
@@ -48,8 +42,7 @@ public class LesseesController : Controller
     {
         if (id == null) return NotFound();
 
-        var lessee = await _context.Lessee
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
 
         if (lessee == null) return NotFound();
 
@@ -74,42 +67,52 @@ public class LesseesController : Controller
     //
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(LesseeViewModel lesseeViewModel)
+    public async Task<IActionResult> Create(
+        int id, LesseeViewModel lesseeViewModel)
     {
+        if (id != lesseeViewModel.Id) return NotFound();
+
         // TODO: Model validation, pending to implement
         // TODO: Microsoft BUG: ModelState.IsValid is always false
         // if (!ModelState.IsValid) return View(lesseeViewModel);
 
-        var filePath = lesseeViewModel.ProfilePhotoUrl;
+        try
+        {
+            var filePath = lesseeViewModel.ProfilePhotoUrl;
+            var fileStorageId = lesseeViewModel.ProfilePhotoId;
 
-        // if (lesseeViewModel.ImageFile is {Length: > 0})
-        //     filePath = await _imageHelper.UploadImageAsync(
-        //         lesseeViewModel.ImageFile, GetType().Name);
-        if (lesseeViewModel.ImageFile is {Length: > 0})
-            filePath = await _imageHelper.UploadImageAsync(
-                lesseeViewModel.ImageFile, "lessees");
+            if (lesseeViewModel.ImageFile is {Length: > 0})
+            {
+                filePath = await _imageHelper.UploadImageAsync(
+                    lesseeViewModel.ImageFile, "lessees");
 
-        var lessee = _converterHelper.ToLessee(
-            lesseeViewModel, filePath, true);
+                fileStorageId = await _storageHelper.UploadStorageAsync(
+                    lesseeViewModel.ImageFile, "lessees");
+            }
 
-
-        // TODO: Pending to improve
-        // lessee.User = await _userHelper.GetUserByEmailAsync(
-        //     this.User.Identity.Name);
-        // TODO: use seedDb, pending to implement
-        var user = await _userHelper
-            .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
-        lessee.User = user ?? lesseeViewModel.User;
+            var lessee = _converterHelper.ToLessee(
+                lesseeViewModel, filePath, fileStorageId, true);
 
 
-        await _context.Lessee.AddAsync(lessee);
-        // await _lesseeRepository.CreateAsync(lessee);
+            // TODO: Pending to improve
+            // lessee.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            // TODO: use seedDb, pending to implement
+            var user = await _userHelper
+                .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+            lessee.User = user ?? lesseeViewModel.User;
 
-        // if (!await _ownerRepository.SaveAllAsync())
-        //     Log.Logger.Error(
-        //         "Error creating owner: {0}, {1}",
-        //         owner.Id, owner.FullName);
-        await _context.SaveChangesAsync();
+            await _lesseeRepository.CreateAsync(lessee);
+
+            if (!await _lesseeRepository.SaveAllAsync())
+                Log.Logger.Error("Error creating owner: {0}, {1}",
+                    lessee.Id, lessee.FullName);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await _lesseeRepository.ExistAsync(lesseeViewModel.Id))
+                return NotFound();
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -120,7 +123,7 @@ public class LesseesController : Controller
     {
         if (id == null) return NotFound();
 
-        var lessee = await _context.Lessee.FindAsync(id);
+        var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
 
         if (lessee == null) return NotFound();
 
@@ -153,30 +156,38 @@ public class LesseesController : Controller
         try
         {
             var filePath = lesseeViewModel.ProfilePhotoUrl;
+            var fileStorageId = lesseeViewModel.ProfilePhotoId;
 
             if (lesseeViewModel.ImageFile is {Length: > 0})
+            {
                 filePath = await _imageHelper.UploadImageAsync(
                     lesseeViewModel.ImageFile, "lessees");
 
+                fileStorageId = await _storageHelper.UploadStorageAsync(
+                    lesseeViewModel.ImageFile, "lessees");
+            }
+
             var lessee = _converterHelper.ToLessee(
-                lesseeViewModel, filePath, false);
+                lesseeViewModel, filePath, fileStorageId, false);
+
 
             // TODO: Pending to improve
-            // lessee.User = await _userHelper.GetUserByEmailAsync(
-            //     User.Identity?.Name);
+            // lessee.User = await _userHelper.GetUserByEmailAsync(User.Identity?.Name);
             var user = await _userHelper
                 .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
             lessee.User = user ?? lesseeViewModel.User;
 
-            _context.Lessee.Update(lessee);
-            // await _lesseeRepository.UpdateAsync(lessee);
+            await _lesseeRepository.UpdateAsync(lessee);
 
-            await _context.SaveChangesAsync();
+            if (!await _lesseeRepository.SaveAllAsync())
+                Log.Logger.Error(
+                    "Error creating owner: {0}, {1}",
+                    lessee.Id, lessee.FullName);
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!LesseeExists(lesseeViewModel.Id)) return NotFound();
-
+            if (!await _lesseeRepository.ExistAsync(lesseeViewModel.Id))
+                return NotFound();
             throw;
         }
 
@@ -189,8 +200,7 @@ public class LesseesController : Controller
     {
         if (id == null) return NotFound();
 
-        var lessee = await _context.Lessee
-            .FirstOrDefaultAsync(m => m.Id == id);
+        var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
 
         if (lessee == null) return NotFound();
 
@@ -204,31 +214,33 @@ public class LesseesController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> DeleteConfirmed(int id)
     {
-        var lessee = await _context.Lessee.FindAsync(id);
+        var lessee = await _lesseeRepository.GetByIdAsync(id);
 
-        if (lessee != null) _context.Lessee.Remove(lessee);
+        if (lessee == null) return RedirectToAction(nameof(Index));
 
-        await _context.SaveChangesAsync();
+        await _lesseeRepository.DeleteAsync(lessee);
+
+        if (!await _lesseeRepository.SaveAllAsync())
+            Log.Logger.Error(
+                "Error creating owner: {0}, {1}",
+                lessee.Id, lessee.FullName);
 
         return RedirectToAction(nameof(Index));
     }
 
 
-    private bool LesseeExists(int id)
-    {
-        return (_context.Lessee?
-                .Any(e => e.Id == id))
-            .GetValueOrDefault();
-    }
+    // private Task<Lessee?> LesseeExists(int id)
+    // {
+    //     return (_lesseeRepository.GetByIdAsync(id));
+    // }
 
     #region Attribues
 
-    private readonly DataContext _context;
     private readonly IUserHelper _userHelper;
     private readonly IImageHelper _imageHelper;
-
+    private readonly IStorageHelper _storageHelper;
     private readonly IConverterHelper _converterHelper;
-    // private readonly ILesseeRepository _lesseeRepository;
+    private readonly ILesseeRepository _lesseeRepository;
 
     #endregion
 }

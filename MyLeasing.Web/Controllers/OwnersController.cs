@@ -13,6 +13,7 @@ public class OwnersController : Controller
     public OwnersController(
         IUserHelper userHelper,
         IImageHelper imageHelper,
+        IStorageHelper storageHelper,
         IConverterHelper converterHelper,
         IOwnerRepository ownerRepository
     )
@@ -21,6 +22,7 @@ public class OwnersController : Controller
         _imageHelper = imageHelper;
         _converterHelper = converterHelper;
         _ownerRepository = ownerRepository;
+        _storageHelper = storageHelper;
     }
 
 
@@ -42,6 +44,8 @@ public class OwnersController : Controller
 
         var owner = await _ownerRepository.GetByIdAsync(id.Value);
 
+        if (owner == null) return NotFound();
+
         return View(owner);
     }
 
@@ -60,38 +64,55 @@ public class OwnersController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Create(OwnerViewModel ownerViewModel)
+    public async Task<IActionResult> Create(
+        int id, OwnerViewModel ownerViewModel)
     {
+        if (id != ownerViewModel.Id) return NotFound();
+
         // TODO: Model validation, pending to implement
         // TODO: Microsoft BUG: ModelState.IsValid is always false
         // if (!ModelState.IsValid) return View(ownerViewModel);
 
-        var filePath = ownerViewModel.ProfilePhotoUrl;
+        try
+        {
+            var filePath = ownerViewModel.ProfilePhotoUrl;
+            var fileStorageId = ownerViewModel.ProfilePhotoId;
 
-        // if (ownerViewModel.ImageFile is {Length: > 0})
-        //     filePath = await _imageHelper.UploadImageAsync(
-        //         ownerViewModel.ImageFile, GetType().Name);
-        if (ownerViewModel.ImageFile is {Length: > 0})
-            filePath = await _imageHelper.UploadImageAsync(
-                ownerViewModel.ImageFile, "owners");
+            if (ownerViewModel.ImageFile is {Length: > 0})
+            {
+                filePath = await _imageHelper.UploadImageAsync(
+                    ownerViewModel.ImageFile, "owners");
 
-        var owner = _converterHelper.ToOwner(
-            ownerViewModel, filePath, true);
+                fileStorageId = await _storageHelper.UploadStorageAsync(
+                    ownerViewModel.ImageFile, "owners");
+            }
 
-        // TODO: Pending to change to the logged user
-        // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);
-        var user = await _userHelper
-            .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
-        owner.User = user ?? ownerViewModel.User;
+            var owner = _converterHelper.ToOwner(
+                ownerViewModel, filePath, fileStorageId, true);
 
-        await _ownerRepository.CreateAsync(owner);
 
-        if (!await _ownerRepository.SaveAllAsync())
-            Log.Logger.Error(
-                "Error creating owner: {0}, {1}",
-                owner.Id, owner.FullName);
+            // TODO: Pending to change to the logged user
+            // owner.User = await _userHelper.GetUserByEmailAsync(owner.User.Email);
+            // TODO: use seedDb, pending to implement
+            var user = await _userHelper
+                .GetUserByEmailAsync(SeedDb.MyLeasingAdminsNuno);
+            owner.User = user ?? ownerViewModel.User;
+
+            await _ownerRepository.CreateAsync(owner);
+
+            if (!await _ownerRepository.SaveAllAsync())
+                Log.Logger.Error("Error creating owner: {0}, {1}",
+                    owner.Id, owner.FullName);
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!await _ownerRepository.ExistAsync(ownerViewModel.Id))
+                return NotFound();
+            throw;
+        }
 
         return RedirectToAction(nameof(Index));
     }
@@ -120,12 +141,13 @@ public class OwnersController : Controller
     //
     // For more details,
     // see http://go.microsoft.com/fwlink/?LinkId=317598.
+    //
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Edit(int id, OwnerViewModel ownerViewModel)
+    public async Task<IActionResult> Edit(
+        int id, OwnerViewModel ownerViewModel)
     {
         if (id != ownerViewModel.Id) return NotFound();
-
 
         // TODO: Model validation, pending to implement
         // TODO: Microsoft BUG: ModelState.IsValid is always false
@@ -134,14 +156,19 @@ public class OwnersController : Controller
         try
         {
             var filePath = ownerViewModel.ProfilePhotoUrl;
+            var fileStorageId = ownerViewModel.ProfilePhotoId;
 
             if (ownerViewModel.ImageFile is {Length: > 0})
+            {
                 filePath = await _imageHelper.UploadImageAsync(
                     ownerViewModel.ImageFile, "owners");
 
+                fileStorageId = await _storageHelper.UploadStorageAsync(
+                    ownerViewModel.ImageFile, "owners");
+            }
 
             var owner = _converterHelper.ToOwner(
-                ownerViewModel, filePath, false);
+                ownerViewModel, filePath, fileStorageId, false);
 
 
             // TODO: Pending to change to the logged user
@@ -175,6 +202,8 @@ public class OwnersController : Controller
 
         var owner = await _ownerRepository.GetByIdAsync(id.Value);
 
+        if (owner == null) return NotFound();
+
         return View(owner);
     }
 
@@ -203,6 +232,7 @@ public class OwnersController : Controller
 
     private readonly IUserHelper _userHelper;
     private readonly IImageHelper _imageHelper;
+    private readonly IStorageHelper _storageHelper;
     private readonly IConverterHelper _converterHelper;
     private readonly IOwnerRepository _ownerRepository;
 

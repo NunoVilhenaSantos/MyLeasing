@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyLeasing.Web.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLessees : Migration
+    public partial class ProfileImagens : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -171,6 +171,7 @@ namespace MyLeasing.Web.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     ProfilePhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FixedPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CellPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
@@ -197,6 +198,7 @@ namespace MyLeasing.Web.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ProfilePhotoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ProfilePhotoId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     FixedPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CellPhone = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),

@@ -15,7 +15,7 @@
 @{
     // ViewData["Title"] = "Index";
     // ViewData["Title"] = "Owners List";
-    ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
     // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " List";
 }
 
@@ -24,8 +24,6 @@
         .GetService<IWebHostEnvironment>();
 
     var webRootPath = webHostEnvironment?.WebRootPath;
-
-    var fileImageToShow = "~/images/PlaceHolders/legacy.png";
 }
 
 
@@ -44,29 +42,14 @@
     <div class="row">
 
         <div class="col-auto">
-            @{
-                var fileExists = false;
-                string photoPath;
-
-                if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
-                {
-                    if (webRootPath != null)
-                    {
-                        photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]);
-                        fileExists = File.Exists(photoPath);
-
-                        photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/'));
-                        fileExists = File.Exists(photoPath);
-                    }
-                }
-
-                if (fileExists) fileImageToShow = Model.ProfilePhotoUrl;
-
-                <img src="@Url.Content(fileImageToShow)"
-                     class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/>
-
-                Console.WriteLine("debug zone");
-            }
+            <td>
+                <img src="@Url.Content(Model.ProfilePhotoFullUrl)"
+                     class="img-thumbnail preview" width="150" height="150" alt="Image"/>
+            </td>
+            <td>
+                <img src="@Url.Content(Model.ProfilePhotoIdUrl)"
+                     class="img-thumbnail preview" width="150" height="150" alt="Image"/>
+            </td>
         </div>
 
         <div class="col">
@@ -93,7 +76,7 @@
                     <div class="form-group">
                         <label asp-for="ImageFile" class="control-label"></label>
                         <input asp-for="ImageFile" class="form-control" id="imageInput"
-                               onchange="previewImage(event)" type="file"/>
+                               onchange="previewImages(event)" type="file"/>
                         <span asp-validation-for="ImageFile" class="text-danger"></span>
                     </div>
 
@@ -125,6 +108,7 @@
 <br/>
 
 @section Scripts {
+
     @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
 
     <script>
@@ -139,5 +123,22 @@
             reader.readAsDataURL(event.target.files[0]);
         }
     </script>
+
+
+    <script>
+    function previewImages(event) {
+        let reader = new FileReader();
+
+        reader.onload = function() {
+            let previews = document.getElementsByClassName('preview');
+            for (let i = 0; i < previews.length; i++) {
+                previews[i].src = reader.result;
+            }
+        }
+
+        reader.readAsDataURL(event.target.files[0]);
+    }
+    </script>
+
 
 }

@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
@@ -31,21 +32,21 @@ public class Lessee : IEntity
 
     [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
 
-
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? null
-            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
+            ? "https://supershopnunostorage.blob.core.windows.net/" +
+              "placeholders/no-picture/person/Placeholder-no-text-person-3.png"
+            : Regex.Replace(ProfilePhotoUrl, @"^~/lessees/images/",
+                "https://myleasingnunostorage.blob.core.windows.net/lessees/");
 
 
-    // [Display(Name = "Thumbnail")]
-    // public string ImageThumbnailUrl { get; set; }
-    //
-    // public string ImageThumbnailFullUrl =>
-    //     string.IsNullOrEmpty(ImageThumbnailUrl)
-    //         ? null
-    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
 
+    public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+          ProfilePhotoId;
 
     [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
 
@@ -59,7 +60,7 @@ public class Lessee : IEntity
     public string? Address { get; set; }
 
 
-    [Display(Name = "Full Name")]
+    [DisplayName("Owner Name")]
     public string FullName => $"{FirstName} {LastName}";
 
 

@@ -86,6 +86,8 @@ public class SeedDb
             await AddLessees(
                 "Giuseppe", "Tornatore", "Calle Luna", user);
             await AddLessees(
+                "Federico", "Fellini", "Rimini", user);
+            await AddLessees(
                 "Ingrid", "Bergman", "Calle Sol", user);
             await AddLessees(
                 "Gina", "Lollobrigida", "Calle Sol", user);

@@ -10,6 +10,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Azure.Storage.Blobs" Version="12.16.0"/>
+        <PackageReference Include="Azure.Storage.Blobs.Batch" Version="12.13.0"/>
         <PackageReference Include="EntityFrameworkCore.Data.AutoHistory" Version="7.0.9"/>
         <PackageReference Include="EntityFrameworkCore.Data.QueryBuilder" Version="7.0.9"/>
         <PackageReference Include="EntityFrameworkCore.DataEncryption" Version="4.0.1"/>
@@ -79,6 +81,7 @@
 
     <ItemGroup>
         <Content Remove="Views\Products\**"/>
+        <Content Remove="Views\Shared\Index.cshtml"/>
     </ItemGroup>
 
     <ItemGroup>

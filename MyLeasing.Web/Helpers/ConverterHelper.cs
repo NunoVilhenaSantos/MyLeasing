@@ -6,7 +6,7 @@ namespace MyLeasing.Web.Helpers;
 public class ConverterHelper : IConverterHelper
 {
     public Owner ToOwner(OwnerViewModel ownerViewModel,
-        string? filePath, bool isNew)
+        string? filePath, Guid fileStorageId, bool isNew)
     {
         return new Owner
         {
@@ -15,6 +15,7 @@ public class ConverterHelper : IConverterHelper
             FirstName = ownerViewModel.FirstName,
             LastName = ownerViewModel.LastName,
             ProfilePhotoUrl = filePath,
+            ProfilePhotoId = fileStorageId,
             FixedPhone = ownerViewModel.FixedPhone,
             CellPhone = ownerViewModel.CellPhone,
             Address = ownerViewModel.Address,
@@ -32,6 +33,7 @@ public class ConverterHelper : IConverterHelper
             FirstName = owner.FirstName,
             LastName = owner.LastName,
             ProfilePhotoUrl = owner.ProfilePhotoUrl,
+            ProfilePhotoId = owner.ProfilePhotoId,
             FixedPhone = owner.FixedPhone,
             CellPhone = owner.CellPhone,
             Address = owner.Address,
@@ -41,7 +43,7 @@ public class ConverterHelper : IConverterHelper
 
 
     public Lessee ToLessee(LesseeViewModel lesseeViewModel,
-        string? filePath, bool isNew)
+        string? filePath, Guid fileStorageId, bool isNew)
     {
         return new Lessee
         {
@@ -50,6 +52,7 @@ public class ConverterHelper : IConverterHelper
             FirstName = lesseeViewModel.FirstName,
             LastName = lesseeViewModel.LastName,
             ProfilePhotoUrl = filePath,
+            ProfilePhotoId = fileStorageId,
             FixedPhone = lesseeViewModel.FixedPhone,
             CellPhone = lesseeViewModel.CellPhone,
             Address = lesseeViewModel.Address,
@@ -67,6 +70,7 @@ public class ConverterHelper : IConverterHelper
             FirstName = lessee.FirstName,
             LastName = lessee.LastName,
             ProfilePhotoUrl = lessee.ProfilePhotoUrl,
+            ProfilePhotoId = lessee.ProfilePhotoId,
             FixedPhone = lessee.FixedPhone,
             CellPhone = lessee.CellPhone,
             Address = lessee.Address,

@@ -33,7 +33,7 @@ builder.Services.AddDbContext<DataContext>(
     options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString(
-                "SomeeConnection")));
+                "SomeeMyLeasingNuno")));
 
 
 // Add services to the container.
@@ -103,7 +103,7 @@ builder.Services
 // -----------------------------------------------------------------------------
 
 // Add services to the container.
-builder.Services.AddTransient<Random>();
+// builder.Services.AddTransient<Random>();
 builder.Services.AddTransient<SeedDb>();
 
 
@@ -128,7 +128,16 @@ builder.Services
 
 
 builder.Services.AddScoped<IImageHelper, ImageHelper>();
+builder.Services.AddScoped<IStorageHelper, StorageHelper>();
 builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
+
+
+//services.AddScoped<ICountryRepository, CountryRepository>();
+
+
+// builder.Services.AddScoped<GCPConfigOptions>();
+// builder.Services.AddScoped<AWSConfigOptions>();
+// builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
 
 // builder.Services.AddScoped<IImageHelper, ImageHelper>();
@@ -155,8 +164,8 @@ builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
 //
 // builder.Services.AddScoped<IRepository, Repository>();
 // builder.Services.AddScoped<IRepository, MockRepository>();
-// builder.Services.AddScoped<IOwnerRepository, OwnerRepository>();
-// builder.Services.AddScoped<IOwnerRepository, MockOwnerRepository>();
+builder.Services.AddScoped<ILesseeRepository, LesseeRepository>();
+// builder.Services.AddScoped<ILesseeRepository, MockLesseeRepository>();
 
 
 // Add services to the container.

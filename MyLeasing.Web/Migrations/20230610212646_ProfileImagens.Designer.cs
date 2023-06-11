@@ -12,8 +12,8 @@ using MyLeasing.Web.Data.DataContexts;
 namespace MyLeasing.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230607154139_AddLessees")]
-    partial class AddLessees
+    [Migration("20230610212646_ProfileImagens")]
+    partial class ProfileImagens
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -191,6 +191,9 @@ namespace MyLeasing.Web.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("ProfilePhotoUrl")
                         .HasColumnType("nvarchar(max)");
 
@@ -233,6 +236,9 @@ namespace MyLeasing.Web.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProfilePhotoUrl")
                         .HasColumnType("nvarchar(max)");
