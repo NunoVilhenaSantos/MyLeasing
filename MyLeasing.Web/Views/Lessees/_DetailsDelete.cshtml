@@ -1,14 +1,14 @@
 ﻿@inject IWebHostEnvironment HostingEnvironment
 @inject IWebHostEnvironment WebHostEnvironment
 
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
 
-@using System.Text.RegularExpressions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-@model MyLeasing.Web.Data.Entities.Owner
-@* @model MyLeasing.Web.Data.Entities.Lessee *@
+@* @model MyLeasing.Web.Data.Entities.Owner *@
+@model MyLeasing.Web.Data.Entities.Lessee
 
 @* @model MyLeasing.Web.Models.OwnerViewModel *@
 @* @model MyLeasing.Web.Models.LesseeViewModel *@

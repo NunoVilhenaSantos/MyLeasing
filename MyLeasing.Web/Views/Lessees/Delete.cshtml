@@ -45,82 +45,88 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-auto">
-            @{
-                var fileExists = false;
 
-                if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
-                {
-                    if (webRootPath != null)
-                    {
-                        var photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]);
-                        fileExists = File.Exists(photoPath);
+        <partial name="_DetailsDelete"/>
 
-                        photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/'));
-                        fileExists = File.Exists(photoPath);
-                    }
-                }
+        @*  <div class="col-auto"> *@
+        @*      @{ *@
+        @*          var fileExists = false; *@
+        @* *@
+        @*          if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl)) *@
+        @*          { *@
+        @*              if (webRootPath != null) *@
+        @*              { *@
+        @*                  var photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]); *@
+        @*                  fileExists = File.Exists(photoPath); *@
+        @* *@
+        @*                  photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/')); *@
+        @*                  fileExists = File.Exists(photoPath); *@
+        @*              } *@
+        @*          } *@
+        @* *@
+        @*          if (fileExists) fileImageToShow = Model.ProfilePhotoUrl; *@
+        @* *@
+        @*          <img src="@Url.Content(fileImageToShow)" *@
+        @*               class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/> *@
+        @* *@
+        @*          Console.WriteLine("debug zone"); *@
+        @*      } *@
+        @*  </div> *@
+        @* *@
+        @*  <div class="col"> *@
+        @*      <dl class="row"> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.Document) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.Document) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.FirstName) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.FirstName) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.LastName) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.LastName) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.ProfilePhotoUrl) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.ProfilePhotoUrl) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.FixedPhone) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.FixedPhone) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.CellPhone) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.CellPhone) *@
+        @*          </dd> *@
+        @*          <dt class="col-sm-2"> *@
+        @*              @Html.DisplayNameFor(model => model.Address) *@
+        @*          </dt> *@
+        @*          <dd class="col-sm-10"> *@
+        @*              @Html.DisplayFor(model => model.Address) *@
+        @*          </dd> *@
+        @*      </dl> *@
+        @* *@
+        @*      <form asp-action="Delete"> *@
+        @*          <input type="hidden" asp-for="Id"/> *@
+        @*          <input type="submit" value="Delete" class="btn btn-danger"/> *@
+        @*          <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@
+        @*      </form> *@
+        @* *@
+        @*  </div> *@
 
-                if (fileExists) fileImageToShow = Model.ProfilePhotoUrl;
 
-                <img src="@Url.Content(fileImageToShow)"
-                     class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/>
-
-                Console.WriteLine("debug zone");
-            }
-        </div>
-
-        <div class="col">
-            <dl class="row">
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Document)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Document)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.FirstName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.FirstName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.LastName)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.LastName)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.ProfilePhotoUrl)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.FixedPhone)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.FixedPhone)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.CellPhone)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.CellPhone)
-                </dd>
-                <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Address)
-                </dt>
-                <dd class="col-sm-10">
-                    @Html.DisplayFor(model => model.Address)
-                </dd>
-            </dl>
-
-            <form asp-action="Delete">
-                <input type="hidden" asp-for="Id"/>
-                <input type="submit" value="Delete" class="btn btn-danger"/>
-                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-            </form>
-        </div>
     </div>
 </div>

@@ -1,13 +1,13 @@
-﻿@* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
+﻿@using System.Text.RegularExpressions
+
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
 
 @* @model MyLeasing.Web.Data.Entities.Owner *@
 @* @model MyLeasing.Web.Data.Entities.Lessee *@
 
-@using System.Text.RegularExpressions
-@model MyLeasing.Web.Models.OwnerViewModel
-@* @model MyLeasing.Web.Models.LesseeViewModel *@
-
+@* @model MyLeasing.Web.Models.OwnerViewModel *@
+@model MyLeasing.Web.Models.LesseeViewModel
 
 
 @switch (ViewData["Title"] as string)
@@ -78,8 +78,12 @@
 <div class="col">
     <div class="row">
         <form asp-action="Edit" enctype="multipart/form-data">
+            @* <form asp-action="Create" enctype="multipart/form-data">  *@
+
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id"/>
+            <input type="hidden" asp-for="ProfilePhotoId"/>
+            <input type="hidden" asp-for="ProfilePhotoUrl"/>
             <div class="form-group">
                 <label asp-for="Document" class="control-label"></label>
                 <input asp-for="Document" class="form-control"/>

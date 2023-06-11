@@ -43,81 +43,85 @@
 <div class="container-fluid">
     <div class="row">
 
-        <div class="col-auto">
-            @{
-                var fileExists = false;
+        <partial name="_EditCreate"/>
 
-                if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl))
-                {
-                    if (webRootPath != null)
-                    {
-                        var photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]);
-                        fileExists = File.Exists(photoPath);
+        @* <div class="col-auto"> *@
+        @*     @{ *@
+        @*         var fileExists = false; *@
+        @* *@
+        @*         if (!string.IsNullOrEmpty(Model.ProfilePhotoUrl)) *@
+        @*         { *@
+        @*             if (webRootPath != null) *@
+        @*             { *@
+        @*                 var photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl[2..]); *@
+        @*                 fileExists = File.Exists(photoPath); *@
+        @* *@
+        @*                 photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/')); *@
+        @*                 fileExists = File.Exists(photoPath); *@
+        @*             } *@
+        @*         } *@
+        @* *@
+        @*         if (fileExists) fileImageToShow = Model.ProfilePhotoUrl; *@
+        @* *@
+        @*         <img src="@Url.Content(fileImageToShow)" *@
+        @*              class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/> *@
+        @* *@
+        @*         Console.WriteLine("debug zone"); *@
+        @*     } *@
+        @* </div> *@
+        @* *@
+        @* <div class="col"> *@
+        @*     <div class="row"> *@
+        @*         <form asp-action="Edit" enctype="multipart/form-data"> *@
+        @*             <div asp-validation-summary="ModelOnly" class="text-danger"></div> *@
+        @*             <input type="hidden" asp-for="Id"/> *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="Document" class="control-label"></label> *@
+        @*                 <input asp-for="Document" class="form-control"/> *@
+        @*                 <span asp-validation-for="Document" class="text-danger"></span> *@
+        @*             </div> *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="FirstName" class="control-label"></label> *@
+        @*                 <input asp-for="FirstName" class="form-control"/> *@
+        @*                 <span asp-validation-for="FirstName" class="text-danger"></span> *@
+        @*             </div> *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="LastName" class="control-label"></label> *@
+        @*                 <input asp-for="LastName" class="form-control"/> *@
+        @*                 <span asp-validation-for="LastName" class="text-danger"></span> *@
+        @*             </div> *@
+        @* *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="ImageFile" class="control-label"></label> *@
+        @*                 <input asp-for="ImageFile" class="form-control" id="imageInput" *@
+        @*                        onchange="previewImage(event)" type="file"/> *@
+        @*                 <span asp-validation-for="ImageFile" class="text-danger"></span> *@
+        @*             </div> *@
+        @* *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="FixedPhone" class="control-label"></label> *@
+        @*                 <input asp-for="FixedPhone" class="form-control"/> *@
+        @*                 <span asp-validation-for="FixedPhone" class="text-danger"></span> *@
+        @*             </div> *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="CellPhone" class="control-label"></label> *@
+        @*                 <input asp-for="CellPhone" class="form-control"/> *@
+        @*                 <span asp-validation-for="CellPhone" class="text-danger"></span> *@
+        @*             </div> *@
+        @*             <div class="form-group"> *@
+        @*                 <label asp-for="Address" class="control-label"></label> *@
+        @*                 <input asp-for="Address" class="form-control"/> *@
+        @*                 <span asp-validation-for="Address" class="text-danger"></span> *@
+        @*             </div> *@
+        @*             <div class="form-group"> *@
+        @*                 <input type="submit" value="Save" class="btn btn-primary"/> *@
+        @*                 <a asp-action="Index" class="btn btn-secondary">Back to List</a> *@
+        @*             </div> *@
+        @*         </form> *@
+        @*     </div> *@
+        @* </div> *@
 
-                        photoPath = System.IO.Path.Combine(webRootPath, Model.ProfilePhotoUrl.TrimStart('~', '/'));
-                        fileExists = File.Exists(photoPath);
-                    }
-                }
 
-                if (fileExists) fileImageToShow = Model.ProfilePhotoUrl;
-
-                <img src="@Url.Content(fileImageToShow)"
-                     class="img-thumbnail" width="350" height="auto" alt="Image" id="preview"/>
-
-                Console.WriteLine("debug zone");
-            }
-        </div>
-
-        <div class="col">
-            <div class="row">
-                <form asp-action="Edit" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Id"/>
-                    <div class="form-group">
-                        <label asp-for="Document" class="control-label"></label>
-                        <input asp-for="Document" class="form-control"/>
-                        <span asp-validation-for="Document" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="FirstName" class="control-label"></label>
-                        <input asp-for="FirstName" class="form-control"/>
-                        <span asp-validation-for="FirstName" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="LastName" class="control-label"></label>
-                        <input asp-for="LastName" class="form-control"/>
-                        <span asp-validation-for="LastName" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="ImageFile" class="control-label"></label>
-                        <input asp-for="ImageFile" class="form-control" id="imageInput"
-                               onchange="previewImage(event)" type="file"/>
-                        <span asp-validation-for="ImageFile" class="text-danger"></span>
-                    </div>
-
-                    <div class="form-group">
-                        <label asp-for="FixedPhone" class="control-label"></label>
-                        <input asp-for="FixedPhone" class="form-control"/>
-                        <span asp-validation-for="FixedPhone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="CellPhone" class="control-label"></label>
-                        <input asp-for="CellPhone" class="form-control"/>
-                        <span asp-validation-for="CellPhone" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Address" class="control-label"></label>
-                        <input asp-for="Address" class="form-control"/>
-                        <span asp-validation-for="Address" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" value="Save" class="btn btn-primary"/>
-                        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 </div>
 

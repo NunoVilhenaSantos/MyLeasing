@@ -40,7 +40,6 @@ public class Lessee : IEntity
                 "https://myleasingnunostorage.blob.core.windows.net/lessees/");
 
 
-
     public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
