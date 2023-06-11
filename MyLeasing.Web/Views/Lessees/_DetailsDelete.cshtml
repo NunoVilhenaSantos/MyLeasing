@@ -1,0 +1,118 @@
+﻿@inject IWebHostEnvironment HostingEnvironment
+@inject IWebHostEnvironment WebHostEnvironment
+
+
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model MyLeasing.Web.Data.Entities.Owner
+@* @model MyLeasing.Web.Data.Entities.Lessee *@
+
+@* @model MyLeasing.Web.Models.OwnerViewModel *@
+@* @model MyLeasing.Web.Models.LesseeViewModel *@
+
+
+@{
+    // ViewData["Title"] = "Index";
+    // ViewData["Title"] = "Owners List";
+    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " - " + ViewContext.RouteData.Values["action"];
+    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " List";
+
+    ViewContext.HttpContext.RequestServices
+        .GetService<IWebHostEnvironment>();
+
+    var action = ViewContext.RouteData.Values["action"] as string;
+
+}
+
+
+<div class="col-auto">
+    <td>
+        <img src="@Url.Content(Model.ProfilePhotoFullUrl)"
+             class="img-thumbnail preview" width="350" height="auto" alt="Image"/>
+    </td>
+    <td>
+        <img src="@Url.Content(Model.ProfilePhotoIdUrl)"
+             class="img-thumbnail preview" width="350" height="auto" alt="Image"/>
+    </td>
+</div>
+
+
+<div class="col">
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Document)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Document)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FirstName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FirstName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LastName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LastName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ProfilePhotoUrl)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.FixedPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.FixedPhone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CellPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.CellPhone)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+    </dl>
+
+
+    @switch (action)
+    {
+        case var _ when Regex.IsMatch(action, @"^Delete$"):
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id"/>
+                <input type="submit" value="Delete" class="btn btn-danger"/>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </form>
+            break;
+
+        case var _ when Regex.IsMatch(action, @"^Details$"):
+            <div>
+                <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.Id">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+            break;
+
+        default:
+            // Caso padrão ou ação desconhecida
+            <div>
+                Caso padrão ou ação desconhecida
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+            break;
+    }
+
+
+
+</div>
