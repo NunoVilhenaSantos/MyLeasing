@@ -34,7 +34,7 @@ public class UserHelper : IUserHelper
         return _userManager.CreateAsync(user, password);
     }
 
-    #region MyRegion
+    #region Attributes
 
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;

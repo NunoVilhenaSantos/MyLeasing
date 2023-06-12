@@ -28,19 +28,19 @@ public class Repository : IRepository
     }
 
 
-    public void AddOwner(Owner? owner)
+    public void AddOwner(Owner owner)
     {
         _context.Owners.Add(owner);
     }
 
 
-    public void UpdateOwner(Owner? owner)
+    public void UpdateOwner(Owner owner)
     {
         _context.Owners.Update(owner);
     }
 
 
-    public void RemoveOwner(Owner? owner)
+    public void RemoveOwner(Owner owner)
     {
         _context.Owners.Remove(owner);
     }

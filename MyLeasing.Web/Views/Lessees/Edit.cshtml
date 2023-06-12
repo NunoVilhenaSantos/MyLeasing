@@ -9,7 +9,7 @@
 @* @model MyLeasing.Web.Data.Entities.Lessee *@
 
 @* @model MyLeasing.Web.Models.OwnerViewModel *@
-@model MyLeasing.Web.Models.LesseeViewModel
+@model LesseeViewModel
 
 
 @{
@@ -23,9 +23,6 @@
     var webHostEnvironment = ViewContext.HttpContext.RequestServices
         .GetService<IWebHostEnvironment>();
 
-    var webRootPath = webHostEnvironment?.WebRootPath;
-
-    var fileImageToShow = "~/images/PlaceHolders/4131088.webp";
 }
 
 

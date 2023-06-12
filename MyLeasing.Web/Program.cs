@@ -6,6 +6,7 @@ using MyLeasing.Web.Data.Repositories;
 using MyLeasing.Web.Data.Repositories.Interfaces;
 using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
+using Microsoft.Extensions.Azure;
 
 
 // using MyLeasing.Web.Data;
@@ -29,11 +30,17 @@ var builder = WebApplication.CreateBuilder(args);
 //                 "DefaultConnection")));
 
 
+// builder.Services.AddDbContext<DataContext>(
+//     options =>
+//         options.UseSqlServer(
+//             builder.Configuration.GetConnectionString(
+//                 "SomeeMyLeasingNuno")));
+
 builder.Services.AddDbContext<DataContext>(
     options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString(
-                "SomeeMyLeasingNuno")));
+                "AzureMyLeasingNuno")));
 
 
 // Add services to the container.
@@ -177,6 +184,35 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 builder.Services.AddRazorPages().AddRazorPagesOptions(options => { });
 builder.Services.AddControllersWithViews();
+builder.Services.AddApplicationInsightsTelemetry(
+    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(
+        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:blob"],
+        preferMsi: true);
+    clientBuilder.AddQueueServiceClient(
+        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:queue"],
+        preferMsi: true);
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(
+        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:blob"],
+        preferMsi: true);
+    clientBuilder.AddQueueServiceClient(
+        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:queue"],
+        preferMsi: true);
+});
+builder.Services.AddAzureClients(clientBuilder =>
+{
+    clientBuilder.AddBlobServiceClient(
+        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:blob"],
+        preferMsi: true);
+    clientBuilder.AddQueueServiceClient(
+        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:queue"],
+        preferMsi: true);
+});
 
 var app = builder.Build();
 
