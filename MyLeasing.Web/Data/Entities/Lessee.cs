@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
-public class Lessee : IEntity
+public class Lessee : IEntity, IPerson
 {
     [DisplayName("Document*")]
     [MaxLength(20,

@@ -8,25 +8,6 @@ namespace MyLeasing.Web.Helpers;
 
 public class StorageHelper : IStorageHelper
 {
-    private const string AzureBlobMyLeasingNuno =
-        "Storages:AzureBlobKeyMyLeasingNuno";
-
-    private const string AzureBlobSuperShopNuno =
-        "Storages:AzureBlobKeySuperShopNuno";
-
-    private const string AzureBlobKeyGlobalGamesNuno =
-        "Storages:AzureBlobKeyGlobalGamesNuno";
-
-    private const string GCPStorageAuthFileNuno = "GCPStorageAuthFile_Nuno";
-
-    private const string GCPStorageBucketName_Nuno =
-        "GCPStorageBucketName_Nuno";
-
-    private const string GCPStorageAuthFileJorge = "GCPStorageAuthFile_Jorge";
-
-    private const string GCPStorageBucketNameJorge =
-        "GCPStorageBucketName_Jorge";
-
     public StorageHelper(
         IConfiguration configuration
         // IOptions<GCPConfigOptions> options,
@@ -63,28 +44,23 @@ public class StorageHelper : IStorageHelper
         // var connectionString =
         //     Environment.GetEnvironmentVariable(
         //         "AZURE_STORAGE_CONNECTION_STRING");
-
         // Create a BlobServiceClient object
         // var blobServiceClient = new BlobServiceClient(_azureBlobKey_1);
-
         // "DefaultEndpointsProtocol=https;" +
         //     "AccountName=storagesuper;" +
         //     "AccountKey=your_storage_account_key;" +
         //     "EndpointSuffix=core.windows.net");
+        //var gcpStorageFileNuno = _configuration[GcpStorageAuthFileNuno];
+        //_gcpStorageBucketNuno = _configuration[GcpStorageBucketNameNuno];
+        //_googleCredentialsNuno =
+        //    GoogleCredential.FromFile(gcpStorageFileNuno);
 
 
-        _gcpStorageFileNuno = _configuration[GCPStorageAuthFileNuno];
-        _gcpStorageBucketNuno = _configuration[GCPStorageBucketName_Nuno];
-        _googleCredentialsNuno =
-            GoogleCredential.FromFile(_gcpStorageFileNuno);
-
-
-        _gcpStorageFileJorge =
-            _configuration[GCPStorageAuthFileJorge];
-        _gcpStorageBucketJorge =
-            _configuration[GCPStorageBucketNameJorge];
-        _googleCredentialsNuno =
-            GoogleCredential.FromFile(_gcpStorageFileJorge);
+        //var gcpStorageFileJorge = _configuration[GcpStorageAuthFileJorge];
+        //_gcpStorageBucketJorge =
+        //    _configuration[GcpStorageBucketNameJorge];
+        //_googleCredentialsJorge =
+        //    GoogleCredential.FromFile(gcpStorageFileJorge);
 
 
         // _options = options.Value;
@@ -116,7 +92,7 @@ public class StorageHelper : IStorageHelper
     }
 
 
-    public async Task<string> UploadFileAsyncToGCP(IFormFile fileToUpload,
+    public async Task<string> UploadFileAsyncToGcp(IFormFile fileToUpload,
         string fileNameToSave)
     {
         try
@@ -270,10 +246,35 @@ public class StorageHelper : IStorageHelper
         return Task.FromResult(true); // "Uploaded file to blob storage.";
     }
 
-    #region Fields
+    #region Attributes
 
     private readonly IConfiguration _configuration;
 
+
+    #region Configurações
+
+    private const string AzureBlobMyLeasingNuno =
+        "AzureStorages:AzureBlobKeyMyLeasingNuno";
+
+    private const string AzureBlobSuperShopNuno =
+        "AzureStorages:AzureBlobKeySuperShopNuno";
+
+    private const string AzureBlobKeyGlobalGamesNuno =
+        "AzureStorages:AzureBlobKeyGlobalGamesNuno";
+
+    private const string GcpStorageAuthFileNuno =
+        "GoogleStorages:GCPStorageAuthFile_Nuno";
+
+    private const string GcpStorageBucketNameNuno =
+        "GoogleStorages:GCPStorageBucketName_Nuno";
+
+    private const string GcpStorageAuthFileJorge =
+        "GoogleStorages:GCPStorageAuthFile_Jorge";
+
+    private const string GcpStorageBucketNameJorge =
+        "GoogleStorages:GCPStorageBucketName_Jorge";
+
+    #endregion
 
     #region Azure
 
@@ -300,15 +301,12 @@ public class StorageHelper : IStorageHelper
 
     // private readonly GCPConfigOptions _options;
     // private readonly ILogger<CloudStorageService> _logger;
-    private readonly GoogleCredential
-        _googleCredentials;
+    private readonly GoogleCredential _googleCredentials;
 
-    private readonly string _gcpStorageFileNuno;
     private readonly string _gcpStorageBucketNuno;
     private readonly GoogleCredential _googleCredentialsNuno;
 
-    private readonly string _gcpStorageFileJorge;
-    private string _gcpStorageBucketJorge;
+    private readonly string _gcpStorageBucketJorge;
     private GoogleCredential _googleCredentialsJorge;
 
     #endregion

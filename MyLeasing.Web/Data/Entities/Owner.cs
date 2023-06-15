@@ -4,26 +4,10 @@ using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
-public class Owner : IEntity
+public class Owner : IEntity, IPerson
 {
-    public Owner()
-    {
-    }
 
-    public Owner(int id, string firstName, string lastName, string document,
-        string? fixedPhone, string? cellPhone, string? address, User? user)
-    {
-        Id = id;
-        FirstName = firstName;
-        LastName = lastName;
-        Document = document;
-        FixedPhone = fixedPhone;
-        CellPhone = cellPhone;
-        Address = address;
-        User = user;
-    }
-
-    [Required] [DisplayName("Document*")] public string Document { get; set; }
+    [Required][DisplayName("Document*")] public string Document { get; set; }
 
 
     [Required]
@@ -31,7 +15,7 @@ public class Owner : IEntity
     public string FirstName { get; set; }
 
 
-    [Required] [DisplayName("Last Name*")] public string LastName { get; set; }
+    [Required][DisplayName("Last Name*")] public string LastName { get; set; }
 
 
     [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }

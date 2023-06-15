@@ -1,13 +1,16 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
+using MyLeasing.Web;
 using MyLeasing.Web.Data.DataContexts;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Data.Repositories;
 using MyLeasing.Web.Data.Repositories.Interfaces;
 using MyLeasing.Web.Data.Seeders;
 using MyLeasing.Web.Helpers;
-using Microsoft.Extensions.Azure;
 
+
+// Configurações do host
 
 // using MyLeasing.Web.Data;
 var builder = WebApplication.CreateBuilder(args);
@@ -30,11 +33,11 @@ var builder = WebApplication.CreateBuilder(args);
 //                 "DefaultConnection")));
 
 
-// builder.Services.AddDbContext<DataContext>(
-//     options =>
-//         options.UseSqlServer(
-//             builder.Configuration.GetConnectionString(
-//                 "SomeeMyLeasingNuno")));
+//builder.Services.AddDbContext<DataContext>(
+//    options =>
+//        options.UseSqlServer(
+//            builder.Configuration.GetConnectionString(
+//                "SomeeMyLeasingNuno")));
 
 builder.Services.AddDbContext<DataContext>(
     options =>
@@ -184,35 +187,45 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 builder.Services.AddRazorPages().AddRazorPagesOptions(options => { });
 builder.Services.AddControllersWithViews();
-builder.Services.AddApplicationInsightsTelemetry(
-    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
-builder.Services.AddAzureClients(clientBuilder =>
-{
-    clientBuilder.AddBlobServiceClient(
-        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:blob"],
-        preferMsi: true);
-    clientBuilder.AddQueueServiceClient(
-        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:queue"],
-        preferMsi: true);
-});
-builder.Services.AddAzureClients(clientBuilder =>
-{
-    clientBuilder.AddBlobServiceClient(
-        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:blob"],
-        preferMsi: true);
-    clientBuilder.AddQueueServiceClient(
-        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:queue"],
-        preferMsi: true);
-});
-builder.Services.AddAzureClients(clientBuilder =>
-{
-    clientBuilder.AddBlobServiceClient(
-        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:blob"],
-        preferMsi: true);
-    clientBuilder.AddQueueServiceClient(
-        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:queue"],
-        preferMsi: true);
-});
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+
+//builder.Services.AddApplicationInsightsTelemetry(
+//    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+//builder.Services.AddAzureClients(clientBuilder =>
+//{
+//    clientBuilder.AddBlobServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:blob"],
+//        true);
+//    clientBuilder.AddQueueServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeySuperShopNuno:queue"],
+//        true);
+//});
+//builder.Services.AddAzureClients(clientBuilder =>
+//{
+//    clientBuilder.AddBlobServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:blob"],
+//        true);
+//    clientBuilder.AddQueueServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeyGlobalGamesNuno:queue"],
+//        true);
+//});
+//builder.Services.AddAzureClients(clientBuilder =>
+//{
+//    clientBuilder.AddBlobServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:blob"],
+//        true);
+//    clientBuilder.AddQueueServiceClient(
+//        builder.Configuration["Storages:AzureBlobKeyMyLeasingNuno:queue"],
+//        true);
+//});
+
+
+
+builder.Logging.ClearProviders();
+//builder.Logging.AddAzureWebAppDiagnostics();
+
 
 var app = builder.Build();
 
@@ -252,5 +265,25 @@ app.UseAuthorization();
 app.MapControllerRoute(
     "default",
     "{controller=Home}/{action=Index}/{id?}");
+
+
+
+
+//public static IHostBuilder CreateHostBuilder(string[] args) =>
+//    Host.CreateDefaultBuilder(args)
+//        .ConfigureWebHostDefaults(webBuilder =>
+//        {
+//            webBuilder.UseStartup<Startup>()
+//                .ConfigureLogging(logging =>
+//                {
+//                    logging.AddAzureWebAppDiagnostics();
+//                    logging.AddAzureBlobStorage(options =>
+//                    {
+//                        options.SasToken = "<your_sas_token>";
+//                    });
+//                });
+//        });
+
+
 
 app.Run();

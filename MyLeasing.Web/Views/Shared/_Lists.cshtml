@@ -1,34 +1,10 @@
-﻿@inject IWebHostEnvironment HostingEnvironment
-@inject IWebHostEnvironment WebHostEnvironment
+﻿
+@model IEnumerable<MyLeasing.Web.Data.Entities.IPerson>
 
 
-@model IEnumerable<MyLeasing.Web.Data.Entities.Owner>
-@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
-
-@* @model MyLeasing.Web.Data.Entities.Owner *@
-@* @model MyLeasing.Web.Data.Entities.Lessee *@
-
-@* @model MyLeasing.Web.Models.OwnerViewModel *@
-@* @model MyLeasing.Web.Models.LesseeViewModel *@
-
-
-@{
-    // ViewData["Title"] = "Index";
-    // ViewData["Title"] = "Owners List";
-    // ViewData["Title"] = @ViewContext.RouteData.Values["controller"] + " - " + @ViewContext.RouteData.Values["action"];
-    ViewData["Title"] = ViewContext.RouteData.Values["controller"] + " List";
-}
-
-@{
-    var webHostEnvironment = ViewContext.HttpContext.RequestServices
-        .GetService<IWebHostEnvironment>();
-
-    var webRootPath = webHostEnvironment?.WebRootPath;
-}
-
+    
 
 @* 1.ª função para a string de formatação *@
-
 @functions {
     // Função de formatação de telefone
     private static string FormatPhoneNumberToString(string phoneNumber)
@@ -56,25 +32,12 @@
             };
     }
 
-
 }
 
 
-<br/>
-<h1>@ViewData["Title"]</h1>
-
-@* <h4>@ViewContext.RouteData.Values["controller"]</h4> *@
-@* <h4>@Model.GetType().Name</h4> *@
-@* <h4>@Model.GetType().FullName</h4> *@
 
 
-<br/>
-<p>
-    <a asp-action="Create" class="btn btn-success">Create New</a>
-</p>
-
-<br/>
-<table class="table table-hover" sortable="True" id="sortableTable">
+    @* <partial name="_Lists"/> *@
     <thead>
     <tr>
         <th>
@@ -121,7 +84,6 @@
                 @Html.DisplayFor(modelItem => item.FullName)
             </td>
 
-
             <td>
                 <img src="@Url.Content(item.ProfilePhotoFullUrl)"
                      class="img-thumbnail" width="150" height="150" alt="Image" id="preview"/>
@@ -158,32 +120,3 @@
             </td>
         </tr>
     }
-    </tbody>
-</table>
-
-
-@* @section scripts { *@
-@* *@
-@*     <script> *@
-@*         $(document).ready(function() { *@
-@*             // $('#sortableTable').DataTable(); *@
-@*             $('#sortableTable').DataTable( *@
-@*                 {"pageLength": 25} *@
-@*                 ); *@
-@*         }); *@
-@*     </script> *@
-@* *@
-@*     <script> *@
-@*             function previewImage(event) { *@
-@*                 const reader = new FileReader(); *@
-@* *@
-@*                 reader.onload = function() { *@
-@*                     let preview = document.getElementById('preview'); *@
-@*                     preview.src = reader.result; *@
-@*                 } *@
-@* *@
-@*                 reader.readAsDataURL(event.target.files[0]); *@
-@*             } *@
-@*     </script> *@
-@* *@
-@* } *@

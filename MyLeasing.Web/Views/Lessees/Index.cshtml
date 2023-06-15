@@ -75,20 +75,28 @@
 
 <br/>
 <table class="table table-hover" sortable="True" id="sortableTable">
-    <thead>
+    
+    @* <partial name="_Lists"/> *@
+    
+    <partial name="../Shared/_Lists"/> @* model=IEnumerable<MyLeasing.Web.Data.Entities.Owner>/> *@
+
+
+    @* <thead>
     <tr>
         <th>
             @Html.DisplayNameFor(model => model.Document)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FullName)
-        </th>
+        </th> *@
         @* <th> *@
         @*     @Html.DisplayNameFor(model => model.FirstName) *@
         @* </th> *@
         @* <th> *@
         @*     @Html.DisplayNameFor(model => model.LastName) *@
         @* </th> *@
+
+        @*
         <th>
             @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
         </th>
@@ -127,7 +135,7 @@
             <td>
                 <img src="@Url.Content(item.ProfilePhotoIdUrl)"
                      class="img-thumbnail" width="150" height="150" alt="Image" id="preview"/>
-            </td>
+            </td> *@
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.FirstName) *@
             @* </td> *@
@@ -135,9 +143,11 @@
             @*     @Html.DisplayFor(modelItem => item.LastName) *@
             @* </td> *@
 
+            @*
             <!-- Colunas com formatação -->
             <td>@FormatPhoneNumberToString(item.FixedPhone ?? "N/A")</td>
             <td>@FormatPhoneNumberToString(item.CellPhone ?? "N/A")</td>
+            *@
 
             @* <td> *@
             @*     @Html.DisplayFor(modelItem => item.FixedPhone) *@
@@ -146,6 +156,7 @@
             @*     @Html.DisplayFor(modelItem => item.CellPhone) *@
             @* </td> *@
 
+            @*
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>
@@ -157,6 +168,7 @@
         </tr>
     }
     </tbody>
+            *@
 </table>
 
 

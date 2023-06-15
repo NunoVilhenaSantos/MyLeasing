@@ -21,7 +21,7 @@
     },
     "resourceName": {
       "type": "string",
-      "defaultValue": "MyLeasingWeb20230611180748",
+      "defaultValue": "MyLeasingWeb20230613191746",
       "metadata": {
         "description": "Name of the main resource to be created by this template."
       }

@@ -1,0 +1,17 @@
+{
+  "dependencies": {
+    "storage1": {
+      "ignored": "true",
+      "type": "storage",
+      "connectionId": "AzureStorages:AzureBlobKeyMyLeasingNuno"
+    },
+    "appConfig1": {
+      "ignored": "true",
+      "type": "appConfig.azure"
+    },
+    "appInsights1": {
+      "ignored": "true",
+      "type": "appInsights"
+    }
+  }
+}

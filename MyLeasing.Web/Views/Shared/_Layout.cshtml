@@ -143,11 +143,13 @@
 
 
 <script>
-        $(document).ready(function() {
+        $(document).ready(
+            function() {
             // $('#sortableTable').DataTable();
             $('#sortableTable').DataTable({"pageLength": 25});
-        });
-    </script>
+        }
+        );
+        </script>
 
 <script>
         function previewImage(event) {
@@ -181,6 +183,8 @@
 
 @await RenderSectionAsync("Scripts", false)
 
+
 </body>
+
 
 </html>

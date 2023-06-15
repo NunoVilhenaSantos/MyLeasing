@@ -23,11 +23,12 @@
     var webHostEnvironment = ViewContext.HttpContext.RequestServices
         .GetService<IWebHostEnvironment>();
 
+    var webRootPath = webHostEnvironment?.WebRootPath;
 }
 
 
 <br/>
-<h1>@ViewContext.RouteData.Values["action"]</h1>
+<h1>ViewContext.RouteData.Values["action"]</h1>
 
 @* <br/> *@
 @* <h4>@ViewContext.RouteData.Values["controller"]</h4> *@
@@ -40,7 +41,8 @@
 <div class="container-fluid">
     <div class="row">
 
-        <partial name="_EditCreate"/>
+        @*<partial name="_EditCreate"/>*@
+        <partial name="../Shared/_EditCreate"/>
 
         @* <div class="col-auto"> *@
         @*     @{ *@

@@ -29,10 +29,11 @@ public class UserHelper : IUserHelper
     }
 
 
-    public Task<IdentityResult> AddUserAsync(User? user, string password)
+    public Task<IdentityResult> AddUserAsync(User user, string password)
     {
         return _userManager.CreateAsync(user, password);
     }
+
 
     #region Attributes
 

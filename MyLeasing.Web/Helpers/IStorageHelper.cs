@@ -36,11 +36,11 @@ public interface IStorageHelper
     }
 
 
-    Task<string> UploadFileAsyncToGCP(IFormFile fileToUpload,
+    Task<string> UploadFileAsyncToGcp(IFormFile fileToUpload,
         string fileNameToSave);
 
-    // [END storage_stream_file_upload]
-    // [END storage_upload_file]
+    // [BEGIN storage_stream_file_upload]
+    // [BEGIN storage_upload_file]
 
 
     // Copyright 2020 Google Inc.
@@ -62,7 +62,7 @@ public interface IStorageHelper
 
     public class UploadFileSample
     {
-        public void UploadFileToGCP(
+        public void UploadFileToGcp(
             string bucketName = "your-unique-bucket-name",
             string localPath = "my-local-path/my-file-name",
             string objectName = "my-file-name")
