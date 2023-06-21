@@ -1,10 +1,8 @@
-using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Models;
-
+using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
 
 namespace MyLeasing.Web.Helpers;
 
@@ -44,29 +42,18 @@ public class UserHelper : IUserHelper
     }
 
 
-    #region Attributes
-
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-    #endregion
-
-
     public async Task CheckRoleAsync(string roleName)
     {
         var roleExists = await _roleManager.RoleExistsAsync(roleName);
         if (!roleExists)
-        {
             await _roleManager.CreateAsync(new IdentityRole
             {
                 Name = roleName
             });
-        }
     }
 
 
-    public async Task<Microsoft.AspNetCore.Identity.SignInResult>
+    public async Task<SignInResult>
         LoginAsync(LoginViewModel model)
     {
         return await _signInManager.PasswordSignInAsync(
@@ -115,12 +102,10 @@ public class UserHelper : IUserHelper
         await signOutTask;
 
         if (signOutTask.IsCompletedSuccessfully)
-        {
             // Handle successful sign-out
             // For example, redirect to a sign-out confirmation page
             return new RedirectToActionResult("LogoutConfirmation",
                 "YourControllerName", null);
-        }
 
         // Handle sign-out failure
         // For example, display an error message
@@ -129,4 +114,13 @@ public class UserHelper : IUserHelper
             "YourControllerName",
             new {error = errorMessage});
     }
+
+
+    #region Attributes
+
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    #endregion
 }

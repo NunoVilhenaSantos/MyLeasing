@@ -6,6 +6,12 @@ namespace MyLeasing.Web.Data.Entities;
 
 public class Lessee : IEntity, IPerson
 {
+    [Display(Name = "Full Name with Document")]
+    public string FullNameWithDocument =>
+        $"{FirstName} {LastName} - {Document}";
+
+    [Key] public int Id { get; set; }
+
     [DisplayName("Document*")]
     [MaxLength(20,
         ErrorMessage =
@@ -63,11 +69,5 @@ public class Lessee : IEntity, IPerson
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Display(Name = "Full Name with Document")]
-    public string FullNameWithDocument =>
-        $"{FirstName} {LastName} - {Document}";
-
-
     [Required] public User User { get; set; }
-    [Key] public int Id { get; set; }
 }

@@ -1,10 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
-using Microsoft.Extensions.Configuration;
-using Microsoft.ApplicationInsights.AspNetCore.Extensions;
-using MyLeasing.Web;
 using MyLeasing.Web.Data.DataContexts;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Data.Repositories;
@@ -26,24 +22,14 @@ var builder = WebApplication.CreateBuilder(args);
 // -----------------------------------------------------------------------------
 
 
-// Ignorar erros de certificado SSL (apenas para ambiente de desenvolvimento/teste)
-ServicePointManager.ServerCertificateValidationCallback +=
-    (sender, certificate, chain, sslPolicyErrors) => true;
-
-
-// Obtém a configuration do builder
-var configuration = builder.Configuration;
-
-// Obtém a connection string do secrets.json
-var connectionString =
-    configuration.GetConnectionString(
-        "MyLeasing-NunoVilhenaSantos.mssql.somee.com");
-
-// Configura o DbContext usando a connection string
-builder.Services.AddDbContext<DataContext>(
-    options =>
-        options.UseSqlServer(connectionString));
-
+//builder.Services.AddDbContext<DataContext>(options =>
+//{
+//    options.UseSqlServer(connectionStringSommee);
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MyLeasing-NunoVilhenaSantos.mssql.somee.com"));
+//    options.UseSqlite(builder.Configuration.GetConnectionString("MyLeasing-NunoVilhenaSantos-SQLite"));
+//}
+//);
+// ...
 
 builder.Services.AddDbContext<DataContext>(
     options =>
@@ -52,56 +38,25 @@ builder.Services.AddDbContext<DataContext>(
                 "MyLeasing-NunoVilhenaSantos.mssql.somee.com")));
 
 
-// Add services to the container.
-// make sure to add the connection string in the appsettings.json file
-// and the connection string name is the same as the one in the appsettings.json file
-// in this case the connection string name is "DefaultConnection"
-// builder.Services.AddDbContext<DataContext>(
-//     options =>
-//         options.UseSqlServer(
-//             builder.Configuration.GetConnectionString(
-//                 "DefaultConnection")));
+builder.Services.AddDbContext<DataContextSQLite>(
+    options =>
+        options.UseSqlite(
+            builder.Configuration.GetConnectionString(
+                "MyLeasing-NunoVilhenaSantos-SQLite") ?? string.Empty));
 
 
-//builder.Services.AddDbContext<DataContext>(
-//    options =>
-//        options.UseSqlServer(
-//            builder.Configuration.GetConnectionString(
-//                "SomeeMyLeasingNuno")));
+builder.Services.AddDbContext<DataContextPostgreSQL>(
+    options =>
+        options.UseNpgsql(
+            builder.Configuration.GetConnectionString(
+                "MyLeasing-NunoVilhenaSantos-PostgreSQL")));
 
 
-//builder.Services.AddDbContext<DataContext>(
-//    options =>
-//        options.UseSqlServer(
-//            builder.Configuration.GetConnectionString(
-//                "AzureMyLeasingNuno")));
-
-
-
-// Add services to the container.
-// make sure to add the connection string in the appsettings.json file
-// and the connection string name is the same as the one in the appsettings.json file
-// in this case the connection string name is "LocalMySQLConnection"
-// MySQL is not supported in .NET 6.0 yet,
-// so we need to install the following package
-// Microsoft.EntityFrameworkCore.Relational
-// builder.Services.AddDbContext<DataContextMySql>(
-//     options =>
-//         options.UseMySQL(
-//             builder.Configuration.GetConnectionString(
-//                 "LocalMySQLConnection") ?? string.Empty ));
-
-
-// Add services to the container.
-// make sure to add the connection string in the appsettings.json file
-// and the connection string name is the same as the one in the appsettings.json file
-// in this case the connection string name is "SqliteConnection"
-// Microsoft.EntityFrameworkCore.Sqlite
-// builder.Services.AddDbContext<DataContextSQLite>(
-//     options =>
-//         options.UseSqlite(
-//             builder.Configuration.GetConnectionString(
-//                 "SqliteConnection")));
+builder.Services.AddDbContext<DataContextMySql>(
+    options =>
+        options.UseMySQL(
+            builder.Configuration.GetConnectionString(
+                "MyLeasing-NunoVilhenaSantos-MySQL") ?? string.Empty));
 
 
 // -----------------------------------------------------------------------------
@@ -182,7 +137,6 @@ builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 // builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
 
-
 // -----------------------------------------------------------------------------
 //
 // instantiated repositories via services added to the container
@@ -212,9 +166,8 @@ builder.Services.AddAuthentication();
 
 
 // Add services to the container.
-builder.Services.AddControllersWithViews().AddViewLocalization();
-
 builder.Services.AddRazorPages().AddRazorPagesOptions(options => { });
+builder.Services.AddControllersWithViews().AddViewLocalization();
 builder.Services.AddControllersWithViews();
 
 

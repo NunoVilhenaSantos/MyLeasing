@@ -5,6 +5,11 @@
       "secretStore": "LocalSecretsFile",
       "type": "mssql.onprem",
       "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos.mssql.somee.com"
+    },
+    "sqlite1": {
+      "secretStore": "LocalSecretsFile",
+      "type": "sqlite.local",
+      "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos-SQLite"
     }
   }
 }

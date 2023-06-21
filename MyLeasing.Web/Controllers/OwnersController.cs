@@ -220,7 +220,7 @@ public class OwnersController : Controller
 
         if (!await _ownerRepository.SaveAllAsync())
             Log.Logger.Error(
-                messageTemplate: "Error creating owner: {0}, {1}",
+                "Error creating owner: {0}, {1}",
                 owner.Id, owner.FullName);
 
         return RedirectToAction(nameof(Index));

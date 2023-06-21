@@ -3,6 +3,10 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos.mssql.somee.com"
+    },
+    "sqlite1": {
+      "type": "sqlite",
+      "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos-SQLite"
     }
   }
 }

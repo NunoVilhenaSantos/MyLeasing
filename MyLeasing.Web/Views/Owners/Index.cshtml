@@ -3,13 +3,13 @@
 
 
 @model IEnumerable<MyLeasing.Web.Data.Entities.Owner>
-@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessees> *@
 
 @* @model MyLeasing.Web.Data.Entities.Owner *@
-@* @model MyLeasing.Web.Data.Entities.Lessee *@
+@* @model MyLeasing.Web.Data.Entities.Lessees *@
 
 @* @model MyLeasing.Web.Models.OwnerViewModel *@
-@* @model MyLeasing.Web.Models.LesseeViewModel *@
+@* @model MyLeasing.Web.Models.LesseesViewModel *@
 
 
 @{
@@ -29,6 +29,7 @@
 
 
 @* 1.ª função para a string de formatação *@
+
 @functions {
     // Função de formatação de telefone
     private static string FormatPhoneNumberToString(string phoneNumber)
@@ -76,7 +77,7 @@
 <table class="table table-hover" sortable="True" id="sortableTable">
 
     @* <partial name="_Lists"/> *@
-    
+
     <partial name="../Shared/_Lists"/> @* model=IEnumerable<MyLeasing.Web.Data.Entities.Owner>/> *@
 
     @*
@@ -88,14 +89,14 @@
         <th>
             @Html.DisplayNameFor(model => model.FullName)
         </th> *@
-        @* <th> *@
-        @*     @Html.DisplayNameFor(model => model.FirstName) *@
-        @* </th> *@
-        @* <th> *@
-        @*     @Html.DisplayNameFor(model => model.LastName) *@
-        @* </th> *@
+    @* <th> *@
+    @*     @Html.DisplayNameFor(model => model.FirstName) *@
+    @* </th> *@
+    @* <th> *@
+    @*     @Html.DisplayNameFor(model => model.LastName) *@
+    @* </th> *@
 
-        @* 
+    @* 
         <th>
             @Html.DisplayNameFor(model => model.ProfilePhotoUrl)
         </th>
@@ -136,26 +137,26 @@
                 <img src="@Url.Content(item.ProfilePhotoIdUrl)"
                      class="img-thumbnail" width="150" height="150" alt="Image" id="preview"/>
             </td>*@
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.FirstName) *@
-            @* </td> *@
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.LastName) *@
-            @* </td> *@
+    @* <td> *@
+    @*     @Html.DisplayFor(modelItem => item.FirstName) *@
+    @* </td> *@
+    @* <td> *@
+    @*     @Html.DisplayFor(modelItem => item.LastName) *@
+    @* </td> *@
 
-            @* 
+    @* 
             <!-- Colunas com formatação -->
             <td>@FormatPhoneNumberToString(item.FixedPhone ?? "N/A")</td>
             <td>@FormatPhoneNumberToString(item.CellPhone ?? "N/A")</td>
             *@
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.FixedPhone) *@
-            @* </td> *@
-            @* <td> *@
-            @*     @Html.DisplayFor(modelItem => item.CellPhone) *@
-            @* </td> *@
+    @* <td> *@
+    @*     @Html.DisplayFor(modelItem => item.FixedPhone) *@
+    @* </td> *@
+    @* <td> *@
+    @*     @Html.DisplayFor(modelItem => item.CellPhone) *@
+    @* </td> *@
 
-            @*
+    @*
             <td>
                 @Html.DisplayFor(modelItem => item.Address)
             </td>

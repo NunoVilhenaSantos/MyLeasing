@@ -2,15 +2,15 @@
 
 
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
-@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessee> *@
+@* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessees> *@
 
 
 @* @model MyLeasing.Web.Data.Entities.Owner *@
-@* @model MyLeasing.Web.Data.Entities.Lessee *@
+@* @model MyLeasing.Web.Data.Entities.Lessees *@
 
 
- @model MyLeasing.Web.Models.OwnerViewModel
-@*  @model MyLeasing.Web.Models.LesseeViewModel *@
+@model MyLeasing.Web.Models.OwnerViewModel
+@*  @model MyLeasing.Web.Models.LesseesViewModel *@
 
 
 @*@model MyLeasing.Web.Data.Entities.IPerson*@
@@ -21,12 +21,12 @@
 
 @{
     // Verificar o tipo do modelo recebido
-    if (Model is MyLeasing.Web.Models.OwnerViewModel ownerModel)
+    if (Model is OwnerViewModel ownerModel)
     {
         // Modelo é do tipo OwnerViewModel
         <div>
             <h1>Create/Edit Owner</h1>
-            <img src="@ownerModel.ProfilePhotoUrl" class="img-thumbnail" width="350" height="auto" alt="Image" />
+            <img src="@ownerModel.ProfilePhotoUrl" class="img-thumbnail" width="350" height="auto" alt="Image"/>
             <!-- Restante do código para OwnerViewModel -->
         </div>
     }
@@ -34,7 +34,7 @@
     //{
     //    // Modelo é do tipo LesseeViewModel
     //    <div>
-    //        <h1>Create/Edit Lessee</h1>
+    //        <h1>Create/Edit Lessees</h1>
     //        <img src="@lesseeModel.ProfilePhotoUrl" class="img-thumbnail" width="350" height="auto" alt="Image" />
     //        <!-- Restante do código para LesseeViewModel -->
     //    </div>
@@ -54,13 +54,13 @@
         <h1>Create Owner</h1>
         break;
     case "Create - Lessees":
-        <h1>Create Lessee</h1>
+        <h1>Create Lessees</h1>
         break;
     case "Edit - Owners":
         <h1>Edit Owner</h1>
         break;
     case "Edit - Lessees":
-        <h1>Edit Lessee</h1>
+        <h1>Edit Lessees</h1>
         break;
     default:
         <h1>Unknown</h1>

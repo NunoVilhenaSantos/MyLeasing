@@ -21,7 +21,7 @@ public class LesseesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Lessee>>> GetLessee()
     {
-        return await _context.Lessee
+        return await _context.Lessees
             .Include(t => t.User)
             .ToListAsync();
         // return Ok(_context.Owners.Include(t => t.User));
@@ -32,7 +32,7 @@ public class LesseesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Lessee>> GetLessee(int id)
     {
-        var lessee = await _context.Lessee.FindAsync(id);
+        var lessee = await _context.Lessees.FindAsync(id);
 
         if (lessee == null)
             return NotFound();
@@ -76,7 +76,7 @@ public class LesseesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Lessee>> PostLessee(Lessee lessee)
     {
-        _context.Lessee.Add(lessee);
+        _context.Lessees.Add(lessee);
 
         await _context.SaveChangesAsync();
 
@@ -89,12 +89,12 @@ public class LesseesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLessee(int id)
     {
-        var lessee = await _context.Lessee.FindAsync(id);
+        var lessee = await _context.Lessees.FindAsync(id);
 
         if (lessee == null)
             return NotFound();
 
-        _context.Lessee.Remove(lessee);
+        _context.Lessees.Remove(lessee);
 
         await _context.SaveChangesAsync();
 
@@ -104,7 +104,7 @@ public class LesseesController : ControllerBase
 
     private bool LesseeExists(int id)
     {
-        return (_context.Lessee?
+        return (_context.Lessees?
                 .Any(e => e.Id == id))
             .GetValueOrDefault();
     }

@@ -155,7 +155,7 @@ namespace MyLeasing.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessee", b =>
+            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessees", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -202,7 +202,7 @@ namespace MyLeasing.Web.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Lessee");
+                    b.ToTable("Lessees");
                 });
 
             modelBuilder.Entity("MyLeasing.Web.Data.Entities.Owner", b =>
@@ -389,7 +389,7 @@ namespace MyLeasing.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessee", b =>
+            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessees", b =>
                 {
                     b.HasOne("MyLeasing.Web.Data.Entities.User", "User")
                         .WithMany()

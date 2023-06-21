@@ -12,7 +12,7 @@ using MyLeasing.Web.Data.DataContexts;
 namespace MyLeasing.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230620233109_ProfileImagens")]
+    [Migration("20230621112454_ProfileImagens")]
     partial class ProfileImagens
     {
         /// <inheritdoc />

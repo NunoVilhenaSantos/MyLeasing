@@ -10,6 +10,7 @@ public class SeedDb
     public SeedDb(
         IUserHelper userHelper,
         DataContext dataContext,
+        DataContextSQLite dataContextSQLite,
         IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
@@ -17,6 +18,7 @@ public class SeedDb
     {
         _userHelper = userHelper;
         _dataContext = dataContext;
+        _dataContextSqLite = dataContextSQLite;
         _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
         // _roleManager = roleManager;
@@ -79,7 +81,7 @@ public class SeedDb
         }
 
 
-        if (!_dataContext.Lessee.Any())
+        if (!_dataContext.Lessees.Any())
         {
             await AddLessees(
                 "Roberto", "Rossellini", "Calle Luna", user);
@@ -115,7 +117,41 @@ public class SeedDb
 
 
         await _dataContext.SaveChangesAsync();
+        await BackupData();
     }
+
+
+    private async Task BackupData()
+    {
+        try
+        {
+            // Certifique-se de que os bancos de dados estejam criados
+            await _dataContext.Database.EnsureCreatedAsync();
+            await _dataContextSqLite.Database.EnsureCreatedAsync();
+
+            // Exemplo:
+            // Copiar todos os registros da tabela "Owners"
+            // para a base de dados de backup tabela "Owners"
+            var owners = _dataContext.Owners.ToList();
+            _dataContextSqLite.Owners.AddRange(owners);
+
+            // Exemplo:
+            // Copiar todos os registros da tabela "Lessees"
+            // para a base de dados de backup tabela "Lessees"
+            var lessees = _dataContext.Lessees.ToList();
+            _dataContextSqLite.Lessees.AddRange(lessees);
+
+            await _dataContextSqLite.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            // Lida com qualquer exceção que possa ocorrer durante a operação
+            Console.WriteLine(
+                "Ocorreu um erro ao fazer o backup " +
+                $"para a base de dados SQLite: {ex.Message}");
+        }
+    }
+
 
     private void AddPlaceHolders()
     {
@@ -204,7 +240,7 @@ public class SeedDb
                         Email = email,
                         PhoneNumber = phoneNumber
                     },
-                    "Lessee" => new User
+                    "Lessees" => new User
                     {
                         Document = document,
                         FirstName = firstName,
@@ -304,7 +340,7 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Lessee.Add(new Lessee
+        _dataContext.Lessees.Add(new Lessee
             {
                 Document = document,
                 FirstName = firstName,
@@ -316,7 +352,7 @@ public class SeedDb
                     firstName, lastName,
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
-                    $"{cellPhone}", "Lessee",
+                    $"{cellPhone}", "Lessees",
                     document, addressFull
                 )
             }
@@ -330,6 +366,7 @@ public class SeedDb
 
     private readonly Random _random = new();
     private readonly DataContext _dataContext;
+    private readonly DataContextSQLite _dataContextSqLite;
 
     private readonly IUserHelper _userHelper;
 
