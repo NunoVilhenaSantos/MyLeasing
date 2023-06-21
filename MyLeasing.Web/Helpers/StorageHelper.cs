@@ -3,6 +3,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using Serilog;
 
 namespace MyLeasing.Web.Helpers;
 
@@ -40,10 +41,10 @@ public class StorageHelper : IStorageHelper
         // _awsStorageKey2 = _configuration["Storages:AWSStorageKey2"];
 
 
-        //var gcpStorageFileNuno = _configuration[GcpStorageAuthFileNuno];
-        //_gcpStorageBucketNuno = _configuration[GcpStorageBucketNameNuno];
-        //_googleCredentialsNuno =
-        //    GoogleCredential.FromFile(gcpStorageFileNuno);
+        var gcpStorageFileNuno = _configuration[GcpStorageAuthFileNuno];
+        _gcpStorageBucketNuno = _configuration[GcpStorageBucketNameNuno];
+        _googleCredentialsNuno =
+            GoogleCredential.FromFile(gcpStorageFileNuno);
 
 
         //var gcpStorageFileJorge = _configuration[GcpStorageAuthFileJorge];
@@ -62,7 +63,10 @@ public class StorageHelper : IStorageHelper
         IFormFile file, string bucketName)
     {
         var stream = file.OpenReadStream();
-        return await UploadStreamAsync(stream, bucketName);
+
+        return await UploadFileAsyncToGcp(file, bucketName);
+
+        // return await UploadStreamAsync(stream, bucketName);
     }
 
 
@@ -82,15 +86,16 @@ public class StorageHelper : IStorageHelper
     }
 
 
-    public async Task<string> UploadFileAsyncToGcp(IFormFile fileToUpload,
-        string fileNameToSave)
+    public async Task<Guid> UploadFileAsyncToGcp(
+        IFormFile fileToUpload, string bucketName)
     {
         try
         {
-            // _logger.LogInformation(
-            //     $"Uploading File Async: {fileToUpload.FileName} to " +
-            //     $"{fileNameToSave} into storage " +
-            //     $"{_configuration["GCPStorageBucketName_Nuno"]}");
+            Log.Logger.Information(
+                $"Uploading File Async: " +
+                $"{fileToUpload.FileName} to " +
+                $"{bucketName} into storage " +
+                $"{_configuration["GCPStorageBucketName_Nuno"]}");
 
 
             using (var memoryStream = new MemoryStream())
@@ -102,35 +107,34 @@ public class StorageHelper : IStorageHelper
                        StorageClient.Create(_googleCredentialsNuno))
                 {
                     //var bucketName = _options.GCPStorageBucketName_Nuno;
+                    var name = Guid.NewGuid();
 
                     var storageObject =
                         await storageClient.UploadObjectAsync(
-                            _gcpStorageBucketNuno, fileNameToSave,
+                            _gcpStorageBucketNuno,
+                            bucketName + "/" + name,
                             fileToUpload.ContentType, memoryStream);
 
-                    // _logger.LogInformation(
-                    //     $"Uploaded File Async: {fileToUpload.FileName} to " +
-                    //     $"{fileNameToSave} into storage {_configuration[""]}");
+                    Log.Logger.Information(
+                        "Uploaded File Async: " +
+                        $"{fileToUpload.FileName} to " +
+                        $"{name} into storage {_configuration[""]}");
 
-                    return await Task.FromResult(storageObject.MediaLink);
+
+                    await Task.FromResult(storageObject.MediaLink);
+
+                    return name;
                 }
-
-                //var uploadFile = _googleCredentials.CreateScoped(scopes: _options.Scopes).UnderlyingCredential as Google.Apis.Auth.OAuth2.GoogleCredential;
-                //var storageClient = Google.Cloud.Storage.V1.StorageClient.Create(uploadFile);
-                //var bucketName = _options.BucketName;
-                //var storageObject = storageClient.UploadObject(bucketName, fileNameToSave, null, memoryStream);
-
-                //return await Task.FromResult(storageObject.MediaLink);
             }
         }
         catch (Exception ex)
         {
-            // _logger.LogError(ex, $"{ex.Message}");
+            Log.Error(ex, $"{ex.Message}");
 
-            //return $"Error while uploading file {fileNameToSave} {ex.Message}";
+            await Task.FromResult(
+                $"Error while uploading file {fileToUpload} {ex.Message}");
 
-            return await Task.FromResult(
-                $"Error while uploading file {fileNameToSave} {ex.Message}");
+            return Guid.Empty;
         }
     }
 
@@ -253,10 +257,10 @@ public class StorageHelper : IStorageHelper
         "AzureStorages:AzureBlobKeyGlobalGamesNuno";
 
     private const string GcpStorageAuthFileNuno =
-        "GoogleStorages:GCPStorageAuthFile_Nuno";
+        "GCPStorageAuthFile_Nuno";
 
     private const string GcpStorageBucketNameNuno =
-        "GoogleStorages:GCPStorageBucketName_Nuno";
+        "GCPStorageBucketName_Nuno";
 
     private const string GcpStorageAuthFileJorge =
         "GoogleStorages:GCPStorageAuthFile_Jorge";

@@ -15,6 +15,10 @@ using MyLeasing.Web.Helpers;
 var builder = WebApplication.CreateBuilder(args);
 
 
+builder.Services.AddApplicationInsightsTelemetry(
+    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
+
 // -----------------------------------------------------------------------------
 //
 // Database connection via data-context
@@ -169,10 +173,6 @@ builder.Services.AddAuthentication();
 builder.Services.AddRazorPages().AddRazorPagesOptions(options => { });
 builder.Services.AddControllersWithViews().AddViewLocalization();
 builder.Services.AddControllersWithViews();
-
-
-builder.Services.AddApplicationInsightsTelemetry(
-    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 
 //builder.Services.AddAzureClients(clientBuilder =>

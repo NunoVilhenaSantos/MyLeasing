@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.DataContexts;
 using MyLeasing.Web.Data.Entities;
 using MyLeasing.Web.Helpers;
@@ -125,30 +126,57 @@ public class SeedDb
     {
         try
         {
-            // Certifique-se de que os bancos de dados estejam criados
-            await _dataContext.Database.EnsureCreatedAsync();
-            await _dataContextSqLite.Database.EnsureCreatedAsync();
+            var backupDateTime = DateTime.Now;
+            var backupFileName =
+                $"backup_{backupDateTime.ToString("yyyyMMdd_HHmmss")}.db";
 
-            // Exemplo:
-            // Copiar todos os registros da tabela "Owners"
-            // para a base de dados de backup tabela "Owners"
-            var owners = _dataContext.Owners.ToList();
-            _dataContextSqLite.Owners.AddRange(owners);
+            // Criar uma nova instância do contexto usando o nome da base de dados de backup
+            var backupOptionsBuilder =
+                new DbContextOptionsBuilder<DataContextMySql>()
+                    .UseSqlServer($"Data Source={backupFileName}");
 
-            // Exemplo:
-            // Copiar todos os registros da tabela "Lessees"
-            // para a base de dados de backup tabela "Lessees"
-            var lessees = _dataContext.Lessees.ToList();
-            _dataContextSqLite.Lessees.AddRange(lessees);
+            using (var backupContext =
+                   new DataContextMySql(backupOptionsBuilder.Options))
+            {
+                // Certifique-se de que a nova base de dados de backup seja criada
+                await backupContext.Database.EnsureCreatedAsync();
 
-            await _dataContextSqLite.SaveChangesAsync();
+                // Obter todos os dados das tabelas relevantes da base de dados principal
+                var owners = _dataContext.Owners.ToList();
+                var lessees = _dataContext.Lessees.ToList();
+                var roles = _dataContext.Roles.ToList();
+                var users = _dataContext.Users.ToList();
+                var roleClaims = _dataContext.RoleClaims.ToList();
+                var userClaims = _dataContext.UserClaims.ToList();
+                var userLogins = _dataContext.UserLogins.ToList();
+                var userRoles = _dataContext.UserRoles.ToList();
+                var userTokens = _dataContext.UserTokens.ToList();
+
+                // Adicionar os dados obtidos à base de dados de backup
+                backupContext.Owners.AddRange(owners);
+                backupContext.Lessees.AddRange(lessees);
+                backupContext.Roles.AddRange(roles);
+                backupContext.Users.AddRange(users);
+                backupContext.RoleClaims.AddRange(roleClaims);
+                backupContext.UserClaims.AddRange(userClaims);
+                backupContext.UserLogins.AddRange(userLogins);
+                backupContext.UserRoles.AddRange(userRoles);
+                backupContext.UserTokens.AddRange(userTokens);
+
+                // Adicione outras tabelas conforme necessário
+
+                // Salvar as alterações na base de dados de backup
+                await backupContext.SaveChangesAsync();
+            }
         }
         catch (Exception ex)
         {
-            // Lida com qualquer exceção que possa ocorrer durante a operação
+            // Lidar com qualquer exceção que possa ocorrer durante a operação
             Console.WriteLine(
                 "Ocorreu um erro ao fazer o backup " +
-                $"para a base de dados SQLite: {ex.Message}");
+                "para a base de dados SQLite: " +
+                _dataContext.Database.GetDbConnection().Database + "\n" +
+                ex.Message);
         }
     }
 

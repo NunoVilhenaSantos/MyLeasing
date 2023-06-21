@@ -7,6 +7,10 @@
     "sqlite1": {
       "type": "sqlite",
       "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos-SQLite"
+    },
+    "secrets1": {
+      "type": "secrets",
+      "dynamicId": null
     }
   }
 }

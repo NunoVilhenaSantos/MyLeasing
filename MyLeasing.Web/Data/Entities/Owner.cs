@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
-public class Owner : IEntity, IPerson
+public partial class Owner : IEntity, IPerson
 {
     [Key] public int Id { get; set; }
 
@@ -24,15 +24,16 @@ public class Owner : IEntity, IPerson
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
             ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-            : Regex.Replace(ProfilePhotoUrl, @"^~/owners/images/",
-                "https://myleasingnunostorage.blob.core.windows.net/owners/");
-    // : "https://myleasingnunostorage.blob.core.windows.net/owners/" + ProfilePhotoUrl.Replace("~/owners/images/", "");
+            : MyRegex().Replace(ProfilePhotoUrl,
+                "https://storage.googleapis.com/" +
+                "supershoptpsicet77-nuno/owners/");
+
 
     public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://myleasingnunostorage.blob.core.windows.net/owners/" +
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/owners/" +
           ProfilePhotoId;
     //:   "https://supershopnunostorage.blob.core.windows.net/{GetType().Name.ToLower()}s/{ImageId}";
     //    "https://supershopnunostorage.blob.core.windows.net/products/e1572b5b-3a31-4c9a-a68b-f13bc4f550d4";
@@ -61,4 +62,7 @@ public class Owner : IEntity, IPerson
 
 
     [Required] public User User { get; set; }
+
+    [GeneratedRegex("^~/owners/images/")]
+    private static partial Regex MyRegex();
 }

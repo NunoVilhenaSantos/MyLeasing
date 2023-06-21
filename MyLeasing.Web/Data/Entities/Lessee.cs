@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace MyLeasing.Web.Data.Entities;
 
-public class Lessee : IEntity, IPerson
+public partial class Lessee : IEntity, IPerson
 {
     [Display(Name = "Full Name with Document")]
     public string FullNameWithDocument =>
@@ -40,17 +40,17 @@ public class Lessee : IEntity, IPerson
 
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? "https://supershopnunostorage.blob.core.windows.net/" +
-              "placeholders/no-picture/person/Placeholder-no-text-person-3.png"
-            : Regex.Replace(ProfilePhotoUrl, @"^~/lessees/images/",
-                "https://myleasingnunostorage.blob.core.windows.net/lessees/");
+            ? "~/images/PlaceHolders/legacy.png"
+            : MyRegex().Replace(ProfilePhotoUrl,
+                "https://storage.googleapis.com/" +
+                "supershoptpsicet77-nuno/lessees/");
 
 
     public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://myleasingnunostorage.blob.core.windows.net/lessees/" +
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/lessees/" +
           ProfilePhotoId;
 
     [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
@@ -70,4 +70,7 @@ public class Lessee : IEntity, IPerson
 
 
     [Required] public User User { get; set; }
+
+    [GeneratedRegex("^~/lessees/images/")]
+    private static partial Regex MyRegex();
 }

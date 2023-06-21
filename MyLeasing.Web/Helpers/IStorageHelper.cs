@@ -36,7 +36,7 @@ public interface IStorageHelper
     }
 
 
-    Task<string> UploadFileAsyncToGcp(IFormFile fileToUpload,
+    Task<Guid> UploadFileAsyncToGcp(IFormFile fileToUpload,
         string fileNameToSave);
 
     // [BEGIN storage_stream_file_upload]
