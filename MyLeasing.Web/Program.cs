@@ -1,6 +1,9 @@
+using System.Net;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Azure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using MyLeasing.Web;
 using MyLeasing.Web.Data.DataContexts;
 using MyLeasing.Web.Data.Entities;
@@ -22,6 +25,33 @@ var builder = WebApplication.CreateBuilder(args);
 //
 // -----------------------------------------------------------------------------
 
+
+// Ignorar erros de certificado SSL (apenas para ambiente de desenvolvimento/teste)
+ServicePointManager.ServerCertificateValidationCallback +=
+    (sender, certificate, chain, sslPolicyErrors) => true;
+
+
+// Obtém a configuration do builder
+var configuration = builder.Configuration;
+
+// Obtém a connection string do secrets.json
+var connectionString =
+    configuration.GetConnectionString(
+        "MyLeasing-NunoVilhenaSantos.mssql.somee.com");
+
+// Configura o DbContext usando a connection string
+builder.Services.AddDbContext<DataContext>(
+    options =>
+        options.UseSqlServer(connectionString));
+
+
+builder.Services.AddDbContext<DataContext>(
+    options =>
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString(
+                "MyLeasing-NunoVilhenaSantos.mssql.somee.com")));
+
+
 // Add services to the container.
 // make sure to add the connection string in the appsettings.json file
 // and the connection string name is the same as the one in the appsettings.json file
@@ -39,11 +69,13 @@ var builder = WebApplication.CreateBuilder(args);
 //            builder.Configuration.GetConnectionString(
 //                "SomeeMyLeasingNuno")));
 
-builder.Services.AddDbContext<DataContext>(
-    options =>
-        options.UseSqlServer(
-            builder.Configuration.GetConnectionString(
-                "AzureMyLeasingNuno")));
+
+//builder.Services.AddDbContext<DataContext>(
+//    options =>
+//        options.UseSqlServer(
+//            builder.Configuration.GetConnectionString(
+//                "AzureMyLeasingNuno")));
+
 
 
 // Add services to the container.
@@ -125,7 +157,7 @@ builder.Services.AddTransient<SeedDb>();
 
 // Add helpers
 
-// add userhelper service to the container
+// add user-helper service to the container
 builder.Services.AddScoped<IUserHelper, UserHelper>();
 // builder.Services.AddScoped<IUserHelper, MockUserHelper>();
 
@@ -149,9 +181,6 @@ builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 // builder.Services.AddScoped<AWSConfigOptions>();
 // builder.Services.AddScoped<ICloudStorageService, CloudStorageService>();
 
-
-// builder.Services.AddScoped<IImageHelper, ImageHelper>();
-// builder.Services.AddScoped<IConverterHelper, ConverterHelper>();
 
 
 // -----------------------------------------------------------------------------
@@ -187,11 +216,11 @@ builder.Services.AddControllersWithViews().AddViewLocalization();
 
 builder.Services.AddRazorPages().AddRazorPagesOptions(options => { });
 builder.Services.AddControllersWithViews();
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 
 
-//builder.Services.AddApplicationInsightsTelemetry(
-//    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+builder.Services.AddApplicationInsightsTelemetry(
+    builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+
 
 //builder.Services.AddAzureClients(clientBuilder =>
 //{
@@ -222,12 +251,12 @@ builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICAT
 //});
 
 
-
 builder.Logging.ClearProviders();
 //builder.Logging.AddAzureWebAppDiagnostics();
 
 
 var app = builder.Build();
+
 
 RunSeeding();
 
@@ -267,8 +296,6 @@ app.MapControllerRoute(
     "{controller=Home}/{action=Index}/{id?}");
 
 
-
-
 //public static IHostBuilder CreateHostBuilder(string[] args) =>
 //    Host.CreateDefaultBuilder(args)
 //        .ConfigureWebHostDefaults(webBuilder =>
@@ -283,7 +310,6 @@ app.MapControllerRoute(
 //                    });
 //                });
 //        });
-
 
 
 app.Run();

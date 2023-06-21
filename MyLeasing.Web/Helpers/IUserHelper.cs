@@ -5,11 +5,11 @@ namespace MyLeasing.Web.Helpers;
 
 public interface IUserHelper
 {
-    Task<User?> GetUserByIdAsync(string id);
+    Task<User> GetUserByIdAsync(string id);
 
 
-    Task<User?> GetUserByEmailAsync(string? email);
+    Task<User> GetUserByEmailAsync(string email);
 
 
-    Task<IdentityResult> AddUserAsync(User? user, string password);
+    Task<IdentityResult> AddUserAsync(User user, string password);
 }

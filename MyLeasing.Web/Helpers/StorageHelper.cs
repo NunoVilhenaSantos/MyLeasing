@@ -36,20 +36,10 @@ public class StorageHelper : IStorageHelper
         //_azureSasCredential = new AzureSasCredential(_azureBlobKey_2);
 
 
-        _awsStorageKey1 = _configuration["Storages:AWSStorageKey1"];
-        _awsStorageKey2 = _configuration["Storages:AWSStorageKey2"];
+        // _awsStorageKey1 = _configuration["Storages:AWSStorageKey1"];
+        // _awsStorageKey2 = _configuration["Storages:AWSStorageKey2"];
 
 
-        // Retrieve the connection string for use with the application.
-        // var connectionString =
-        //     Environment.GetEnvironmentVariable(
-        //         "AZURE_STORAGE_CONNECTION_STRING");
-        // Create a BlobServiceClient object
-        // var blobServiceClient = new BlobServiceClient(_azureBlobKey_1);
-        // "DefaultEndpointsProtocol=https;" +
-        //     "AccountName=storagesuper;" +
-        //     "AccountKey=your_storage_account_key;" +
-        //     "EndpointSuffix=core.windows.net");
         //var gcpStorageFileNuno = _configuration[GcpStorageAuthFileNuno];
         //_gcpStorageBucketNuno = _configuration[GcpStorageBucketNameNuno];
         //_googleCredentialsNuno =

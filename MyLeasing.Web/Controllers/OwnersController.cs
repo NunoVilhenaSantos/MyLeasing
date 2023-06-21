@@ -216,13 +216,11 @@ public class OwnersController : Controller
     {
         var owner = await _ownerRepository.GetByIdAsync(id);
 
-        if (owner == null) return RedirectToAction(nameof(Index));
-
         await _ownerRepository.DeleteAsync(owner);
 
         if (!await _ownerRepository.SaveAllAsync())
             Log.Logger.Error(
-                "Error creating owner: {0}, {1}",
+                messageTemplate: "Error creating owner: {0}, {1}",
                 owner.Id, owner.FullName);
 
         return RedirectToAction(nameof(Index));
@@ -238,7 +236,7 @@ public class OwnersController : Controller
 
     #endregion
 
-    // private Task<Owner?> OwnerExists(int id)
+    // private Task<Owner> OwnerExists(int id)
     // {
     //     return (_ownerRepository.GetByIdAsync(id));
     // }

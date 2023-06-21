@@ -23,7 +23,7 @@ public class GenericRepository<T> :
     }
 
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<T> GetByIdAsync(int id)
     {
         // return await _dataContext.Set<T>().FindAsync(id).AsTask();
         return await _dataContext.Set<T>().AsNoTracking()

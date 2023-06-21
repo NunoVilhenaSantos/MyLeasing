@@ -12,7 +12,7 @@ using MyLeasing.Web.Data.DataContexts;
 namespace MyLeasing.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230612004852_ProfileImagens")]
+    [Migration("20230620233109_ProfileImagens")]
     partial class ProfileImagens
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace MyLeasing.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.5")
+                .HasAnnotation("ProductVersion", "7.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);

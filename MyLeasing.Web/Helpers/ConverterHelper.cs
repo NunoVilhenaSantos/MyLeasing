@@ -6,7 +6,7 @@ namespace MyLeasing.Web.Helpers;
 public class ConverterHelper : IConverterHelper
 {
     public Owner ToOwner(OwnerViewModel ownerViewModel,
-        string? filePath, Guid fileStorageId, bool isNew)
+        string filePath, Guid fileStorageId, bool isNew)
     {
         return new Owner
         {
@@ -43,7 +43,7 @@ public class ConverterHelper : IConverterHelper
 
 
     public Lessee ToLessee(LesseeViewModel lesseeViewModel,
-        string? filePath, Guid fileStorageId, bool isNew)
+        string filePath, Guid fileStorageId, bool isNew)
     {
         return new Lessee
         {

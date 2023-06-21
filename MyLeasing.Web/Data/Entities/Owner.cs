@@ -59,6 +59,6 @@ public class Owner : IEntity, IPerson
     public string FullName => $"{FirstName} {LastName}";
 
 
-    [Required] public User? User { get; set; }
+    [Required] public User User { get; set; }
     [Key] public int Id { get; set; }
 }

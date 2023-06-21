@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLeasing.Web", "MyLeasing.Web\MyLeasing.Web.csproj", "{CE511332-3A49-4406-B98A-F03A4B1CF09E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyLeasing.Common", "MyLeasing.Common\MyLeasing.Common.csproj", "{45F0055C-C168-4331-BECD-77E3E0988613}"
+	ProjectSection(ProjectDependencies) = postProject
+		{CE511332-3A49-4406-B98A-F03A4B1CF09E} = {CE511332-3A49-4406-B98A-F03A4B1CF09E}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

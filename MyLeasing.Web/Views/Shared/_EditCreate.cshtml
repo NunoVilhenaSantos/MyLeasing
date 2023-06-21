@@ -9,14 +9,14 @@
 @* @model MyLeasing.Web.Data.Entities.Lessee *@
 
 
-@* @model MyLeasing.Web.Models.OwnerViewModel *@
+ @model MyLeasing.Web.Models.OwnerViewModel
 @*  @model MyLeasing.Web.Models.LesseeViewModel *@
 
 
 @*@model MyLeasing.Web.Data.Entities.IPerson*@
 
 
-@model object
+@*@model object*@
 
 
 @{
@@ -30,15 +30,15 @@
             <!-- Restante do código para OwnerViewModel -->
         </div>
     }
-    else if (Model is MyLeasing.Web.Models.LesseeViewModel lesseeModel)
-    {
-        // Modelo é do tipo LesseeViewModel
-        <div>
-            <h1>Create/Edit Lessee</h1>
-            <img src="@lesseeModel.ProfilePhotoUrl" class="img-thumbnail" width="350" height="auto" alt="Image" />
-            <!-- Restante do código para LesseeViewModel -->
-        </div>
-    }
+    //else if (Model is MyLeasing.Web.Models.LesseeViewModel lesseeModel)
+    //{
+    //    // Modelo é do tipo LesseeViewModel
+    //    <div>
+    //        <h1>Create/Edit Lessee</h1>
+    //        <img src="@lesseeModel.ProfilePhotoUrl" class="img-thumbnail" width="350" height="auto" alt="Image" />
+    //        <!-- Restante do código para LesseeViewModel -->
+    //    </div>
+    //}
     else
     {
         // Tipo de modelo desconhecido

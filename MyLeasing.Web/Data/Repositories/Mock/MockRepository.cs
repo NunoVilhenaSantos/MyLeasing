@@ -85,25 +85,25 @@ public class MockRepository : IRepository
 //}
 
 
-    public Owner? GetOwner(int id)
+    public Owner GetOwner(int id)
     {
         throw new NotImplementedException();
     }
 
 
-    public void AddOwner(Owner? owner)
+    public void AddOwner(Owner owner)
     {
         throw new NotImplementedException();
     }
 
 
-    public void UpdateOwner(Owner? owner)
+    public void UpdateOwner(Owner owner)
     {
         throw new NotImplementedException();
     }
 
 
-    public void RemoveOwner(Owner? owner)
+    public void RemoveOwner(Owner owner)
     {
         throw new NotImplementedException();
     }
@@ -120,7 +120,7 @@ public class MockRepository : IRepository
         throw new NotImplementedException();
     }
 
-    public IOrderedQueryable<Owner?> GetOwners()
+    public IOrderedQueryable<Owner> GetOwners()
     {
         throw new NotImplementedException();
     }

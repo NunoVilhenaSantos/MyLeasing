@@ -22,7 +22,7 @@ public class Repository : IRepository
     }
 
 
-    public Owner? GetOwner(int id)
+    public Owner GetOwner(int id)
     {
         return _context.Owners.Find(id);
     }

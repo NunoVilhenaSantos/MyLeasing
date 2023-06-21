@@ -6,7 +6,7 @@ namespace MyLeasing.Web.Data.Entities
 {
     public interface IPerson: IEntity
     {
-        
+
 
             string Document { get; set; }
             string FirstName { get; set; }
@@ -19,8 +19,8 @@ namespace MyLeasing.Web.Data.Entities
             string? CellPhone { get; set; }
             string? Address { get; set; }
             string FullName { get; }
-            User? User { get; set; }
-        
+            User User { get; set; }
+
 
 
     }

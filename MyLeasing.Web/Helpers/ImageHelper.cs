@@ -3,7 +3,7 @@
 public class ImageHelper : IImageHelper
 {
     public async Task<string> UploadImageAsync(
-        IFormFile? imageFile, string folder)
+        IFormFile imageFile, string folder)
     {
         // Cria o diretório se não existir
         var folderPath = Path.Combine(
