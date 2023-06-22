@@ -118,7 +118,7 @@ public class SeedDb
 
 
         await _dataContext.SaveChangesAsync();
-        await BackupData();
+        // await BackupData();
     }
 
 
