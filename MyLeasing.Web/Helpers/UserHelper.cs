@@ -8,7 +8,10 @@ namespace MyLeasing.Web.Helpers;
 
 public class UserHelper : IUserHelper
 {
-    #region Constructor
+    private readonly UserManager<User> _userManager;
+    private readonly SignInManager<User> _signInManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
 
     public UserHelper(
         UserManager<User> userManager,
@@ -21,8 +24,6 @@ public class UserHelper : IUserHelper
         _roleManager = roleManager;
     }
 
-    #endregion
-
 
     public async Task<User> GetUserByIdAsync(string id)
     {
@@ -32,7 +33,7 @@ public class UserHelper : IUserHelper
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
-        return await _userManager.FindByEmailAsync(email ?? string.Empty);
+        return await _userManager.FindByEmailAsync(email);
     }
 
 
@@ -71,30 +72,6 @@ public class UserHelper : IUserHelper
     }
 
 
-    // public Task<SignOutResult> LogoutAsync()
-    // {
-    //     // Sign out the user
-    //     var result =
-    //         _signInManager.SignOutAsync().ConfigureAwait(false).GetAwaiter();
-    //
-    //     if (result.IsCompleted)
-    //     {
-    //         // Handle successful sign-out
-    //         // For example, redirect to a sign-out confirmation page
-    //         return new Task<SignOutResult>(
-    //             new RedirectToActionResult("LogoutConfirmation",
-    //                 "YourControllerName", null));
-    //     }
-    //
-    //     // Handle sign-out failure
-    //     // For example, display an error message
-    //     var errorMessage = "Failed to sign out.";
-    //     return new RedirectToActionResult("LogoutConfirmation",
-    //         "YourControllerName",
-    //         new {error = errorMessage});
-    // }
-
-
     public async Task<IActionResult> LogoutAsync()
     {
         // Sign out the user
@@ -116,11 +93,36 @@ public class UserHelper : IUserHelper
     }
 
 
-    #region Attributes
+    public async Task<IdentityResult> UpdateUserAsync(User user)
+    {
+        return await _userManager.UpdateAsync(user);
+    }
 
-    private readonly UserManager<User> _userManager;
-    private readonly SignInManager<User> _signInManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
-    #endregion
+    public async Task<IdentityResult> ChangePasswordAsync(
+        User user, string oldPassword, string newPassword)
+    {
+        return await _userManager.ChangePasswordAsync(
+            user, oldPassword, newPassword);
+    }
+
+
+    public async Task<IdentityResult> AddUserToRoleAsync(
+        User user, string roleName)
+    {
+        return await _userManager.AddToRoleAsync(user, roleName);
+    }
+
+
+    public async Task<IdentityResult> RemoveUserFromRoleAsync(
+        User user, string roleName)
+    {
+        return await _userManager.RemoveFromRoleAsync(user, roleName);
+    }
+
+
+    public async Task<bool> IsUserInRoleAsync(User user, string roleName)
+    {
+        return await _userManager.IsInRoleAsync(user, roleName);
+    }
 }

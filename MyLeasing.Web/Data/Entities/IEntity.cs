@@ -7,7 +7,7 @@ public interface IEntity
     [Key] int Id { get; set; }
 
 
-    // bool WasDeleted { get; set; }
+    [Required] bool WasDeleted { get; set; }
 
 
     // string Name { get; set; }

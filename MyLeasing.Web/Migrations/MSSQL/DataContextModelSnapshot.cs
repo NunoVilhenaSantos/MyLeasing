@@ -17,7 +17,7 @@ namespace MyLeasing.Web.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.7")
+                .HasAnnotation("ProductVersion", "7.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -155,7 +155,7 @@ namespace MyLeasing.Web.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessees", b =>
+            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessee", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -197,6 +197,9 @@ namespace MyLeasing.Web.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -243,6 +246,9 @@ namespace MyLeasing.Web.Migrations
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("WasDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -389,7 +395,7 @@ namespace MyLeasing.Web.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessees", b =>
+            modelBuilder.Entity("MyLeasing.Web.Data.Entities.Lessee", b =>
                 {
                     b.HasOne("MyLeasing.Web.Data.Entities.User", "User")
                         .WithMany()

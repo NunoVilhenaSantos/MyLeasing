@@ -11,6 +11,7 @@ public partial class Lessee : IEntity, IPerson
         $"{FirstName} {LastName} - {Document}";
 
     [Key] public int Id { get; set; }
+    public bool WasDeleted { get; set; }
 
     [DisplayName("Document*")]
     [MaxLength(20,

@@ -12,8 +12,10 @@
       "connectionId": "ConnectionStrings:MyLeasing-NunoVilhenaSantos-SQLite"
     },
     "secrets1": {
+      "secretStore": null,
+      "resourceId": null,
       "type": "secrets.user",
-      "dynamicId": null
+      "connectionId": null
     }
   }
 }
