@@ -9,6 +9,7 @@ public partial class Owner : IEntity, IPerson
     [Key] public int Id { get; set; }
     public bool WasDeleted { get; set; }
 
+
     [Required] [DisplayName("Document*")] public string Document { get; set; }
 
 

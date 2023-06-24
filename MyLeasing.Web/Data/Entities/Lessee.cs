@@ -13,6 +13,7 @@ public partial class Lessee : IEntity, IPerson
     [Key] public int Id { get; set; }
     public bool WasDeleted { get; set; }
 
+
     [DisplayName("Document*")]
     [MaxLength(20,
         ErrorMessage =

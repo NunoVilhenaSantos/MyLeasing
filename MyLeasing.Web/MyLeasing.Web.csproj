@@ -43,6 +43,7 @@
     <ItemGroup>
         <Folder Include="Helpers\AWS\" />
         <Folder Include="Helpers\Azure\" />
+        <Folder Include="Pages\" />
         <Folder Include="wwwroot\images\owners\" />
     </ItemGroup>
 
