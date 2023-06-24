@@ -304,7 +304,7 @@ namespace MyLeasing.Web.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ProfilePhotoUrl")
+                    b.Property<Guid>("ProfilePhotoId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")

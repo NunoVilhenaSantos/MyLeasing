@@ -9,11 +9,11 @@ namespace MyLeasing.Web.Controllers.API;
 [ApiController]
 public class LesseesController : ControllerBase
 {
-    private readonly DataContext _context;
+    private readonly DataContextMSSQL _contextMssql;
 
-    public LesseesController(DataContext context)
+    public LesseesController(DataContextMSSQL contextMssql)
     {
-        _context = context;
+        _contextMssql = contextMssql;
     }
 
 
@@ -21,10 +21,10 @@ public class LesseesController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Lessee>>> GetLessee()
     {
-        return await _context.Lessees
+        return await _contextMssql.Lessees
             .Include(t => t.User)
             .ToListAsync();
-        // return Ok(_context.Owners.Include(t => t.User));
+        // return Ok(_contextMssql.Owners.Include(t => t.User));
     }
 
 
@@ -32,7 +32,7 @@ public class LesseesController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Lessee>> GetLessee(int id)
     {
-        var lessee = await _context.Lessees.FindAsync(id);
+        var lessee = await _contextMssql.Lessees.FindAsync(id);
 
         if (lessee == null)
             return NotFound();
@@ -51,11 +51,11 @@ public class LesseesController : ControllerBase
     {
         if (id != lessee.Id) return BadRequest();
 
-        _context.Entry(lessee).State = EntityState.Modified;
+        _contextMssql.Entry(lessee).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _contextMssql.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -76,9 +76,9 @@ public class LesseesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Lessee>> PostLessee(Lessee lessee)
     {
-        _context.Lessees.Add(lessee);
+        _contextMssql.Lessees.Add(lessee);
 
-        await _context.SaveChangesAsync();
+        await _contextMssql.SaveChangesAsync();
 
         return CreatedAtAction("GetLessee",
             new {id = lessee.Id}, lessee);
@@ -89,14 +89,14 @@ public class LesseesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteLessee(int id)
     {
-        var lessee = await _context.Lessees.FindAsync(id);
+        var lessee = await _contextMssql.Lessees.FindAsync(id);
 
         if (lessee == null)
             return NotFound();
 
-        _context.Lessees.Remove(lessee);
+        _contextMssql.Lessees.Remove(lessee);
 
-        await _context.SaveChangesAsync();
+        await _contextMssql.SaveChangesAsync();
 
         return NoContent();
     }
@@ -104,7 +104,7 @@ public class LesseesController : ControllerBase
 
     private bool LesseeExists(int id)
     {
-        return (_context.Lessees?
+        return (_contextMssql.Lessees?
                 .Any(e => e.Id == id))
             .GetValueOrDefault();
     }

@@ -10,7 +10,7 @@ public class SeedDb
 {
     public SeedDb(
         IUserHelper userHelper,
-        DataContext dataContext,
+        DataContextMSSQL dataContextMssql,
         DataContextSQLite dataContextSQLite,
         IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
@@ -18,7 +18,7 @@ public class SeedDb
     )
     {
         _userHelper = userHelper;
-        _dataContext = dataContext;
+        _dataContextMssql = dataContextMssql;
         _dataContextSqLite = dataContextSQLite;
         _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
@@ -28,7 +28,7 @@ public class SeedDb
 
     public async Task SeedAsync()
     {
-        await _dataContext.Database.EnsureCreatedAsync();
+        await _dataContextMssql.Database.EnsureCreatedAsync();
 
 
         await AddUsers(MyLeasingAdminsJorge,
@@ -57,7 +57,7 @@ public class SeedDb
 
         // await CheckRolesAsync(user);
 
-        if (!_dataContext.Owners.Any())
+        if (!_dataContextMssql.Owners.Any())
         {
             await AddOwners(
                 "Juan", "Zuluaga", "Calle Luna", user);
@@ -82,7 +82,7 @@ public class SeedDb
         }
 
 
-        if (!_dataContext.Lessees.Any())
+        if (!_dataContextMssql.Lessees.Any())
         {
             await AddLessees(
                 "Roberto", "Rossellini", "Calle Luna", user);
@@ -108,7 +108,7 @@ public class SeedDb
                 "Claudia", "Cardinale", "Calle Sol", user);
         }
 
-        // if (!_dataContext.Properties.Any())
+        // if (!_dataContextMssql.Properties.Any())
         // {
         //     await AddProperties(user);
         // }
@@ -117,7 +117,7 @@ public class SeedDb
         AddPlaceHolders();
 
 
-        await _dataContext.SaveChangesAsync();
+        await _dataContextMssql.SaveChangesAsync();
         // await BackupData();
     }
 
@@ -142,15 +142,15 @@ public class SeedDb
                 await backupContext.Database.EnsureCreatedAsync();
 
                 // Obter todos os dados das tabelas relevantes da base de dados principal
-                var owners = _dataContext.Owners.ToList();
-                var lessees = _dataContext.Lessees.ToList();
-                var roles = _dataContext.Roles.ToList();
-                var users = _dataContext.Users.ToList();
-                var roleClaims = _dataContext.RoleClaims.ToList();
-                var userClaims = _dataContext.UserClaims.ToList();
-                var userLogins = _dataContext.UserLogins.ToList();
-                var userRoles = _dataContext.UserRoles.ToList();
-                var userTokens = _dataContext.UserTokens.ToList();
+                var owners = _dataContextMssql.Owners.ToList();
+                var lessees = _dataContextMssql.Lessees.ToList();
+                var roles = _dataContextMssql.Roles.ToList();
+                var users = _dataContextMssql.Users.ToList();
+                var roleClaims = _dataContextMssql.RoleClaims.ToList();
+                var userClaims = _dataContextMssql.UserClaims.ToList();
+                var userLogins = _dataContextMssql.UserLogins.ToList();
+                var userRoles = _dataContextMssql.UserRoles.ToList();
+                var userTokens = _dataContextMssql.UserTokens.ToList();
 
                 // Adicionar os dados obtidos à base de dados de backup
                 backupContext.Owners.AddRange(owners);
@@ -175,7 +175,7 @@ public class SeedDb
             Console.WriteLine(
                 "Ocorreu um erro ao fazer o backup " +
                 "para a base de dados SQLite: " +
-                _dataContext.Database.GetDbConnection().Database + "\n" +
+                _dataContextMssql.Database.GetDbConnection().Database + "\n" +
                 ex.Message);
         }
     }
@@ -338,7 +338,7 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Owners.Add(new Owner
+        _dataContextMssql.Owners.Add(new Owner
             {
                 Document = document,
                 FirstName = firstName,
@@ -356,7 +356,7 @@ public class SeedDb
             }
         );
 
-        // await _dataContext.SaveChangesAsync();
+        // await _dataContextMssql.SaveChangesAsync();
     }
 
 
@@ -368,7 +368,7 @@ public class SeedDb
         var cellPhone = _random.Next(1000000, 99999999).ToString();
         var addressFull = address + ", " + _random.Next(1, 9999);
 
-        _dataContext.Lessees.Add(new Lessee
+        _dataContextMssql.Lessees.Add(new Lessee
             {
                 Document = document,
                 FirstName = firstName,
@@ -386,14 +386,14 @@ public class SeedDb
             }
         );
 
-        // await _dataContext.SaveChangesAsync();
+        // await _dataContextMssql.SaveChangesAsync();
     }
 
 
     #region Attributes
 
     private readonly Random _random = new();
-    private readonly DataContext _dataContext;
+    private readonly DataContextMSSQL _dataContextMssql;
     private readonly DataContextSQLite _dataContextSqLite;
 
     private readonly IUserHelper _userHelper;

@@ -41,20 +41,23 @@ public class User : IdentityUser
         $"{FirstName} {LastName} - {Document}";
 
 
-    [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
+    [DisplayName("Profile Photo Id")] public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/users/" +
+          ProfilePhotoId;
+    //  : "https://supershopnunostorage.blob.core.windows.net/"+
+    //    GetType().Name.ToLower()+"s/"+ImageId;
+    //  : "https://supershopnunostorage.blob.core.windows.net/products/"+
+    //    ProfilePhotoId;
 
 
-    public string? ProfilePhotoFullUrl =>
-        string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? null
-            : $"https://supermarketapi.azurewebsites.net{ProfilePhotoUrl[1..]}";
-
-
-    // [Display(Name = "Thumbnail")]
-    // public string ImageThumbnailUrl { get; set; }
+    // [Display(Name = "Thumbnail")] public string ImageThumbnailUrl { get; set; }
     //
     // public string ImageThumbnailFullUrl =>
     //     string.IsNullOrEmpty(ImageThumbnailUrl)
-    //         ? null
-    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
+    //         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+    //         : "https://storage.googleapis.com/supershoptpsicet77-nuno/users/" +
+    //           ImageThumbnailUrl;
 }

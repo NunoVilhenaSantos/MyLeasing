@@ -4,10 +4,10 @@ using MyLeasing.Web.Data.Entities;
 
 namespace MyLeasing.Web.Data.DataContexts;
 
-public class DataContext : IdentityDbContext<User>
-// public class DataContext : DbContext
+public class DataContextMSSQL : IdentityDbContext<User>
+// public class DataContextMSSQL : DbContext
 {
-    public DataContext(DbContextOptions<DataContext> options) : base(options)
+    public DataContextMSSQL(DbContextOptions<DataContextMSSQL> options) : base(options)
     {
     }
 

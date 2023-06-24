@@ -1,12 +1,12 @@
-﻿@inject IWebHostEnvironment HostingEnvironment
+﻿@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+
 @inject IWebHostEnvironment WebHostEnvironment
 
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Lessees> *@
 
 @* @model MyLeasing.Web.Data.Entities.Owner *@
-@using System.Text.RegularExpressions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model MyLeasing.Web.Data.Entities.Lessee
 
 @* @model MyLeasing.Web.Models.OwnerViewModel *@
@@ -86,6 +86,9 @@
     </dl>
 
 
+    @{
+        System.Diagnostics.Debug.Assert(action != null, nameof(action) + " != null");
+    }
     @switch (action)
     {
         case var _ when Regex.IsMatch(action, @"^Delete$"):

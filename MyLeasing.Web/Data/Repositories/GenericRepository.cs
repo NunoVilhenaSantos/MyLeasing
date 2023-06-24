@@ -8,58 +8,58 @@ namespace MyLeasing.Web.Data.Repositories;
 public class GenericRepository<T> :
     IGenericRepository<T> where T : class, IEntity
 {
-    private readonly DataContext _dataContext;
+    private readonly DataContextMSSQL _dataContextMssql;
 
 
-    protected GenericRepository(DataContext dataContext)
+    protected GenericRepository(DataContextMSSQL dataContextMssql)
     {
-        _dataContext = dataContext;
+        _dataContextMssql = dataContextMssql;
     }
 
 
     public IQueryable<T> GetAll()
     {
-        return _dataContext.Set<T>().AsQueryable().AsNoTracking();
+        return _dataContextMssql.Set<T>().AsQueryable().AsNoTracking();
     }
 
 
     public async Task<T> GetByIdAsync(int id)
     {
-        // return await _dataContext.Set<T>().FindAsync(id).AsTask();
-        return await _dataContext.Set<T>().AsNoTracking()
+        // return await _dataContextMssql.Set<T>().FindAsync(id).AsTask();
+        return await _dataContextMssql.Set<T>().AsNoTracking()
             .FirstOrDefaultAsync(e => e.Id == id);
     }
 
 
     public async Task<bool> CreateAsync(T entity)
     {
-        await _dataContext.Set<T>().AddAsync(entity);
+        await _dataContextMssql.Set<T>().AddAsync(entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> UpdateAsync(T entity)
     {
-        _dataContext.Set<T>().Update(entity);
+        _dataContextMssql.Set<T>().Update(entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> DeleteAsync(T entity)
     {
-        _dataContext.Set<T>().Remove(entity);
+        _dataContextMssql.Set<T>().Remove(entity);
         return await SaveAllAsync();
     }
 
 
     public async Task<bool> ExistAsync(int id)
     {
-        return await _dataContext.Set<T>().AnyAsync(e => e.Id == id);
+        return await _dataContextMssql.Set<T>().AnyAsync(e => e.Id == id);
     }
 
 
     public async Task<bool> SaveAllAsync()
     {
-        return await _dataContext.SaveChangesAsync() > 0;
+        return await _dataContextMssql.SaveChangesAsync() > 0;
     }
 }

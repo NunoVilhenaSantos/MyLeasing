@@ -31,7 +31,7 @@ public partial class Owner : IEntity, IPerson
                 "supershoptpsicet77-nuno/owners/");
 
 
-    public Guid ProfilePhotoId { get; set; }
+    [DisplayName("Profile Photo Id")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
         ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"

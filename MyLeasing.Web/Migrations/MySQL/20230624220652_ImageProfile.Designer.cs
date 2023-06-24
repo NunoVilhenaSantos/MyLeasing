@@ -10,8 +10,8 @@ using MyLeasing.Web.Data.DataContexts;
 namespace MyLeasing.Web.Migrations.MySQL
 {
     [DbContext(typeof(DataContextMySql))]
-    [Migration("20230623203716_InitialMySql")]
-    partial class InitialMySql
+    [Migration("20230624220652_ImageProfile")]
+    partial class ImageProfile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -308,8 +308,8 @@ namespace MyLeasing.Web.Migrations.MySQL
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ProfilePhotoUrl")
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");

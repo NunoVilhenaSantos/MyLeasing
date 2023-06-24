@@ -9,18 +9,18 @@ namespace MyLeasing.Web.Controllers.API;
 [ApiController]
 public class OwnersController : ControllerBase
 {
-    private readonly DataContext _context;
+    private readonly DataContextMSSQL _contextMssql;
 
-    public OwnersController(DataContext context)
+    public OwnersController(DataContextMSSQL contextMssql)
     {
-        _context = context;
+        _contextMssql = contextMssql;
     }
 
     // GET: api/Owners
     [HttpGet]
     public IActionResult GetOwners()
     {
-        return Ok(_context.Owners.Include(t => t.User));
+        return Ok(_contextMssql.Owners.Include(t => t.User));
     }
 
 
@@ -28,7 +28,7 @@ public class OwnersController : ControllerBase
     [HttpGet("{id}")]
     public async Task<ActionResult<Owner>> GetOwner(int id)
     {
-        var owner = await _context.Owners.FindAsync(id);
+        var owner = await _contextMssql.Owners.FindAsync(id);
 
         if (owner == null)
             return NotFound();
@@ -45,11 +45,11 @@ public class OwnersController : ControllerBase
         if (id != owner.Id)
             return BadRequest();
 
-        _context.Entry(owner).State = EntityState.Modified;
+        _contextMssql.Entry(owner).State = EntityState.Modified;
 
         try
         {
-            await _context.SaveChangesAsync();
+            await _contextMssql.SaveChangesAsync();
         }
         catch (DbUpdateConcurrencyException)
         {
@@ -67,9 +67,9 @@ public class OwnersController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Owner>> PostOwner(Owner owner)
     {
-        _context.Owners.Add(owner);
+        _contextMssql.Owners.Add(owner);
 
-        await _context.SaveChangesAsync();
+        await _contextMssql.SaveChangesAsync();
 
         return CreatedAtAction(
             "GetOwner", new {id = owner.Id}, owner);
@@ -79,21 +79,21 @@ public class OwnersController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteOwner(int id)
     {
-        var owner = await _context.Owners.FindAsync(id);
+        var owner = await _contextMssql.Owners.FindAsync(id);
 
         if (owner == null)
             return NotFound();
 
-        _context.Owners.Remove(owner);
+        _contextMssql.Owners.Remove(owner);
 
-        await _context.SaveChangesAsync();
+        await _contextMssql.SaveChangesAsync();
 
         return NoContent();
     }
 
     private bool OwnerExists(int id)
     {
-        return (_context.Owners?.Any(e => e.Id == id))
+        return (_contextMssql.Owners?.Any(e => e.Id == id))
             .GetValueOrDefault();
     }
 }

@@ -10,8 +10,8 @@ using MyLeasing.Web.Data.DataContexts;
 namespace MyLeasing.Web.Migrations.SQLite
 {
     [DbContext(typeof(DataContextSQLite))]
-    [Migration("20230623203436_InitialSQLite")]
-    partial class InitialSQLite
+    [Migration("20230624220526_ImageProfile")]
+    partial class ImageProfile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -306,7 +306,7 @@ namespace MyLeasing.Web.Migrations.SQLite
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("ProfilePhotoUrl")
+                    b.Property<Guid>("ProfilePhotoId")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("SecurityStamp")

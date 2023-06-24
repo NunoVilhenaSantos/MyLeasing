@@ -25,7 +25,7 @@ builder.Services.AddApplicationInsightsTelemetry(
 // -----------------------------------------------------------------------------
 
 
-//builder.Services.AddDbContext<DataContext>(options =>
+//builder.Services.AddDbContext<DataContextMSSQL>(options =>
 //{
 //    options.UseSqlServer(connectionStringSommee);
 //    options.UseSqlite(builder.Configuration.GetConnectionString("MyLeasing-NunoVilhenaSantos.mssql.somee.com"));
@@ -34,7 +34,7 @@ builder.Services.AddApplicationInsightsTelemetry(
 //);
 // ...
 
-builder.Services.AddDbContext<DataContext>(
+builder.Services.AddDbContext<DataContextMSSQL>(
     options =>
         options.UseSqlServer(
             builder.Configuration.GetConnectionString(
@@ -84,7 +84,7 @@ builder.Services.AddIdentity<User, IdentityRole>(options =>
         options.Lockout.AllowedForNewUsers = true;
     })
     .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<DataContext>();
+    .AddEntityFrameworkStores<DataContextMSSQL>();
 
 
 builder.Services

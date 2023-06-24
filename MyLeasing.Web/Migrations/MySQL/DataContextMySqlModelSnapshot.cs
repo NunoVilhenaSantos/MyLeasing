@@ -306,8 +306,8 @@ namespace MyLeasing.Web.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<string>("ProfilePhotoUrl")
-                        .HasColumnType("longtext");
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");

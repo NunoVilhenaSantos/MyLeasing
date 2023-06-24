@@ -91,11 +91,11 @@ public class AccountController : Controller
             {
                 user = new User
                 {
-                    // Address = registerNewUserViewModel.Address,
-                    // Document = registerNewUserViewModel.Document,
+                    Document = registerNewUserViewModel.Document,
                     FirstName = registerNewUserViewModel.FirstName,
                     LastName = registerNewUserViewModel.LastName,
-                    // PhoneNumber = registerNewUserViewModel.PhoneNumber,
+                    Address = registerNewUserViewModel.Address,
+                    PhoneNumber = registerNewUserViewModel.PhoneNumber,
                     UserName = registerNewUserViewModel.Username,
                     Email = registerNewUserViewModel.Username
                 };

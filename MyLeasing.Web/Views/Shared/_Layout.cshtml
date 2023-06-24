@@ -169,7 +169,10 @@
 <header>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary nav-tabs">
-
+        @{
+            var currentController = ViewContext.RouteData.Values["controller"] as string;
+            var currentAction = ViewContext.RouteData.Values["action"] as string;
+        }
         <div class="container-fluid">
 
             @* <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">@ViewData["Title"] - </a> *@
@@ -177,10 +180,7 @@
                 @ViewData["AssemblyName"] - @ViewData["AssemblyVersion"]
             </a>
 
-            @{
-                var currentController = ViewContext.RouteData.Values["controller"] as string;
-                var currentAction = ViewContext.RouteData.Values["action"] as string;
-            }
+
             <div class="navbar-collapse collapse justify-content-between" id="navbarNavAltMarkup">
 
                 <div class="navbar-nav flex-grow-1">
@@ -236,7 +236,8 @@
 
                     <ul class="dropdown-menu">
                         <li>
-                            <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">
+                            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                               asp-area="" asp-controller="" asp-action="">
                                 <i class="bi bi-person-fill"></i>
                                 <span class="material-symbols-outlined">person</span>Users
                             </a>
@@ -245,7 +246,8 @@
                             <hr class="dropdown-divider">
                         </li>
                         <li>
-                            <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">
+                            <a class="dropdown-item @(currentAction == "About" && currentController == "Account" ? "active" : "")"
+                               asp-area="" asp-controller="" asp-action="">
                                 <i class="bi bi-people-fill"></i>
                                 <i class="material-symbols-outlined">group</i>Roles
                             </a>
@@ -268,20 +270,24 @@
                     }
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="ChangeUser">
+                        <a class="nav-link @(currentAction == "ChangeUser" && currentController == "Account" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="ChangeUser">
                             <span class="material-symbols-outlined">settings_account_box</span>@User.Identity?.Name
                         </a>
 
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="LogOut">
+                        <a class="nav-link @(currentAction == "LogOut" && currentController == "Account" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="LogOut">
                             <span class="material-symbols-outlined">logout</span>Logout
                         </a>
                     }
                     else
                     {
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Register">
+                        <a class="nav-link @(currentAction == "Register" && currentController == "Account" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="Register">
                             <span class="material-symbols-outlined">person_add</span>Register
                         </a>
-                        <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Login">
+                        <a class="nav-link @(currentAction == "Login" && currentController == "Account" ? "active" : "")"
+                           asp-area="" asp-controller="Account" asp-action="Login">
                             <span class="material-symbols-outlined">login</span>Login
                         </a>
                     }

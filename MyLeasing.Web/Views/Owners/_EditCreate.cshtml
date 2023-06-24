@@ -44,6 +44,10 @@
 
 <div class="col-auto">
 
+
+    @{
+        System.Diagnostics.Debug.Assert(action != null, nameof(action) + " != null");
+    }
     @switch (action)
     {
         case var _ when Regex.IsMatch(action, @"^Create$"):

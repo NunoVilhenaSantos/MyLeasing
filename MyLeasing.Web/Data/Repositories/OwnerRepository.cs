@@ -6,7 +6,7 @@ namespace MyLeasing.Web.Data.Repositories;
 
 public class OwnerRepository : GenericRepository<Owner>, IOwnerRepository
 {
-    public OwnerRepository(DataContext dataContext) : base(dataContext)
+    public OwnerRepository(DataContextMSSQL dataContextMssql) : base(dataContextMssql)
     {
     }
 }

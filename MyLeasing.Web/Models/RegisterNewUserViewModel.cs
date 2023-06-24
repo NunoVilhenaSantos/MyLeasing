@@ -1,9 +1,10 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using MyLeasing.Web.Data.Entities;
 
 namespace MyLeasing.Web.Models;
 
-public class RegisterNewUserViewModel
+public class RegisterNewUserViewModel : User
 {
     [Required] [DisplayName("First Name")] public string FirstName { get; set; }
 

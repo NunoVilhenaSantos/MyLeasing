@@ -10,7 +10,7 @@ using MyLeasing.Web.Data.DataContexts;
 
 namespace MyLeasing.Web.Migrations
 {
-    [DbContext(typeof(DataContext))]
+    [DbContext(typeof(DataContextMSSQL))]
     partial class DataContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -318,8 +318,8 @@ namespace MyLeasing.Web.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<string>("ProfilePhotoUrl")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<Guid>("ProfilePhotoId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");

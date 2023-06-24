@@ -5,18 +5,18 @@ namespace MyLeasing.Web.Data.Repositories.OLD;
 
 public class Repository : IRepository
 {
-    private readonly DataContext _context;
+    private readonly DataContextMSSQL _contextMssql;
 
 
-    public Repository(DataContext context)
+    public Repository(DataContextMSSQL contextMssql)
     {
-        _context = context;
+        _contextMssql = contextMssql;
     }
 
 
     public IOrderedQueryable<Owner> GetOwners()
     {
-        return _context.Owners
+        return _contextMssql.Owners
             .OrderBy(o => o.FirstName)
             .ThenBy(o => o.LastName);
     }
@@ -24,36 +24,36 @@ public class Repository : IRepository
 
     public Owner GetOwner(int id)
     {
-        return _context.Owners.Find(id);
+        return _contextMssql.Owners.Find(id);
     }
 
 
     public void AddOwner(Owner owner)
     {
-        _context.Owners.Add(owner);
+        _contextMssql.Owners.Add(owner);
     }
 
 
     public void UpdateOwner(Owner owner)
     {
-        _context.Owners.Update(owner);
+        _contextMssql.Owners.Update(owner);
     }
 
 
     public void RemoveOwner(Owner owner)
     {
-        _context.Owners.Remove(owner);
+        _contextMssql.Owners.Remove(owner);
     }
 
 
     public async Task<bool> SaveOwnersAsync()
     {
-        return await _context.SaveChangesAsync() > 0;
+        return await _contextMssql.SaveChangesAsync() > 0;
     }
 
 
     public bool OwnerExists(int id)
     {
-        return _context.Owners.Any(o => o.Id == id);
+        return _contextMssql.Owners.Any(o => o.Id == id);
     }
 }
