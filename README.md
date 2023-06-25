@@ -2,7 +2,7 @@
 
 ![img.png](img.png)
 
-## Exercício – 1ª parte
+## Exercício – 1.ª parte
 
 ### Final do vídeo 6
 
@@ -43,13 +43,13 @@ Figura 4 - vista delete do controlador Owners
 
 Faça novo commit com o texto SeedDb
 
-## Exercício – 2ª parte
+## Exercício – 2.ª parte
 
 ### Final do vídeo 7
 
 1. Implemente no projeto o padrão Repository, fazendo depois o respetivo commit.
 
-## Exercício – 3ª parte
+## Exercício – 3.ª parte
 
 ### Final do vídeo 10
 
@@ -58,6 +58,7 @@ Faça novo commit com o texto SeedDb
 2. Extenda a classe User da IdentityUser acrescentando as seguintes propriedades e anotações :
 
 ```csharp
+
 [Display(Name = "Document")]
 
 [MaxLength(20, ErrorMessage = "The {0} field can not have more than {1} characters.")] [Required(ErrorMessage = "The field {0} is mandatory.")]
@@ -73,12 +74,12 @@ public string FirstName { get; set; }
 [MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")] [Required(ErrorMessage = "The field {0} is mandatory.")]
 public string LastName { get; set; }
 
-[MaxLength(100, ErrorMessage = "The {0} field can not have more than {1} characters.")] public string Address { get;
-set; }
+[MaxLength(100, ErrorMessage = "The {0} field can not have more than {1} characters.")] public string Address { get; set; }
 
 public string FullName => $"{FirstName} {LastName}";
 
 public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
+
 ```
 
 3. Atualize os Owners não esquecendo que são também users, respeitando o seguinte DER:
@@ -89,7 +90,7 @@ public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
 5. Crie uma API que devolva todos os Owners existentes. Faça o respetivo commit.
 
-## Exercício – 4ª parte
+## Exercício – 4.ª parte
 
 ### Final do vídeo 12
 
@@ -97,14 +98,84 @@ public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
 2. Implemente a entidade Lessee (inquilino) com as seguintes propriedades:
 
-Id, Document, FirstName, LastName, FixedPhone, CellPhone, Address, Photo, FullName só de leitura e FullNameWithDocument
-também só de leitura.
+```csharp
+[Display(Name = "Full Name with Document")]
+    public string FullNameWithDocument =>
+        $"{FirstName} {LastName} - {Document}";
+
+    [Key] public int Id { get; set; }
+    public bool WasDeleted { get; set; }
+
+
+    [DisplayName("Document*")]
+    [MaxLength(20,
+        ErrorMessage =
+            "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public string Document { get; set; }
+
+
+    [DisplayName("First Name*")]
+    [MaxLength(50,
+        ErrorMessage =
+            "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public string FirstName { get; set; }
+
+
+    [DisplayName("Last Name*")]
+    [MaxLength(50,
+        ErrorMessage =
+            "The {0} field can not have more than {1} characters.")]
+    [Required(ErrorMessage = "The field {0} is mandatory.")]
+    public string LastName { get; set; }
+
+
+    [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }
+
+    public string? ProfilePhotoFullUrl =>
+        string.IsNullOrEmpty(ProfilePhotoUrl)
+            ? "~/images/PlaceHolders/legacy.png"
+            : MyRegex().Replace(ProfilePhotoUrl,
+                "https://storage.googleapis.com/" +
+                "supershoptpsicet77-nuno/lessees/");
+
+
+    public Guid ProfilePhotoId { get; set; }
+
+    public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
+        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        : "https://storage.googleapis.com/supershoptpsicet77-nuno/lessees/" +
+          ProfilePhotoId;
+
+    [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
+
+
+    [DisplayName("Cell Phone")] public string? CellPhone { get; set; }
+
+
+    [MaxLength(100,
+        ErrorMessage =
+            "The {0} field can not have more than {1} characters.")]
+    public string? Address { get; set; }
+
+
+    [DisplayName("Owner Name")]
+    public string FullName => $"{FirstName} {LastName}";
+
+
+    [Required] public User User { get; set; }
+
+    [GeneratedRegex("^~/lessees/images/")]
+    private static partial Regex MyRegex();
+
+```
 
 3. Implemente o CRUD dos Lessee’s não esquecendo que deverá manter o padrão Repository, e que estes também são Users.
 
 4. Atualize o Seed por forma a gerar 5 Lessee’s ao reconstruir a base de dados.
 
-## Exercício – 5ª parte
+## Exercício – 5.ª parte
 
 ### Final do vídeo 15
 
@@ -115,37 +186,30 @@ também só de leitura.
 3. Publique no Azure e envie o link pela conversa privada do Teams.
 
 4. Implemente o projecto Global Games usando um projecto ASP.NET MVC, tendo em conta o seguinte:
+    1. Deverá usar o controller Home com três actions para as páginas Home, Sobre e Serviços.
+    2. Deverá criar uma base de dados com duas tabelas. Uma para apenas guardar o email inserido para subscrever a
+       newsletter, e outra para os dados inseridos no formulário orçamento.
+    3. A zona da newsletter, como aparece nas três páginas, deverá ser uma vista parcial, com a sua própria action.
+    4. O projecto já tem todo o seu design completo e está responsivo. Deve continuar assim, não podendo o front-end
+       sofrer qualquer alteração e não esquecendo que tudo o que é comum poderá ser um layout partilhado.
+    5. Publique o site e envie o respetivo link pela conversa privada.
 
-a. Deverá usar o controller Home com três actions para as páginas Home, Sobre e Serviços.
-
-b. Deverá criar uma base de dados com duas tabelas. Uma para apenas guardar o email inserido para subscrever a
-newsletter, e outra para os dados inseridos no formulário orçamento.
-
-c. A zona da newsletter, como aparece nas três páginas, deverá ser uma vista parcial, com a sua própria action.
-
-d. O projecto já tem todo o seu design completo e está responsivo. Deve continuar assim, não podendo o front-end sofrer
-qualquer alteração e não esquecendo que tudo o que é comum poderá ser um layout partilhado.
-
-e. Publique o site e envie o respetivo link pela conversa privada.
-
-## Exercício – 6ª parte
+## Exercício – 6.ª parte
 
 ### Final do vídeo 18
 
 1. Em ambos os projectos, MyLeasing e GlobalGames, crie as seguintes funcionalidades:
+    1. Login e logout
+    2. Registar-se como user, passando a partir de aí poder já efetuar login.
+    3. Alterar os dados.
 
-a. Login e logout
-
-b. Registar-se como user, passando a partir de aí poder já efetuar login.
-
-c. Alterar os dados.
-
-## Exercício – 7ª parte
+## Exercício – 7.ª parte
 
 ### Final do vídeo 21
 
 1. No projeto MyLeasing crie os três roles (Admin, Owner e Lessee) atualizando o respetivo Seed.
 
-2. Apenas o Admin pode aceder ao CRUD total tanto dos Owners como dos Lessees, não devendo para estes, sequer aparecer os links do menu.
+2. Apenas o Admin pode aceder ao CRUD total tanto dos Owners como dos Lessees, não devendo para estes, sequer aparecer
+   os links do menu.
 
 3. Implemente um menu do tipo dropdown para o user administrador ter as opções dos Owners e Lessees.
