@@ -257,6 +257,9 @@ namespace MyLeasing.Web.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
+                    b.Property<string>("CellPhone")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
@@ -277,6 +280,9 @@ namespace MyLeasing.Web.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<string>("FixedPhone")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("LastName")
                         .IsRequired()

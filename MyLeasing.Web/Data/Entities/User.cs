@@ -41,6 +41,12 @@ public class User : IdentityUser
         $"{FirstName} {LastName} - {Document}";
 
 
+    [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
+
+
+    [DisplayName("Cell Phone")] public string? CellPhone { get; set; }
+
+
     [DisplayName("Profile Photo Id")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty

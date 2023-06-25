@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MyLeasing.Web.Migrations.SQLite
 {
     /// <inheritdoc />
-    public partial class ImageProfile : Migration
+    public partial class UserDBUpdate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -33,6 +33,8 @@ namespace MyLeasing.Web.Migrations.SQLite
                     FirstName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     LastName = table.Column<string>(type: "TEXT", maxLength: 50, nullable: false),
                     Address = table.Column<string>(type: "TEXT", maxLength: 100, nullable: true),
+                    FixedPhone = table.Column<string>(type: "TEXT", nullable: true),
+                    CellPhone = table.Column<string>(type: "TEXT", nullable: true),
                     ProfilePhotoId = table.Column<Guid>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),

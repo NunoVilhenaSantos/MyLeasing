@@ -8,10 +8,50 @@ namespace MyLeasing.Web.Data.Seeders;
 
 public class SeedDb
 {
+    private readonly Random _random = new();
+    private readonly DataContextMSSQL _dataContextMssql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextSQLite _dataContextSqLite;
+
+    private readonly IUserHelper _userHelper;
+
+    // private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+
+    public const string MyLeasingAdminsNuno =
+        "nuno.santos.26288@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsDiogo =
+        "diogo.alves.28645@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsRuben =
+        "ruben.corrreia.28257@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsTatiane =
+        "tatiane.avellar.24718@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJorge =
+        "jorge.pinto.28720@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsJoel =
+        "joel.rangel.22101@formandos.cinel.pt";
+
+    public const string MyLeasingAdminsLicinio =
+        "licinio.do.rosario@formandos.cinel.pt";
+
+
+    // Injeção de dependência do IWebHostEnvironment
+    private readonly IWebHostEnvironment _hostingEnvironment;
+
+    public string PlaceHolders;
+
+
     public SeedDb(
         IUserHelper userHelper,
         DataContextMSSQL dataContextMssql,
-        DataContextSQLite dataContextSQLite,
+        DataContextSQLite dataContextSqLite,
+        DataContextMySql dataContextMySql,
         IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager
@@ -19,7 +59,8 @@ public class SeedDb
     {
         _userHelper = userHelper;
         _dataContextMssql = dataContextMssql;
-        _dataContextSqLite = dataContextSQLite;
+        _dataContextMySql = dataContextMySql;
+        _dataContextSqLite = dataContextSqLite;
         _hostingEnvironment = hostingEnvironment;
         // _userManager = userManager;
         // _roleManager = roleManager;
@@ -29,7 +70,8 @@ public class SeedDb
     public async Task SeedAsync()
     {
         await _dataContextMssql.Database.EnsureCreatedAsync();
-
+        await _dataContextMySql.Database.EnsureCreatedAsync();
+        await _dataContextSqLite.Database.EnsureCreatedAsync();
 
         await AddUsers(MyLeasingAdminsJorge,
             "Calle Luna", "Admin", "123456");
@@ -388,49 +430,4 @@ public class SeedDb
 
         // await _dataContextMssql.SaveChangesAsync();
     }
-
-
-    #region Attributes
-
-    private readonly Random _random = new();
-    private readonly DataContextMSSQL _dataContextMssql;
-    private readonly DataContextSQLite _dataContextSqLite;
-
-    private readonly IUserHelper _userHelper;
-
-    // private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-
-    #region AdminSeedersConstants
-
-    public const string MyLeasingAdminsNuno =
-        "nuno.santos.26288@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsDiogo =
-        "diogo.alves.28645@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsRuben =
-        "ruben.corrreia.28257@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsTatiane =
-        "tatiane.avellar.24718@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsJorge =
-        "jorge.pinto.28720@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsJoel =
-        "joel.rangel.22101@formandos.cinel.pt";
-
-    public const string MyLeasingAdminsLicinio =
-        "licinio.do.rosario@formandos.cinel.pt";
-
-    #endregion
-
-    // Injeção de dependência do IWebHostEnvironment
-    private readonly IWebHostEnvironment _hostingEnvironment;
-
-    public string PlaceHolders;
-
-    #endregion
 }
