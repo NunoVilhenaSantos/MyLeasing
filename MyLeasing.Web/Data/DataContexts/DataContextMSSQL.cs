@@ -7,7 +7,8 @@ namespace MyLeasing.Web.Data.DataContexts;
 public class DataContextMSSQL : IdentityDbContext<User>
 // public class DataContextMSSQL : DbContext
 {
-    public DataContextMSSQL(DbContextOptions<DataContextMSSQL> options) : base(options)
+    public DataContextMSSQL(DbContextOptions<DataContextMSSQL> options) :
+        base(options)
     {
     }
 

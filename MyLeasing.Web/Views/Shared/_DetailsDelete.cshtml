@@ -1,7 +1,4 @@
-﻿@using System.Text.RegularExpressions
-@using Microsoft.AspNetCore.Mvc.TagHelpers
-
-@inject IWebHostEnvironment WebHostEnvironment
+﻿@inject IWebHostEnvironment WebHostEnvironment
 
 
 @* @model IEnumerable<MyLeasing.Web.Data.Entities.Owner> *@
@@ -13,6 +10,9 @@
 @* @model MyLeasing.Web.Models.OwnerViewModel *@
 @* @model MyLeasing.Web.Models.LesseesViewModel *@
 
+@using System.Diagnostics
+@using System.Text.RegularExpressions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model MyLeasing.Web.Data.Entities.IPerson
 
 @{
@@ -89,7 +89,7 @@
 
 
     @{
-        System.Diagnostics.Debug.Assert(action != null, nameof(action) + " != null");
+        Debug.Assert(action != null, nameof(action) + " != null");
     }
     @switch (action)
     {

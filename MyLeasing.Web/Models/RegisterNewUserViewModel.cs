@@ -2,7 +2,6 @@
 using System.ComponentModel.DataAnnotations;
 using MyLeasing.Web.Data.Entities;
 
-
 namespace MyLeasing.Web.Models;
 
 public class RegisterNewUserViewModel : User

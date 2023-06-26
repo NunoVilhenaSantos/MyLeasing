@@ -6,7 +6,8 @@ namespace MyLeasing.Web.Data.Repositories;
 
 public class LesseeRepository : GenericRepository<Lessee>, ILesseeRepository
 {
-    public LesseeRepository(DataContextMSSQL dataContextMssql) : base(dataContextMssql)
+    public LesseeRepository(DataContextMSSQL dataContextMssql) : base(
+        dataContextMssql)
     {
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.Repositories.Interfaces;
 using MyLeasing.Web.Data.Seeders;
@@ -44,12 +45,10 @@ public class LesseesController : Controller
 
         var lessee = await _lesseeRepository.GetByIdAsync(id.Value);
 
-        if (lessee == null) return NotFound();
-
         return View(lessee);
     }
 
-
+    [Authorize(Roles = "Admin")]
     // GET: Lessees/Create
     public IActionResult Create()
     {
@@ -119,6 +118,7 @@ public class LesseesController : Controller
 
 
     // GET: Lessees/Edit/5
+    [Authorize]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -196,6 +196,7 @@ public class LesseesController : Controller
 
 
     // GET: Lessees/Delete/5
+    [Authorize]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();

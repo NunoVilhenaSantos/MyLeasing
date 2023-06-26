@@ -13,24 +13,24 @@
 @* @model MyLeasing.Web.Models.LesseeViewModel *@
 
 
-@switch (ViewData["Title"] as string)
-{
-    case "Create - Owners":
-        <h1>Create Owner</h1>
-        break;
-    case "Create - Lessees":
-        <h1>Create Lessees</h1>
-        break;
-    case "Edit - Owners":
-        <h1>Edit Owner</h1>
-        break;
-    case "Edit - Lessees":
-        <h1>Edit Lessees</h1>
-        break;
-    default:
-        <h1>Unknown</h1>
-        break;
-}
+@* @switch (ViewData["Title"] as string) *@
+@* { *@
+@*     case "Create - Owners": *@
+@*         <h1>Create Owner</h1> *@
+@*         break; *@
+@*     case "Create - Lessees": *@
+@*         <h1>Create Lessees</h1> *@
+@*         break; *@
+@*     case "Edit - Owners": *@
+@*         <h1>Edit Owner</h1> *@
+@*         break; *@
+@*     case "Edit - Lessees": *@
+@*         <h1>Edit Lessees</h1> *@
+@*         break; *@
+@*     default: *@
+@*         <h1>Unknown</h1> *@
+@*         break; *@
+@* } *@
 
 
 @{
@@ -84,15 +84,15 @@
 
 </div>
 
-<div class="col">
+<div class="col-auto">
     <div class="row">
         <form asp-action="Register" enctype="multipart/form-data">
             @* <form asp-action="Create" enctype="multipart/form-data">  *@
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id"/>
-            <input type="hidden" asp-for="ProfilePhotoId"/>
-            <input type="hidden" asp-for="ProfilePhotoIdUrl"/>
+            @* <input type="hidden" asp-for="Id"/> *@
+            @* <input type="hidden" asp-for="ProfilePhotoId"/> *@
+            @* <input type="hidden" asp-for="ProfilePhotoIdUrl"/> *@
 
             <div class="form-group">
                 <label asp-for="Document" class="control-label"></label>
@@ -115,6 +115,23 @@
                 <input asp-for="ImageFile" class="form-control" id="imageInput"
                        onchange="previewImages(event)" type="file"/>
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input asp-for="Username" class="form-control"/>
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control"/>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control"/>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
             </div>
 
             <div class="form-group">

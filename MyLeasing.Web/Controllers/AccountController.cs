@@ -161,7 +161,7 @@ public class AccountController : Controller
             // Address = user.Address,
             // Document = user.Document,
             FirstName = user.FirstName,
-            LastName = user.LastName,
+            LastName = user.LastName
             // PhoneNumber = user.PhoneNumber
         };
 

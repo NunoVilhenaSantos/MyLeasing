@@ -8,17 +8,6 @@ namespace MyLeasing.Web.Data.Seeders;
 
 public class SeedDb
 {
-    private readonly Random _random = new();
-    private readonly DataContextMSSQL _dataContextMssql;
-    private readonly DataContextMySql _dataContextMySql;
-    private readonly DataContextSQLite _dataContextSqLite;
-
-    private readonly IUserHelper _userHelper;
-
-    // private readonly UserManager<User> _userManager;
-    private readonly RoleManager<IdentityRole> _roleManager;
-
-
     public const string MyLeasingAdminsNuno =
         "nuno.santos.26288@formandos.cinel.pt";
 
@@ -40,9 +29,19 @@ public class SeedDb
     public const string MyLeasingAdminsLicinio =
         "licinio.do.rosario@formandos.cinel.pt";
 
+    private readonly DataContextMSSQL _dataContextMssql;
+    private readonly DataContextMySql _dataContextMySql;
+    private readonly DataContextSQLite _dataContextSqLite;
+
 
     // Injeção de dependência do IWebHostEnvironment
     private readonly IWebHostEnvironment _hostingEnvironment;
+    private readonly Random _random = new();
+
+    // private readonly UserManager<User> _userManager;
+    private readonly RoleManager<IdentityRole> _roleManager;
+
+    private readonly IUserHelper _userHelper;
 
     public string PlaceHolders;
 
@@ -50,8 +49,8 @@ public class SeedDb
     public SeedDb(
         IUserHelper userHelper,
         DataContextMSSQL dataContextMssql,
-        DataContextSQLite dataContextSqLite,
         DataContextMySql dataContextMySql,
+        DataContextSQLite dataContextSqLite,
         IWebHostEnvironment hostingEnvironment
         // UserManager<User> userManager,
         // RoleManager<IdentityRole> roleManager

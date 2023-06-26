@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MyLeasing.Web.Data.Repositories.Interfaces;
 using MyLeasing.Web.Data.Seeders;
@@ -51,6 +52,7 @@ public class OwnersController : Controller
 
 
     // GET: Owners/Create
+    [Authorize(Roles = "Admin")]
     public IActionResult Create()
     {
         return View();
@@ -119,6 +121,7 @@ public class OwnersController : Controller
 
 
     // GET: Owners/Edit/5
+    [Authorize]
     public async Task<IActionResult> Edit(int? id)
     {
         if (id == null) return NotFound();
@@ -196,6 +199,7 @@ public class OwnersController : Controller
 
 
     // GET: Owners/Delete/5
+    [Authorize]
     public async Task<IActionResult> Delete(int? id)
     {
         if (id == null) return NotFound();

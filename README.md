@@ -26,16 +26,20 @@ O formador Rafael Santos (rafaelsantos1000) deverá ter acesso também a esse re
 
 Faça commit no final deste ponto com a mensagem CRUD Owners.
 
-![Imagem1.png](MyLeasing.Web/Docs/Imagens/Imagem1.png)
+![Imagem1.png](MyLeasing.Web/Docs/Imagens/Imagem1.png "Figura 1 - vista index do controlador Owners")
+
 Figura 1 - vista index do controlador Owners
 
-![Imagem2.png](MyLeasing.Web/Docs/Imagens/Imagem2.png)
+![Imagem2.png](MyLeasing.Web/Docs/Imagens/Imagem2.png "Figura 2 - vista edit do controlador Owners")
+
 Figura 2 - vista edit do controlador Owners
 
-![Imagem3.png](MyLeasing.Web/Docs/Imagens/Imagem3.png)
+![Imagem3.png](MyLeasing.Web/Docs/Imagens/Imagem3.png "Figura 3 - vista details do controlador Owners")
+
 Figura 3 - vista details do controlador Owners
 
-![Imagem4.png](MyLeasing.Web/Docs/Imagens/Imagem4.png)
+![Imagem4.png](MyLeasing.Web/Docs/Imagens/Imagem4.png "Figura 4 - vista delete do controlador Owners")
+
 Figura 4 - vista delete do controlador Owners
 
 8. Crie uma alimentador automático da base de dados, para que, sempre que esta for eliminada, quando a aplicação
@@ -60,23 +64,29 @@ Faça novo commit com o texto SeedDb
 ```csharp
 
 [Display(Name = "Document")]
-
-[MaxLength(20, ErrorMessage = "The {0} field can not have more than {1} characters.")] [Required(ErrorMessage = "The field {0} is mandatory.")]
+[MaxLength(20, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+[Required(ErrorMessage = "The field {0} is mandatory.")]
 public string Document { get; set; }
 
-[Display(Name = "First Name")]
 
-[MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")] [Required(ErrorMessage = "The field {0} is mandatory.")]
+[Display(Name = "First Name")]
+[MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+[Required(ErrorMessage = "The field {0} is mandatory.")]
 public string FirstName { get; set; }
 
-[Display(Name = "Last Name")]
 
-[MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")] [Required(ErrorMessage = "The field {0} is mandatory.")]
+[Display(Name = "Last Name")]
+[MaxLength(50, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+[Required(ErrorMessage = "The field {0} is mandatory.")]
 public string LastName { get; set; }
 
-[MaxLength(100, ErrorMessage = "The {0} field can not have more than {1} characters.")] public string Address { get; set; }
+
+[MaxLength(100, ErrorMessage = "The {0} field can not have more than {1} characters.")]
+public string Address { get; set; }
+
 
 public string FullName => $"{FirstName} {LastName}";
+
 
 public string FullNameWithDocument => $"{FirstName} {LastName} - {Document}";
 
