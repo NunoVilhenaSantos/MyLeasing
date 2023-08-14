@@ -83,7 +83,7 @@ public class OwnersController : Controller
             var filePath = ownerViewModel.ProfilePhotoUrl;
             var fileStorageId = ownerViewModel.ProfilePhotoId;
 
-            if (ownerViewModel.ImageFile is {Length: > 0})
+            if (ownerViewModel.ImageFile is { Length: > 0 })
             {
                 filePath = await _imageHelper.UploadImageAsync(
                     ownerViewModel.ImageFile, "owners");
@@ -161,7 +161,7 @@ public class OwnersController : Controller
             var filePath = ownerViewModel.ProfilePhotoUrl;
             var fileStorageId = ownerViewModel.ProfilePhotoId;
 
-            if (ownerViewModel.ImageFile is {Length: > 0})
+            if (ownerViewModel.ImageFile is { Length: > 0 })
             {
                 filePath = await _imageHelper.UploadImageAsync(
                     ownerViewModel.ImageFile, "owners");

@@ -125,7 +125,7 @@ public partial class UserDBUpdate : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserLogins",
-                    x => new {x.LoginProvider, x.ProviderKey});
+                    x => new { x.LoginProvider, x.ProviderKey });
                 table.ForeignKey(
                     "FK_AspNetUserLogins_AspNetUsers_UserId",
                     x => x.UserId,
@@ -144,7 +144,7 @@ public partial class UserDBUpdate : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserRoles",
-                    x => new {x.UserId, x.RoleId});
+                    x => new { x.UserId, x.RoleId });
                 table.ForeignKey(
                     "FK_AspNetUserRoles_AspNetRoles_RoleId",
                     x => x.RoleId,
@@ -171,7 +171,7 @@ public partial class UserDBUpdate : Migration
             constraints: table =>
             {
                 table.PrimaryKey("PK_AspNetUserTokens",
-                    x => new {x.UserId, x.LoginProvider, x.Name});
+                    x => new { x.UserId, x.LoginProvider, x.Name });
                 table.ForeignKey(
                     "FK_AspNetUserTokens_AspNetUsers_UserId",
                     x => x.UserId,

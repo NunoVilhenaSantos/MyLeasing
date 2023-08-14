@@ -10,7 +10,7 @@ public partial class Owner : IEntity, IPerson
     public bool WasDeleted { get; set; }
 
 
-    [Required] [DisplayName("Document*")] public string Document { get; set; }
+    [Required][DisplayName("Document*")] public string Document { get; set; }
 
 
     [Required]
@@ -18,7 +18,7 @@ public partial class Owner : IEntity, IPerson
     public string FirstName { get; set; }
 
 
-    [Required] [DisplayName("Last Name*")] public string LastName { get; set; }
+    [Required][DisplayName("Last Name*")] public string LastName { get; set; }
 
 
     [DisplayName("Profile Photo")] public string? ProfilePhotoUrl { get; set; }

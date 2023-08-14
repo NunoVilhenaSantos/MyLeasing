@@ -81,7 +81,7 @@ public class LesseesController : ControllerBase
         await _contextMssql.SaveChangesAsync();
 
         return CreatedAtAction("GetLessee",
-            new {id = lessee.Id}, lessee);
+            new { id = lessee.Id }, lessee);
     }
 
 

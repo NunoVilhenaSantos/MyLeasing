@@ -80,7 +80,7 @@ public class LesseesController : Controller
             var filePath = lesseeViewModel.ProfilePhotoUrl;
             var fileStorageId = lesseeViewModel.ProfilePhotoId;
 
-            if (lesseeViewModel.ImageFile is {Length: > 0})
+            if (lesseeViewModel.ImageFile is { Length: > 0 })
             {
                 filePath = await _imageHelper.UploadImageAsync(
                     lesseeViewModel.ImageFile, "lessees");
@@ -158,7 +158,7 @@ public class LesseesController : Controller
             var filePath = lesseeViewModel.ProfilePhotoUrl;
             var fileStorageId = lesseeViewModel.ProfilePhotoId;
 
-            if (lesseeViewModel.ImageFile is {Length: > 0})
+            if (lesseeViewModel.ImageFile is { Length: > 0 })
             {
                 filePath = await _imageHelper.UploadImageAsync(
                     lesseeViewModel.ImageFile, "lessees");

@@ -52,8 +52,8 @@ public class SeedDb
         DataContextMySql dataContextMySql,
         DataContextSQLite dataContextSqLite,
         IWebHostEnvironment hostingEnvironment
-        // UserManager<User> userManager,
-        // RoleManager<IdentityRole> roleManager
+    // UserManager<User> userManager,
+    // RoleManager<IdentityRole> roleManager
     )
     {
         _userHelper = userHelper;
@@ -296,60 +296,60 @@ public class SeedDb
         switch (user)
         {
             case null:
-            {
-                user = role switch
                 {
-                    "Owner" => new User
+                    user = role switch
                     {
-                        Document = document,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    },
-                    "Lessees" => new User
-                    {
-                        Document = document,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    },
-                    "User" => new User
-                    {
-                        Document = document,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    },
-                    "Admin" => new User
-                    {
-                        Document = document,
-                        FirstName = firstName,
-                        LastName = lastName,
-                        Address = address,
-                        UserName = userName,
-                        Email = email,
-                        PhoneNumber = phoneNumber
-                    },
-                    _ => throw new InvalidOperationException(
-                        "The role is not valid")
-                };
+                        "Owner" => new User
+                        {
+                            Document = document,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Address = address,
+                            UserName = userName,
+                            Email = email,
+                            PhoneNumber = phoneNumber
+                        },
+                        "Lessees" => new User
+                        {
+                            Document = document,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Address = address,
+                            UserName = userName,
+                            Email = email,
+                            PhoneNumber = phoneNumber
+                        },
+                        "User" => new User
+                        {
+                            Document = document,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Address = address,
+                            UserName = userName,
+                            Email = email,
+                            PhoneNumber = phoneNumber
+                        },
+                        "Admin" => new User
+                        {
+                            Document = document,
+                            FirstName = firstName,
+                            LastName = lastName,
+                            Address = address,
+                            UserName = userName,
+                            Email = email,
+                            PhoneNumber = phoneNumber
+                        },
+                        _ => throw new InvalidOperationException(
+                            "The role is not valid")
+                    };
 
-                var result = await _userHelper.AddUserAsync(user, password);
+                    var result = await _userHelper.AddUserAsync(user, password);
 
-                if (result != IdentityResult.Success)
-                    throw new InvalidOperationException(
-                        "Could not create the user in Seeder");
-                break;
-            }
+                    if (result != IdentityResult.Success)
+                        throw new InvalidOperationException(
+                            "Could not create the user in Seeder");
+                    break;
+                }
         }
 
         return user;
@@ -380,21 +380,21 @@ public class SeedDb
         var addressFull = address + ", " + _random.Next(1, 9999);
 
         _dataContextMssql.Owners.Add(new Owner
-            {
-                Document = document,
-                FirstName = firstName,
-                LastName = lastName,
-                FixedPhone = fixedPhone,
-                CellPhone = cellPhone,
-                Address = addressFull,
-                User = await CheckUserAsync(
+        {
+            Document = document,
+            FirstName = firstName,
+            LastName = lastName,
+            FixedPhone = fixedPhone,
+            CellPhone = cellPhone,
+            Address = addressFull,
+            User = await CheckUserAsync(
                     firstName, lastName,
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{cellPhone}", "Owner",
                     document, addressFull
                 )
-            }
+        }
         );
 
         // await _dataContextMssql.SaveChangesAsync();
@@ -410,21 +410,21 @@ public class SeedDb
         var addressFull = address + ", " + _random.Next(1, 9999);
 
         _dataContextMssql.Lessees.Add(new Lessee
-            {
-                Document = document,
-                FirstName = firstName,
-                LastName = lastName,
-                FixedPhone = fixedPhone,
-                CellPhone = cellPhone,
-                Address = addressFull,
-                User = await CheckUserAsync(
+        {
+            Document = document,
+            FirstName = firstName,
+            LastName = lastName,
+            FixedPhone = fixedPhone,
+            CellPhone = cellPhone,
+            Address = addressFull,
+            User = await CheckUserAsync(
                     firstName, lastName,
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{firstName}.{lastName}@rouba_a_descarada.com",
                     $"{cellPhone}", "Lessees",
                     document, addressFull
                 )
-            }
+        }
         );
 
         // await _dataContextMssql.SaveChangesAsync();

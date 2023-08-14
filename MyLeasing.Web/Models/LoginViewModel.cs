@@ -5,7 +5,7 @@ namespace MyLeasing.Web.Models;
 
 public class LoginViewModel
 {
-    [Required] [EmailAddress] public string Username { get; set; }
+    [Required][EmailAddress] public string Username { get; set; }
 
 
     [Required]

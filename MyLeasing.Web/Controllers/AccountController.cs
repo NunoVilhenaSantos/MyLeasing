@@ -17,11 +17,11 @@ public class AccountController : Controller
 
 
     // GET
-    // [HttpGet]
-    // public IActionResult Index()
-    // {
-    //     return View();
-    // }
+    [HttpGet]
+    public IActionResult Index()
+    {
+        return View();
+    }
 
 
     // GET

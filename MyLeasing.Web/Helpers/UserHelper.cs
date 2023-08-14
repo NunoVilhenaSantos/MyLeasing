@@ -89,7 +89,7 @@ public class UserHelper : IUserHelper
         const string errorMessage = "Failed to sign out.";
         return new RedirectToActionResult("LogoutConfirmation",
             "YourControllerName",
-            new {error = errorMessage});
+            new { error = errorMessage });
     }
 
 

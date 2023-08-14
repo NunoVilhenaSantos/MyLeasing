@@ -11,8 +11,8 @@ public class StorageHelper : IStorageHelper
 {
     public StorageHelper(
         IConfiguration configuration
-        // IOptions<GCPConfigOptions> options,
-        // ILogger<CloudStorageService> logger
+    // IOptions<GCPConfigOptions> options,
+    // ILogger<CloudStorageService> logger
     )
     {
         _configuration = configuration;

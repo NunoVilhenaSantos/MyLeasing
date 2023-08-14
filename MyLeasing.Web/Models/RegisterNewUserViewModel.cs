@@ -1,6 +1,6 @@
-﻿using System.ComponentModel;
+﻿using MyLeasing.Web.Data.Entities;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using MyLeasing.Web.Data.Entities;
 
 namespace MyLeasing.Web.Models;
 

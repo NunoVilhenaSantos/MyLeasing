@@ -1,5 +1,5 @@
-using System.ComponentModel;
 using MyLeasing.Web.Data.Entities;
+using System.ComponentModel;
 
 namespace MyLeasing.Web.Models;
 

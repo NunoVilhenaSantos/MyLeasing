@@ -72,7 +72,7 @@ public class OwnersController : ControllerBase
         await _contextMssql.SaveChangesAsync();
 
         return CreatedAtAction(
-            "GetOwner", new {id = owner.Id}, owner);
+            "GetOwner", new { id = owner.Id }, owner);
     }
 
     // DELETE: api/Owners/5
