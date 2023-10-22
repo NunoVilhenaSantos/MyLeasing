@@ -25,29 +25,19 @@ public partial class Owner : IEntity, IPerson
 
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
+        ? "https://supershop.blob.core.windows.net/placeholders/noimage.png"
             : MyRegex().Replace(ProfilePhotoUrl,
-                "https://storage.googleapis.com/" +
-                "supershoptpsicet77-nuno/owners/");
+                "https://supershop.blob.core.windows.net/" +
+                "/owners/");
 
 
     [DisplayName("Profile Photo Id")] public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/owners/" +
-          ProfilePhotoId;
-    //:   "https://supershopnunostorage.blob.core.windows.net/{GetType().Name.ToLower()}s/{ImageId}";
-    //    "https://supershopnunostorage.blob.core.windows.net/products/e1572b5b-3a31-4c9a-a68b-f13bc4f550d4";
-
-
-    // [Display(Name = "Thumbnail")]
-    // public string ImageThumbnailUrl { get; set; }
-    //
-    // public string ImageThumbnailFullUrl =>
-    //     string.IsNullOrEmpty(ImageThumbnailUrl)
-    //         ? null
-    //         : $"https://supermarketapi.azurewebsites.net{ImageThumbnailUrl[1..]}";
+        ? "https://supershop.blob.core.windows.net/placeholders/noimage.png"
+        : "https://supershop.blob.core.windows.net/" +
+        "owners" +
+        "/" + ProfilePhotoId;
 
 
     [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }

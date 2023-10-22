@@ -42,18 +42,19 @@ public partial class Lessee : IEntity, IPerson
 
     public string? ProfilePhotoFullUrl =>
         string.IsNullOrEmpty(ProfilePhotoUrl)
-            ? "~/images/PlaceHolders/legacy.png"
+        ? "https://supershop.blob.core.windows.net/placeholders/noimage.png"
             : MyRegex().Replace(ProfilePhotoUrl,
-                "https://storage.googleapis.com/" +
-                "supershoptpsicet77-nuno/lessees/");
+                "https://supershop.blob.core.windows.net/" +
+                "/lessees/");
 
 
     public Guid ProfilePhotoId { get; set; }
 
     public string ProfilePhotoIdUrl => ProfilePhotoId == Guid.Empty
-        ? "https://supershopweb.blob.core.windows.net/noimage/noimage.png"
-        : "https://storage.googleapis.com/supershoptpsicet77-nuno/lessees/" +
-          ProfilePhotoId;
+        ? "https://supershop.blob.core.windows.net/placeholders/noimage.png"
+        : "https://supershop.blob.core.windows.net/" +
+        "lessees" +
+        "/" + ProfilePhotoId;
 
     [DisplayName("Fixed Phone")] public string? FixedPhone { get; set; }
 
